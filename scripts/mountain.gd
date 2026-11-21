@@ -234,7 +234,7 @@ func _launch_line() -> String:
 
 func _pad() -> void:
 	if not GameState.quest_done("clear_meadow") or (GameState.is_penguins() and not GameState.run["flags"].has("merkitty_done")):
-		var early := not GameState.run["flags"].has("prison_done")
+		var early: bool = not GameState.run["flags"].has("prison_done")
 		await say([{"who": "Star Crystal", "text": "(faintly) Not yet. There's a mountain to climb first, the long way." if early else "(faintly) Not yet. The merkitties have to find you before we leave the ground."}])
 		return
 	var d := Dialogue.instance(get_tree())
