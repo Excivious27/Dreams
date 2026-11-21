@@ -754,7 +754,8 @@ func _field_team() -> void:
 		# Spread on a ring around you (not a row on top of you); free_spot keeps it dry.
 		var ang := PI * 0.5 + (float(n) - 1.5) * 0.9
 		var at: Vector2 = map.player.position + Vector2(cos(ang), sin(ang)) * Vector2(34, 24)
-		var h := HelperUnit.make_team(map, m, jobs[n % jobs.size()], at, team_sprite(m))
+		var job: String = TeamAnimals.battle_job(str(m[0]).trim_prefix("animal:")) if str(m[2]) == "animal" else job_for(m, jobs[n % jobs.size()])
+		var h := HelperUnit.make_team(map, m, job, at, team_sprite(m))
 		h.tag_row = n % 2
 		if bool(d.get("inspired", false)):
 			h.max_hp = int(h.max_hp * 1.25)
@@ -792,11 +793,35 @@ func _team_push() -> void:
 	map.set_meta("team_push", tgt)
 	if not _push_said:
 		_push_said = true
-		map.hud.toast("Your team pushes on. Tap RALLY to give orders.", Color(0.7, 0.95, 1.0))
+		map.hud.toast("Your team pushes on. Tap %s to give orders." % _rally_word(), Color(0.7, 0.95, 1.0))
 
 
+## Fielding order: the line-up picked on the battle card first (CampaignGate.line_up, C11b P6).
 static func team_members() -> Array:
-	return CampaignGate.team()
+	return CampaignGate.line_up()
+
+
+## C11b P6 (c11b_08-15): a job from who the ally is, the slot's job only as the fallback.
+## Partners by ability (mend heals, muscle/haul guard, a shade/mirror Gift hides you), crew by role
+## (medic heals, muscle guards, lookout hides you); friends and the rest strike.
+const ABILITY_JOB := {"mend": "healer", "muscle": "warden", "haul": "warden", "gift:shade": "shade", "gift:mirror": "shade", "gift:iron": "warden", "bee_bop": "healer"}
+const ROLE_JOB := {"medic": "healer", "cook": "healer", "muscle": "warden", "lookout": "shade"}
+
+
+static func job_for(m: Array, fallback := "striker") -> String:
+	var id := str(m[0])
+	match str(m[2]):
+		"partner":
+			var ab := str(Companion.defs().get(id, {}).get("ability", ""))
+			if ABILITY_JOB.has(ab):
+				return str(ABILITY_JOB[ab])
+			return "striker" if ab.begins_with("gift:") else fallback
+		"crew":
+			var role := str((Crew.members().get(id, {}) as Dictionary).get("role", ""))
+			return str(ROLE_JOB.get(role, "striker"))
+		"friend":
+			return "striker"
+	return fallback
 
 
 static func _and_list(a: Array) -> String:
@@ -813,6 +838,8 @@ static func team_sprite(m: Array) -> String:
 			return str(Companion.defs().get(id, {}).get("sprite", ""))
 		"crew":
 			return str(Crew.members().get(id, {}).get("sprite", ""))
+		"animal":
+			return TeamAnimals.sprite_group(id.trim_prefix("animal:"))  # "animals/<strip>"
 	return str(GameState.npcs.get(id, {}).get("sprite", ""))
 
 
@@ -899,6 +926,8 @@ func interact(id: String) -> void:
 				for h in map.get_tree().get_nodes_in_group("allies"):
 					if h is HelperUnit and (h as Node2D).position.distance_to(map.player.position) < 120.0:
 						(h as HelperUnit).hp = (h as HelperUnit).max_hp
+					elif h is TeamBeast and (h as Node2D).position.distance_to(map.player.position) < 120.0:
+						(h as TeamBeast).heal(9999)  # C11a P4
 				if map.pet != null and is_instance_valid(map.pet) and map.pet.position.distance_to(map.player.position) < 120.0 and not Pet.state().has("down_until"):
 					Pet.state()["hp"] = Pet.max_hp()
 				map.fx("heal", map.player.position + Vector2(0, -10), 10.0, 0.6)

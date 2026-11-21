@@ -189,6 +189,10 @@ MAP = {
     "cluck": ("sfx", ["bigsoundbank/0978", "bigsoundbank/1039", "bigsoundbank/0453"], {"cap": 0.9, "slice": True, "gap": 0.12, "min": 0.1}),
     "peep": ("sfx", ["bigsoundbank/0430", "bigsoundbank/0431", "bigsoundbank/0672"], {"cap": 0.5, "slice": True, "gap": 0.05, "min": 0.05}),
     "quack": ("sfx", ["bigsoundbank/0276"], {"cap": 0.8, "slice": True, "gap": 0.1, "min": 0.1}),
+    # C11a P5 ranch voices (all BigSoundBank CC0): pig (mouth imitation, cartoon-friendly), bees, rabbits stamping.
+    "oink": ("sfx", ["bigsoundbank/1658", "bigsoundbank/1659"], {"cap": 1.0, "slice": True, "gap": 0.2, "min": 0.15}),
+    "buzz": ("sfx", ["bigsoundbank/1000", "bigsoundbank/1001"], {"cap": 1.4, "slice": True, "gap": 0.3, "min": 0.4}),
+    "thump": ("sfx", ["bigsoundbank/1376"], {"cap": 0.35, "slice": True, "gap": 0.08, "min": 0.03}),
     "bleat": ("sfx", ["bigsoundbank/0880", "bigsoundbank/1377"], {"cap": 1.4, "slice": True, "gap": 0.2, "min": 0.3}),
     # --- mega travel (C4 P4): derived mixes of the CC0 bell dings + the air whoosh ---
     "airship_whoosh": ("sfx", ["air-whoosh/whoosh2_0.*"], {"cap": 2.6}),
@@ -211,6 +215,19 @@ MAP = {
     "cicada": ("spot", ["swamp-environment-audio/cicada_1*", "swamp-environment-audio/cicada_2*"], {"cap": 4.0}),
     "insect": ("spot", ["insect-sounds/insect1*", "insect-sounds/insect3*"], {"cap": 2.5}),
     "wave": ("spot", ["beach-ocean-waves/wave_01*", "beach-ocean-waves/wave_03*"], {"cap": 6.0}),
+    # --- C11b P6: creature voices (cv_<group>, never a name an effect already uses: c11b_14-01) --------
+    # All ages: soft hoots, chirrs, burbles and snorts; never roar/growl/monster/scream files.
+    "cv_ostrich": ("sfx", ["80-cc0-creture-sfx-2/misc_10*", "80-cc0-creture-sfx-2/misc_11*", "80-cc0-creture-sfx-2/misc_12*"], {"cap": 0.9, "af": "asetrate=44100*0.7,aresample=44100,lowpass=f=3000"}),
+    "cv_emu": ("sfx", ["80-cc0-creture-sfx-2/misc_11*", "80-cc0-creture-sfx-2/misc_10*"], {"cap": 0.8, "af": "asetrate=44100*0.85,aresample=44100,lowpass=f=3200"}),
+    "cv_komodo": ("sfx", ["80-cc0-creature-sfx/nose.*", "80-cc0-creature-sfx/breath.*"], {"cap": 0.8, "af": "highpass=f=200"}),
+    "cv_moon": ("sfx", ["80-cc0-creature-sfx/alien_02*", "80-cc0-creature-sfx/alien_03*", "80-cc0-creture-sfx-2/alien_08*"], {"cap": 0.9}),
+    "cv_merkitty": ("sfx", ["80-cc0-creature-sfx/cute_02*", "80-cc0-creature-sfx/cute_06*", "80-cc0-creature-sfx/burble_01*"], {"cap": 0.8}),
+    "cv_gloam": ("sfx", ["insect-sounds/insect0*", "insect-sounds/insect4*"], {"cap": 1.0, "af": "highpass=f=400"}),
+    "cv_frost": ("sfx", ["80-cc0-creature-sfx/ooh.*", "80-cc0-creture-sfx-2/weird_07*"], {"cap": 0.9, "af": "asetrate=44100*0.9,aresample=44100"}),
+    "cv_sky": ("sfx", ["bird-chirping-sounds/birdchirping071414.wav"], {"cap": 0.7, "slice": True, "takes": 2, "min": 0.12, "floor": -28}),
+    # --- C11b P6: ranch machine cues (c11b_14-09) ---------------------------------------------------
+    "egg_crack": ("sfx", ["7-eating-crunches/crunch.2.*", "7-eating-crunches/crunch.4.*", "7-eating-crunches/crunch.5.*"], {"cap": 0.25, "af": "asetrate=44100*1.3,aresample=44100,highpass=f=300"}),
+    "feeder_fill": ("sfx", ["68-workshop-sounds/*rummaging through nails*", "68-workshop-sounds/*tool rummaging*"], {"cap": 1.0, "af": "lowpass=f=2400"}),
     # --- ambience beds (loops) ------------------------------------------------
     "rain_light": ("bed", ["amb-rain-loop-1/amb_rain_loop_1.*"], {}),
     "rain_heavy": ("bed", ["amb-rain-loop-2/amb_rain2.*"], {}),
@@ -232,6 +249,8 @@ MAP = {
     "marsh": ("bed", ["bigsoundbank/0691"], {}),
     "basement_drips": ("bed", ["dripping-water-loop/*"], {}),
     "boiling": ("bed", ["bigsoundbank/0149", "bigsoundbank/0492"], {"join": True}),
+    "aviary_room": ("bed", ["bird-chirping-sounds/birdchirping071414.wav"], {"af": "volume=-6dB"}),  # C11b P6 (c11b_14-04)
+    "terrarium_room": ("bed", ["30-cc0-sfx-loops/ambient_02*", "30-cc0-sfx-loops/noise_01*"], {"join": True, "af": "lowpass=f=1800"}),
     "machines": ("bed", ["bigsoundbank/0502", "30-cc0-sfx-loops/machine_03*"], {}),
     "purr_loop": ("bed", ["bigsoundbank/0436", "cat-purr-meow/cat_purrsleepy_loop*"], {"join": True}),
     # C6: real recordings for the last synth placeholders, plus room tones

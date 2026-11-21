@@ -305,7 +305,7 @@ func _broadcast_state() -> void:
 ## (overwriting those from the host let guests copy crystals and replay story).
 ## "decor_home" is the host's house look (DecorMode.home_view: placed pieces, wallpaper,
 ## flooring; never the decor box or wardrobe), so guests in the house see the host's decor.
-const WORLD_KEYS := ["day", "time", "weather", "farm", "builds", "construction", "permits", "cleared", "placed", "day_len", "opts", "decor_home"]
+const WORLD_KEYS := ["day", "time", "weather", "farm", "builds", "construction", "permits", "cleared", "placed", "day_len", "opts", "decor_home", "ranch", "coop_hatch"]
 
 
 func _push_world(to_id := -1) -> void:
@@ -486,7 +486,7 @@ func _apply_world(d: Dictionary) -> void:
 		GameState.run[k] = d[k]
 	if not _host:
 		# A full world from the host: keys it doesn't have aren't ours to show (ours are in _solo_backup).
-		for k in ["builds", "construction", "permits", "cleared", "weather", "placed", "decor_home"]:
+		for k in ["builds", "construction", "permits", "cleared", "weather", "placed", "decor_home", "ranch", "coop_hatch"]:
 			if not d.has(k):
 				GameState.run.erase(k)
 	if not _host and host_day == 0:

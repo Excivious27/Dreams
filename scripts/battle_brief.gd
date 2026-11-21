@@ -31,6 +31,8 @@ var d: Dictionary = {}
 var mode := ""
 var _was_paused := false
 var _arm := 0.0
+var _want_back := false
+const BACK_ARM := 0.3
 var _min_t := 0.0
 var _go: Button
 var _hide: Button
@@ -137,6 +139,7 @@ func _ready() -> void:
 	if army != "":
 		v.add_child(_head("YOUR " + Campaign.force_word().to_upper()))
 		v.add_child(_label(army, 7, Color(1, 0.95, 0.7)))
+	_team_box(v)
 	v.add_child(_head("CONTROLS"))
 	v.add_child(_label(CONTROLS, 7, Color(0.88, 0.88, 0.92)))
 	var row := HBoxContainer.new()
@@ -171,7 +174,67 @@ func _ready() -> void:
 	_track_rects.call_deferred()
 
 
+## C11b P6 (c11b_08-09): pick who takes the field. Tap a name to put them in or take them out of
+## the line-up (CampaignGate.LINE_MAX); unpicked slots fill in muster order. Campaign fights only.
+var _team_btns: Array = []
+
+
+func _team_box(v: VBoxContainer) -> void:
+	if mode == "drill" or str(d.get("campaign", "")) == "":
+		return
+	var tm: Array = CampaignGate.team()
+	if tm.is_empty():
+		return
+	v.add_child(_head("YOUR TEAM: TAP TO PICK %d" % CampaignGate.LINE_MAX))
+	var fl := HFlowContainer.new()
+	fl.add_theme_constant_override("h_separation", 3)
+	fl.add_theme_constant_override("v_separation", 3)
+	fl.custom_minimum_size = Vector2(234, 0)
+	v.add_child(fl)
+	for r: Array in tm.slice(0, 8):
+		var b := Button.new()
+		b.toggle_mode = true
+		b.focus_mode = Control.FOCUS_NONE
+		b.custom_minimum_size = Vector2(54, 20)
+		b.add_theme_font_size_override("font_size", 7)
+		b.set_meta("id", str(r[0]))
+		b.set_meta("nm", str(r[1]))
+		b.pressed.connect(_pick.bind(b))
+		fl.add_child(b)
+		_team_btns.append(b)
+	_paint_team()
+
+
+func _pick(b: Button) -> void:
+	CampaignGate.toggle_pick(str(b.get_meta("id")))
+	Music.instance(get_tree()).sfx("ui_tap", "pickup")
+	_paint_team()
+
+
+## Mark who takes the field: the first LINE_MAX of the line-up (your partner on the field walks with
+## you and is skipped there).
+func _paint_team() -> void:
+	var on := {}
+	var n := 0
+	for r: Array in CampaignGate.line_up():
+		if n >= CampaignGate.LINE_MAX:
+			break
+		if str(r[0]) == Companion.active_id():
+			continue
+		on[str(r[0])] = true
+		n += 1
+	var picked: Array = CampaignGate.picked()
+	for b: Button in _team_btns:
+		var id := str(b.get_meta("id"))
+		b.set_pressed_no_signal(on.has(id))
+		b.text = ("★ " if id in picked else ("✓ " if on.has(id) else "")) + str(b.get_meta("nm"))
+
+
 func _track_rects() -> void:
+	for b in _team_btns:
+		var r0 := Rect2(b.global_position, b.size)
+		_rects.append(r0)
+		Hud.extra_rects.append(r0)
 	for b in [_go, _hide, _later]:
 		if b != null and is_instance_valid(b):
 			var r := Rect2(b.global_position, b.size)
@@ -213,10 +276,16 @@ func _process(delta: float) -> void:
 	_arm += delta
 	if _go:
 		_go.disabled = _arm < _min_t
-	if _arm >= _min_t and Input.is_action_just_pressed("a"):
-		_fight()
-	elif _arm >= 0.3 and Input.is_action_just_pressed("b"):
+	# B or MENU backs out (every screen closes on B). A press in the first
+	# BACK_ARM s is kept, not dropped, so a quick B still closes the card
+	# (bot 20, C11a fix); the very first frame is ignored (the press that
+	# opened the card).
+	if _arm > delta and (Input.is_action_just_pressed("b") or Input.is_action_just_pressed("menu")):
+		_want_back = true
+	if _want_back and _arm >= BACK_ARM:
 		_not_now()
+	elif _arm >= _min_t and Input.is_action_just_pressed("a"):
+		_fight()
 	elif _hide != null and _arm >= _min_t and Input.is_action_just_pressed("action"):
 		_hide_forever()
 

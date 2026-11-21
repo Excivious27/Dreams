@@ -22,7 +22,9 @@ AMT = {"growth": 0.03, "extra_crop": 0.04, "farm_energy": 0.04, "crop_value": 0.
        "pass_risk": 0.01, "heat_cool": 0.04, "wash_bonus": 0.02, "job_pay": 0.04, "gun_damage": 1, "supply_rate": 0.05, "helper_hp": 4,
        "ability_cooldown": 0.03, "colony_discount": 0.03,
        "capture_speed": 0.05, "start_supply": 3, "spawner_discount": 0.04, "helper_damage": 1, "ticket_bleed": 0.06, "ticket_guard": 0.05,
-       "team_damage": 1, "team_defense": 0.02, "team_heal": 2, "friend_gain": 0.05, "pet_bond": 5, "team_xp": 0.04, "xp_gain": 0.03, "buy_discount": 0.02, "regrowth": 1}
+       "team_damage": 1, "team_defense": 0.02, "team_heal": 2, "friend_gain": 0.05, "pet_bond": 5, "team_xp": 0.04, "xp_gain": 0.03, "buy_discount": 0.02, "regrowth": 1,
+       # Ranching (C11a P3): read by Ranch / GameMap / Helpers through GameState.bonus("ranching", key)
+       "big_goods": 0.02, "animal_quality": 0.12, "ranch_value": 0.03, "breed_chance": 0.03, "grow_speed": 0.12, "animal_friend": 0.03, "hand_work": 0.04}
 DESC = {"xp_gain": "faster levelling in this skill", "growth": "faster crop growth", "extra_crop": "chance of an extra crop", "farm_energy": "less energy to hoe and water", "crop_value": "crop sell value",
         "extra_day": "chance a crop grows an extra day overnight", "animal_yield": "animal products", "star_chance": "chance of a star harvest",
         "double_harvest": "chance of a double harvest", "seed_back": "chance to get a seed back", "stone_bonus": "toward an extra stone per rock (3 = one more)",
@@ -43,14 +45,19 @@ DESC = {"xp_gain": "faster levelling in this skill", "growth": "faster crop grow
         "team_damage": "damage while a partner is with you", "team_defense": "less damage taken while a partner is with you",
         "team_heal": "health healed each time you use a partner power", "friend_gain": "friendship from talking and gifts",
         "pet_bond": "pup health", "team_xp": "skill XP while a partner is with you", "buy_discount": "off shop prices",
-        "regrowth": "day sooner for picked spots to regrow"}
+        "regrowth": "day sooner for picked spots to regrow",
+        "big_goods": "chance an animal gives a second good", "animal_quality": "of a day sooner to silver and gold animal goods",
+        "ranch_value": "animal goods sell value", "breed_chance": "chance two animals have a baby overnight",
+        "grow_speed": "of a day sooner for babies to grow up", "animal_friend": "chance petting counts double toward friendship",
+        "hand_work": "more chores a farm hand does each night"}
 # skill: [(row title, [keys], [filler names...]), x4], {original node id: row}
 T = {
  "farming": ([("Crops", ["extra_crop", "double_harvest"], ["Sprout Song", "Tender Care", "Full Rows", "Heavy Stalks", "Plenty", "Overflowing Baskets", "Harvest Dance", "Bumper Crop", "Endless Fields"]),
               ("Soil & Water", ["farm_energy", "extra_day"], ["Soft Soil", "Morning Dew", "Light Hoe", "Rain Reader", "Loam Lore", "Deep Watering", "Rich Earth", "Root Song", "Living Soil"]),
-              ("Animals", ["animal_yield"], ["Gentle Hands", "Warm Barn", "Fresh Straw", "Happy Herd", "Brushed Coats", "Best in Show", "Big Eggs", "Full Pails", "Barn Royalty"]),
+              # Animals moved to the Ranching tree (C11a): this row is about the harvest itself.
+              ("Harvest Craft", ["crop_value", "seed_back", "growth"], ["Clean Cuts", "Sorting Table", "Basket Lore", "Morning Pick", "Gentle Wash", "Crate Stacker", "Field Ledger", "Ripe Eye", "Harvest Master"]),
               ("Seeds & Gold", ["crop_value", "star_chance", "seed_back"], ["Market Eye", "Seed Pouch", "Polished Produce", "Shiny Skins", "Star Sense", "Prize Picker", "Golden Glow", "Heirloom Hands", "Crown Harvest"])],
-             {"green_thumb": 0, "harvest_lord": 0, "quick_hands": 1, "sprinkler_plans": 1, "greenhouse_plans": 1, "rich_soil": 1, "harvest_moon": 2, "rancher": 2, "fertilizer": 3, "golden_seeds": 3, "seed_saver": 3, "fields_of_gold": 0}),
+             {"green_thumb": 0, "harvest_lord": 0, "quick_hands": 1, "sprinkler_plans": 1, "greenhouse_plans": 1, "rich_soil": 1, "harvest_moon": 2, "fertilizer": 3, "golden_seeds": 3, "seed_saver": 3, "fields_of_gold": 0}),
  "mining": ([("Stone", ["stone_bonus", "mine_energy"], ["Steady Swing", "Grit", "Rubble Rouser", "Quarry Legs", "Stone Ear", "Boulder Breaker", "Tunnel Lungs", "Bedrock", "Mountain Shoulders"]),
              ("Ore", ["ore_bonus", "double_hit"], ["Copper Nose", "Vein Finder", "Ore Song", "Twin Strike", "Iron Grip", "Rich Seams", "Deep Veins", "Mother Lode", "Heart of Ore"]),
              ("Gems & Crystal", ["gem_chance", "shard_bonus"], ["Sparkle Eye", "Shard Catcher", "Gem Whisper", "Crystal Hum", "Facet Sense", "Glittering Walls", "Prism Touch", "Geode Luck", "Star Stone"]),
@@ -113,12 +120,26 @@ T["strategist"] = ([("Ground", ["capture_speed", "start_supply"], ["Scout the Fi
                     ("Logistics", ["supply_rate", "spawner_discount"], ["Supply Runner", "Lean Builds", "Stockpile", "Prefab Spires", "Convoy", "Efficient Works", "Depot", "Assembly Yard", "Endless Supply"]),
                     ("Forces", ["helper_hp", "helper_damage"], ["Drill", "Sharpened Sparks", "Hardened Shells", "Formation", "Volley", "Veterans", "Elite Guard", "Overcharge", "Legion"]),
                     ("Command", ["ticket_bleed", "ticket_guard"], ["Pressure", "Hold the Line", "Pincer Move", "Morale", "Attrition", "Last Stand", "Rout", "Iron Resolve", "Grand Victory"])], {})
-EXTRA = {"strategist": ("Strategist", "Conquest battles: taking ground, supply, your crystal or drone helpers and breaking the enemy's tickets. Levels up with every battle campaign you fight."),
+# Ranching (C11a P3): both arcs (no "arc" key: the farm animals are the same in both stories).
+T["ranching"] = ([("Produce", ["animal_yield", "big_goods"], ["Gentle Hands", "Warm Barn", "Fresh Straw", "Happy Herd", "Brushed Coats", "Best in Show", "Big Eggs", "Full Pails", "Barn Royalty"]),
+                  ("Quality & Care", ["animal_quality", "ranch_value"], ["Soft Brush", "Clean Stalls", "Shiny Coats", "Proud Hens", "Blue Ribbon", "Fine Fleece", "Cream Top", "Golden Yolks", "Prize Stock"]),
+                  ("Breeding", ["grow_speed", "breed_chance"], ["Nest Box", "Warm Lamp", "Little Ones", "Spring Lambs", "Quick Chicks", "Growing Up", "Strong Kids", "Proud Parents", "Big Family"]),
+                  ("Friends & Helpers", ["animal_friend", "hand_work"], ["Kind Voice", "Known Face", "Treat Pocket", "Follow Me", "Trusted", "Barn Buddy", "Best Pals", "Whistle Call", "Herd Heart"])],
+                 {"rancher": 0})
+EXTRA = {"ranching": ("Ranching", "Your coop, barn, hutch, sty and hives: animal goods and their quality, babies, daily care, feeding, animal friendship and trained farm hands. Levels up whenever you care for animals."),
+         "strategist": ("Strategist", "Conquest battles: taking ground, supply, your crystal or drone helpers and breaking the enemy's tickets. Levels up with every battle campaign you fight."),
          "leadership": ("Leadership", "Working with your team: partners, the pup, your crew or companions, battle helpers and friends. Levels up whenever you work together."),
          "hustle": ("Hustle", "The street: passing bills, washing money, your crew, your guns and your drones. Gangster arc only."),
          "harmony": ("Harmony", "The bonds of the penguin arc: your partners, the song, the merkitty islands and the crystal wardens. Penguin arc only.")}
 for k, (nm, ds) in EXTRA.items():
     base["skills"].setdefault(k, {"name": nm, "desc": ds, "nodes": []})
+# Rancher (animal_yield) moves from Farming to Ranching with the same id: the old Farming ranks
+# refund through GameState._migrate's "renamed or removed" path and can be spent again here.
+_r = [n for n in base["skills"]["farming"]["nodes"] if n["id"] == "rancher"]
+base["skills"]["farming"]["nodes"] = [n for n in base["skills"]["farming"]["nodes"] if n["id"] != "rancher"]
+if _r and not any(n["id"] == "rancher" for n in base["skills"]["ranching"]["nodes"]):
+    rn = dict(_r[0]); rn.pop("requires", None); rn["tier"] = 2
+    base["skills"]["ranching"]["nodes"].append(rn)
 MAGIC_ROW = {"light": 0, "dream": 1, "crystal": 2, "core": 3}
 
 
@@ -147,7 +168,7 @@ def _caps():
 
 
 BASE_CAPS, SKILL_CAPS = _caps()
-FALLBACK = {"farming": ["growth", "seed_back", "animal_yield"], "mining": ["stone_bonus", "mine_energy"], "foraging": ["wood_bonus", "forage_bonus"],
+FALLBACK = {"farming": ["growth", "seed_back"], "ranching": ["animal_yield", "ranch_value", "animal_friend", "hand_work"], "mining": ["stone_bonus", "mine_energy"], "foraging": ["wood_bonus", "forage_bonus"],
             "fishing": ["fish_value", "double_fish", "bite_speed", "escape_less"], "combat": ["xp_gain", "hp", "energy"], "bartering": ["sell_bonus", "interest", "xp_gain", "gift_bonus", "buy_discount"],
             "building": ["energy", "craft_speed"], "magic": ["mana"], "pup": ["pet_hp", "pet_dmg"],
             "hustle": ["hp"], "harmony": ["mana"], "leadership": ["team_heal"], "strategist": ["start_supply"]}
@@ -164,6 +185,13 @@ FALLBACK = {"farming": ["growth", "seed_back", "animal_yield"], "mining": ["ston
 # Tree totals: mining gems 0.12 + Sorcery 0.04; fishing treasure 0.15.
 GEN_CAPS = {"mining": {"gem_chance": 0.12}, "magic": {"gem_chance": 0.04}, "fishing": {"chest_chance": 0.15},
             "leadership": {"team_xp": 0.25}}
+# Ranching keys: mirror of GameState.BONUS_CAPS (the generator also refuses to run if they drift).
+RANCH_CAPS = {"animal_yield": 1.0, "big_goods": 0.3, "animal_quality": 3.0, "ranch_value": 0.35, "breed_chance": 0.3, "grow_speed": 3.0,
+              "animal_friend": 0.3, "hand_work": 0.5, "care_grace": 1.0, "hatch_fast": 1.0, "hand_slot": 2.0, "feeder": 1.0}
+for _k, _v in RANCH_CAPS.items():
+    assert abs(BASE_CAPS.get(_k, -1) - _v) < 1e-9, "GameState.BONUS_CAPS must carry %s: %s (Ranching)" % (_k, _v)
+# Trees whose filler never falls back to hp/energy (a new tree must not rescale the others' hp/energy nodes).
+NO_TAIL = {"ranching", "farming"}
 # Cross-tree totals GameState applies at run time (P1, C8): mirrored here so the
 # filler hp/energy nodes of one arc add up to the cap instead of past it (nodes
 # past a total cap would be dead picks). Base nodes keep their values; only the
@@ -216,6 +244,16 @@ UNLOCKS = {
                  (2, 2, "Smooth Ride", "Your horse and vehicles go 10% faster.", {"ride_speed": 0.1}, "building_u_light_feet"),
                  (3, 9, "Quick Build", "Hazel's crew finishes every build a day sooner.", {"quick_build": 1})],
     "pup": [(1, 4, "Pack Run", "Move 5% faster.", {"move_speed": 0.05})],
+    # Ranching (C11a P3). Keys read at run time: feeder (Ranch feeding), care_grace (streak), hatch_fast (incubator),
+    # hand_slot (Helpers: ranch chores), animal_quality (quality days); hutch/sty blueprints through Builds.gate.
+    "ranching": [(1, 2, "Hutch Blueprint", "Learn to build the Rabbit Hutch.", {"blueprint": "hutch"}),
+                 (2, 3, "Sty Blueprint", "Learn to build the Pig Sty: pigs dig truffles.", {"blueprint": "sty"}),
+                 (3, 2, "Farm Hand", "A trained farm hand can take one ranch chore each night (feed, pet or collect).", {"hand_slot": 1}),
+                 (0, 5, "Feeder Hookup", "Every coop and barn eats silo hay by itself each morning, from the first tier.", {"feeder": 1}),
+                 (1, 6, "Steady Routine", "One missed day of care no longer breaks an animal's friendship streak.", {"care_grace": 1}),
+                 (2, 7, "Warm Incubator", "Eggs hatch a day sooner.", {"hatch_fast": 1}),
+                 (3, 8, "Second Farm Hand", "One more farm hand slot for ranch chores.", {"hand_slot": 1}),
+                 (1, 9, "Golden Touch", "Animal goods reach gold quality a whole day sooner.", {"animal_quality": 1})],
     "magic": [(2, 3, "Blink Step", "Haste lasts half as long again.", {"haste_time": 0.5}),
               (3, 9, "Twin Cast", "15% chance a spell costs no mana.", {"free_cast": 0.15})],
     "hustle": [(0, 1, "Terminal Blueprint", "Learn to build the Hacking Terminal.", {"blueprint": "terminal"}),
@@ -242,6 +280,8 @@ total = 0
 for sk, sd in base["skills"].items():
     rows, rowmap = T[sk]
     CAPS = {**BASE_CAPS, **SKILL_CAPS.get(sk, {})}
+    if sk == "ranching":
+        CAPS.update(RANCH_CAPS)
     for gk, gv in GEN_CAPS.get(sk, {}).items():
         CAPS[gk] = min(CAPS.get(gk, gv), gv)
     grid = [[None] * 10 for _ in range(4)]
@@ -292,7 +332,8 @@ for sk, sd in base["skills"].items():
                 a = AMT[k] * (2 if c == 9 else 1)
                 no_xp = c >= NO_XP_FROM
                 if (k in CAPS and used.get(k, 0) + a * ranks > CAPS[k] + 1e-9) or (no_xp and k == "xp_gain"):
-                    for fk in ([x for x in keys if x != k] + FALLBACK.get(sk, []) if sk == "combat" else FALLBACK.get(sk, []) + [x for x in keys if x != k]) + ["xp_gain", "energy", "hp"]:
+                    tail = ["xp_gain"] if sk in NO_TAIL else ["xp_gain", "energy", "hp"]
+                    for fk in ([x for x in keys if x != k] + FALLBACK.get(sk, []) if sk == "combat" else FALLBACK.get(sk, []) + [x for x in keys if x != k]) + tail:
                         fa = AMT.get(fk, 0) * (2 if c == 9 else 1)
                         if fk in AMT and not (no_xp and fk == "xp_gain") and not (fk in CAPS and used.get(fk, 0) + fa * ranks > CAPS[fk] + 1e-9):
                             k, a = fk, fa
@@ -300,7 +341,7 @@ for sk, sd in base["skills"].items():
                     else:
                         # Everything here is capped: one rank of whatever still has room.
                         ranks = 1
-                        cands = [x for x in FALLBACK.get(sk, []) + keys + ["xp_gain", "energy", "hp"] if x in AMT and x in CAPS and not (no_xp and x == "xp_gain")]
+                        cands = [x for x in FALLBACK.get(sk, []) + keys + (["xp_gain"] if sk in NO_TAIL else ["xp_gain", "energy", "hp"]) if x in AMT and x in CAPS and not (no_xp and x == "xp_gain")]
                         room = {x: CAPS[x] - used.get(x, 0) for x in cands}
                         best = max(room, key=room.get) if room else None
                         if best is not None and room[best] > 1e-9:
