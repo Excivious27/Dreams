@@ -628,7 +628,9 @@ func _spot(name: String, db: float, at := Vector2.INF, species := "") -> void:
 	var p := AudioStreamPlayer2D.new()
 	p.stream = s
 	p.bus = "Ambience" if AudioServer.get_bus_index("Ambience") != -1 else "SFX"
-	p.volume_db = db
+	p.volume_db = db + Settings.loud_db(name)  # c13_17-02 softer thunder
+	p.panning_strength = Settings.pan()  # c13_17-01 mono audio
+	Captions.for_sfx(name)
 	p.max_distance = 260.0
 	p.attenuation = 1.6  # the 60-140 px offset reads as distance, not a pop in the ear (c6_07)
 	p.pitch_scale = randf_range(0.94, 1.06) if name != "thunder" else randf_range(0.8, 0.9)

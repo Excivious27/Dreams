@@ -86,6 +86,7 @@ static func lane_sound(at: Node2D, pos: Vector2, what: String, hits := 0) -> Str
 	p.stream = load(str(takes[randi() % takes.size()]))
 	p.bus = "SFX"
 	p.volume_db = -12.0 if what == "roll" else -7.0
+	p.panning_strength = Settings.pan()  # c13_17-01 mono audio
 	p.max_distance = 360.0
 	p.attenuation = 1.5
 	p.position = pos

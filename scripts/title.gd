@@ -192,12 +192,14 @@ func _show_title() -> void:
 ## Volumes and mute before any save is loaded (the title song plays first).
 func _show_sound() -> void:
 	_clear()
-	_page.add_child(_label("Sound", 16))
+	_page.add_child(_label("Options", 16))  # c13_17-07: the page holds every option
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation", 6)
 	box.size_flags_horizontal = SIZE_EXPAND_FILL
 	_page.add_child(box)
+	Settings.header(box, "Sound")
 	Settings.audio_rows(box, get_tree(), _show_sound)
+	Settings.header(box, "Display and controls")
 	# C9: the other packages' shared rows, when present (P2 general options, P4 vibration).
 	for sp: Array in [["res://scripts/settings.gd", "general_rows"]]:  # vibration rows come with Settings.audio_rows
 		if ResourceLoader.exists(str(sp[0])):

@@ -83,11 +83,11 @@ func _ready() -> void:
 		_voice_t.append(0)
 		_voice_long.append(false)
 	_steps = AudioStreamPlayer.new()
-	_steps.bus = "SFX"
+	_steps.bus = "Steps"
 	_steps.volume_db = STEP_DB
 	add_child(_steps)
 	_blip = AudioStreamPlayer.new()
-	_blip.bus = "SFX"
+	_blip.bus = "Voices"
 	add_child(_blip)
 	_muted = bool(SaveGame.get_value("muted", false))
 	_apply_master_mute()
@@ -798,7 +798,9 @@ func sfx(name: String, fallback := "") -> void:
 	var pick := _voice_for()
 	var vi := _sfx.find(pick)
 	pick.stream = st
-	pick.volume_db = -4.0 + _group_db(name)
+	pick.bus = Settings.sfx_bus(name)  # C13 P6: data/sfx_buses.json (Voices/UI/Steps)
+	pick.volume_db = -4.0 + _group_db(name) + Settings.loud_db(name)
+	Captions.for_sfx(name)
 	# A little pitch drift so repeated swings and steps don't sound stamped out;
 	# UI clicks, money and musical cues stay in key.
 	pick.pitch_scale = 1.0 if (ln > 0.55 or _no_drift(name)) else randf_range(0.93, 1.07)
@@ -839,7 +841,8 @@ func sfx_pitched(name: String, fallback := "", pitch := 1.0, db := 0.0, delay :=
 	var pick := _voice_for()
 	var vi := _sfx.find(pick)
 	pick.stream = st
-	pick.volume_db = -4.0 + _group_db(name) + db
+	pick.bus = Settings.sfx_bus(name)
+	pick.volume_db = -4.0 + _group_db(name) + db + Settings.loud_db(name)
 	pick.pitch_scale = clampf(pitch, 0.5, 2.0)
 	pick.play()
 	_voice_t[vi] = now

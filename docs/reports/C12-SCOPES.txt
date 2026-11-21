@@ -1,0 +1,21 @@
+01 MAIN STORY PENGUIN ARC A: chapters 1-2 beats (data/story.json + scripts/story.gd), Pip-Pip and Nova voices true to Tom's book, Crystopia/Grumps lore (Grumps were crystals, Meow Pow Wow turns them back), pacing; play the beats in order and log every line problem.
+02 MAIN STORY PENGUIN ARC B: chapters 3+ to the endings/epilogue (gen_epilogue), boss intros, campaign story text; continuity with A.
+03 MAIN STORY GANGSTER ARC A: data/story_gang.json early beats, crew recruitment, Racket, Hideout; serious, cool, all-ages voice; no references to penguin-only things.
+04 MAIN STORY GANGSTER ARC B: late beats, the Marked, heat/loyalty branches, endings; continuity.
+05 VILLAGERS A (town core: Hazel, Benno, Posy, Tam, Maple, Tess, Gideon...): first meetings (Intros), daily lines, weather/season/time variants; consistent voice per NPC; progress-aware (no talk of unseen things).
+06 VILLAGERS B (the rest of the cast incl. region NPCs, crew members): same checks.
+07 HEARTS AND ROMANCE: heart events, heart perks text (gen_heart_perks), dating/marriage lines (Romance), spouse daily/chores lines, birthdays; no gender checks; consistency with perks.
+08 GIFTS AND REACTIONS: gift lines (gen_gifts, gift_lines.json), loved/liked/hated tables vs character voice, ItemWords use, ranch goods and decor as gifts.
+09 MAIL: every letter (Mail, ranch mail, favours, welcomes, storm letters, festival eve letters, Tam highlands letters), tone, timing conditions vs state, gangster variants.
+10 SIDE STORIES AND QUESTS: gen_side_stories, data/quests.json, community farm, rec center quests, colony stories (gen_colonies STORY); quest text clear about what to do and where.
+11 FESTIVALS AND EVENTS: every festival's lines, shows (AnimalShowLib), contests, market stalls, seasonal chatter; arc variants.
+12 ITEMS AND DESCRIPTIONS: item names/descriptions (items.json via generators), crafting/station recipe text, decor/wardrobe/casino descriptions, ranch goods; tone, typos, consistency, all-ages, wine/ale trade-goods wording.
+13 TUTORIALS, HINTS, UI TEXT: goal line, quest tracker, toasts, ToolHint, locked-area/gate messages (Campaign.gate_words), menus, options, battle drill/brief text, achievements text (data/achievements.json); clarity, button words via InputSetup.prompt.
+14 RANCH AND DECOR WRITING (C10-C11 content): ranch chatter, Animals page, chores words, team lessons, creature lore/sources, decor catalogue, carpenter Tess, casino lines; seamless with the rest.
+15 CONTINUITY SCRIPT: build a checker (tools/) that maps who mentions what, when (NPC/place/item references vs the state that unlocks them) across all dialogue/mail/story data; run it and log contradictions and spoilers.
+16 CROSS-REFERENCES: storylines referencing each other (story <-> villagers <-> side stories <-> mail <-> festivals); find missed links and dead references; propose where references should exist.
+17 GAMESTATE CONDITIONS TESTS: plan headless tests that check dialogue/mail conditions match game state (flags, days, hearts, quests, arc); list current tests and gaps.
+18 STYLE AND TYPOS SWEEP: grammar, typos, repeated phrases, line length vs phone screen (text boxes), names and capitalisation, Money.amount/ItemWords usage in text, both arcs.
+19 REGRESSION after S1 merge (low): achievements_test, steam_service_test, web_export_guard, deck tests, phone_ui_test, menu_sweep_test; log only what is broken.
+20 BUGS SWEEP after S1 (low): 4 single bots (both arcs, Hard + Very easy) around dialogue, mail, festivals; script errors, freezes, softlocks.
+Note: 01-18 medium; 19-20 low after the S1 push.

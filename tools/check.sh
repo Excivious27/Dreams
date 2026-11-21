@@ -1138,3 +1138,9 @@ echo "$dsout" | grep -E "FAIL|SCRIPT ERROR|dialogue_state_test" || true
 if ! echo "$dsout" | grep -q "dialogue_state_test: OK"; then
   echo "dialogue_state_test failed"; exit 1
 fi
+
+acout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/access_audio_test.gd 2>&1)"
+echo "$acout" | grep -E "FAIL|SCRIPT ERROR|access_audio_test" || true
+if ! echo "$acout" | grep -q "access_audio_test: 0 failures"; then
+  echo "Hearing accessibility test failed"; exit 1
+fi
