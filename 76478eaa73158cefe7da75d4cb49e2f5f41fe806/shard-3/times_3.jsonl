@@ -1,0 +1,24 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 208.2}
+{"step": 4, "name": "building doors", "rc": 0, "secs": 14.8}
+{"step": 10, "name": "first week pacing, faint/clinic/sleep", "rc": 0, "secs": 3.3}
+{"step": 16, "name": "touch_ui_test", "rc": 0, "secs": 37.1}
+{"step": 22, "name": "Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a", "rc": 0, "secs": 4.5}
+{"step": 28, "name": "rec_test", "rc": 0, "secs": 5.1}
+{"step": 34, "name": "cash_test", "rc": 0, "secs": 3.4}
+{"step": 40, "name": "make_house_parts", "rc": 0, "secs": 0.4}
+{"step": 46, "name": "commons_test", "rc": 0, "secs": 36.6}
+{"step": 52, "name": "cf_layout_test", "rc": 0, "secs": 8.5}
+{"step": 58, "name": "music loop seams (join click + level jump)", "rc": 0, "secs": 8.9}
+{"step": 64, "name": "C11a ranch art: species strips, building looks, icons, stations", "rc": 0, "secs": 0.3}
+{"step": 70, "name": "mix_test", "rc": 0, "secs": 4.5}
+{"step": 76, "name": "gifts: the Marked and boss powers", "rc": 0, "secs": 6.7}
+{"step": 82, "name": "campaign: battles, projects, colonies, big mines", "rc": 0, "secs": 6.2}
+{"step": 88, "name": "street_bat_test", "rc": 0, "secs": 2.6}
+{"step": 94, "name": "campaign_c3_test", "rc": 0, "secs": 2.6}
+{"step": 100, "name": "story: every chapter plays to the end", "rc": 0, "secs": 10.8}
+{"step": 106, "name": "mega UI: map pins, travel letters, mega quests, boss themes, caves (C4", "rc": 0, "secs": 4.7}
+{"step": 112, "name": "hidden areas stay put day to day (C5)", "rc": 0, "secs": 4.5}
+{"step": 118, "name": "softlocks: every menu/screen leaves on B, dialogues always finish", "rc": 0, "secs": 6.8}
+{"step": 124, "name": "C7 P3: endings and epilogue", "rc": 0, "secs": 2.6}
+{"step": 130, "name": "C11a integration: one care path, ranching keys, incubator, farm hands,", "rc": 0, "secs": 2.6}
+{"step": 136, "name": "C9 P4: haptics", "rc": 0, "secs": 2.4}

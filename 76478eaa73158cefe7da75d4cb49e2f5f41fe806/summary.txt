@@ -1,0 +1,13 @@
+CONDUCT CI FAIL  76478eaa73  (ci/c11bp4-3b079922, run 44848313315)
+
+subset run: shards [3, 5], bots off, playtest on
+check shards (2/2):
+  shard 3: PASS  388s
+  shard 5: PASS  256s
+playtest: FAIL (twice in a row)  79s  21 screenshots (results playtest/shots/)
+  FAIL tap-to-move walks to the tapped cell (14 away)
+  FAIL boss appeared after 5 kills
+
+longest job: 388s
+slowest check steps: import 208.2s; import 114.6s; touch_ui_test 37.1s; commons_test 36.6s; crop_test 26.8s; exits line up (top edge leads to the next map's bottom edge...) 26.0s; building doors 14.8s; story: every chapter plays to the end 10.8s
+distinct errors/fails/warns:

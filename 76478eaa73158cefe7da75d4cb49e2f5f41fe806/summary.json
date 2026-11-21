@@ -1,0 +1,145 @@
+{
+ "sha": "76478eaa73158cefe7da75d4cb49e2f5f41fe806",
+ "ref": "ci/c11bp4-3b079922",
+ "run": "44848313315",
+ "finished": 1795223955.7027335,
+ "pass": false,
+ "playtest": {
+  "rc": 1,
+  "secs": 79,
+  "shots": 21,
+  "fails": [
+   "FAIL tap-to-move walks to the tapped cell (14 away)",
+   "FAIL boss appeared after 5 kills"
+  ],
+  "attempts": 2,
+  "first_rc": 1,
+  "first_fail": "  FAIL tap-to-move walks to the tapped cell (11 away)"
+ },
+ "playtest_pass": false,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "3b07992291b84e422aaba46b21b07dcebfcfc3b3",
+  "label": "c11bp4",
+  "branch": "c11bf/p4",
+  "shards": [
+   3,
+   5
+  ],
+  "bots": false,
+  "playtest": true
+ },
+ "max_job_secs": 388,
+ "shards": [
+  {
+   "shard": 3,
+   "rc": 0,
+   "secs": 388,
+   "failed_steps": []
+  },
+  {
+   "shard": 5,
+   "rc": 0,
+   "secs": 256,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 208.2
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 114.6
+  },
+  {
+   "step": 16,
+   "name": "touch_ui_test",
+   "rc": 0,
+   "secs": 37.1
+  },
+  {
+   "step": 46,
+   "name": "commons_test",
+   "rc": 0,
+   "secs": 36.6
+  },
+  {
+   "step": 42,
+   "name": "crop_test",
+   "rc": 0,
+   "secs": 26.8
+  },
+  {
+   "step": 6,
+   "name": "exits line up (top edge leads to the next map's bottom edge...)",
+   "rc": 0,
+   "secs": 26.0
+  },
+  {
+   "step": 4,
+   "name": "building doors",
+   "rc": 0,
+   "secs": 14.8
+  },
+  {
+   "step": 100,
+   "name": "story: every chapter plays to the end",
+   "rc": 0,
+   "secs": 10.8
+  },
+  {
+   "step": 102,
+   "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew",
+   "rc": 0,
+   "secs": 10.4
+  },
+  {
+   "step": 108,
+   "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)",
+   "rc": 0,
+   "secs": 9.4
+  },
+  {
+   "step": 58,
+   "name": "music loop seams (join click + level jump)",
+   "rc": 0,
+   "secs": 8.9
+  },
+  {
+   "step": 52,
+   "name": "cf_layout_test",
+   "rc": 0,
+   "secs": 8.5
+  },
+  {
+   "step": 120,
+   "name": "toasts: never over a boss card, a region card, the pup strip or the en",
+   "rc": 0,
+   "secs": 7.5
+  },
+  {
+   "step": 84,
+   "name": "region campaigns: boards, locks, convoy",
+   "rc": 0,
+   "secs": 7.3
+  },
+  {
+   "step": 118,
+   "name": "softlocks: every menu/screen leaves on B, dialogues always finish",
+   "rc": 0,
+   "secs": 6.8
+  }
+ ]
+}
