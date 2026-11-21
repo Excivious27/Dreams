@@ -111,7 +111,7 @@ def add(id, name, cat, rarity, art, layer='floor', tier=1, arc='both', sub='', s
     assert id not in ENTRIES, 'duplicate id ' + id
     assert cat in CATS, (id, cat)
     if name in ITEM_NAMES:  # never share a name with a non-decor item (gear, goods): cosmetics say "(Look)"
-        name = name + (' (Look)' if cat in WEAR_CATS else ' Ornament')
+        name = ('Replica ' + name) if cat in WEAR_CATS else (name + ' Ornament')   # c12_12-10: no dev-tag '(Look)'
     if name in NAMES:
         raise SystemExit('duplicate decor name %r (%s, %s)' % (name, id, NAMES[name]))
     NAMES[name] = id
@@ -1151,6 +1151,303 @@ for k, e in ENTRIES.items():
             e['desc'] = 'Part of the %s.' % SETS[e['set']]['name']
         elif e['sub'] in SUB_DESC:
             e['desc'] = SUB_DESC[e['sub']][zlib.crc32(k.encode()) % 2]
+
+# ---- C12 P6 (c12_12-01/06/17, c12_14-08/09/13/19): flavour lines and real "where" words ------------------
+# Every boilerplate line (default_desc, the old SUB_DESC pairs, the shared unique/keepsake lines) is
+# replaced by, in order: a hand-written line (DESC), a keyword line from the piece's name, or a
+# category line built from the name; set membership becomes a second sentence; wear keeps
+# "Looks only, no stats." as its tail. Authored lines (yard renders, colonies, prizes) are kept.
+DESC = {
+    'dc_founders_orrery': 'Brass rings that still turn with the night sky. The valley founders charted the stars with it.',
+    'dc_show_dream_clock': 'Its hands drift a little slower when someone in the house is dreaming.',
+    'dc_show_kingpin_vault': "The Kingpin's own vault door, hinges and all. Nobody else has one.",
+    'dc_show_moon_throne': 'Carved from pale moonstone. Only one was ever made.',
+    'dc_show_trophy': 'Best in Show, three blue ribbons running. Polished every morning.',
+    'dc_u_aurum_statue': 'A gold figure from the Gilt Vaults. It catches every light in the room.',
+    'dc_u_golden_fountain': 'A little gold fountain, given to whoever finishes every decor set.',
+    'dc_u_horse_statue': 'A bronze horse from the end of the story, mid-gallop and proud.',
+    'dc_u_lighthouse_lamp': 'The old lighthouse lens. It throws a soft, turning beam across the room.',
+    'dc_u_vault_door': 'Gilt from top to bottom. Opens onto nothing, and looks amazing doing it.',
+    'dc_y_u_bell_tower': 'A tiny bell tower that chimes the hour, just quietly enough.',
+    'dc_y_u_gold_lowrider': 'A solid-gold lowrider. It bounces once when you walk past.',
+    'dc_y_u_star_shrine': 'A shrine of star crystal. It hums softly on clear nights.',
+    'dc_alien_statue': 'A little stone visitor from the Moon. It looks pleased to be here.',
+    'dc_show_crystal_tree': 'A tree of glow glass. Every leaf rings like a bell when you brush past.',
+    'dc_show_skyline_window': 'A window onto a skyline that never sleeps, in pink and blue neon.',
+    'dc_show_star_orrery': 'Brass planets on brass arms, turning with the real sky. Nova would approve.',
+    'dc_y_crystal_fountain': 'Crystal water spills from tier to tier and sparkles all night.',
+    'dc_y_star_well': 'Toss a coin, make a wish. The water twinkles back.',
+    'dc_arcade_cab_2': 'The gold cabinet. High scores look better in gold.',
+    'dc_arcade_cab_5': 'A midnight-blue cabinet with a screen that glows in the dark.',
+    'dc_fireplace_anim': 'A big stone hearth. The fire crackles all evening and never needs a log.',
+    'dc_jukebox_b': 'A diner jukebox, chrome and coloured lights. Plays the old favourites.',
+    'dc_neon_sign_7': 'A skyline in glowing tubes. The whole wall hums pink and blue.',
+    'dc_out_fountain2': 'A grand fountain for the yard. Birds queue up for it.',
+    'dc_rec_pinball_b': 'Galaxy Pinball: planets for bumpers and a comet for a ball.',
+    'dc_show_aurora_tank': 'A tank of slow fish under a shimmering aurora light.',
+    'dc_show_gold_jukebox': 'Gold trim, deep bass, and every record worth hearing.',
+    'dc_show_grand_piano': 'A gleaming grand. It plays itself a little tune when nobody is looking.',
+    'dc_statue2_crystal': 'A crystal statue that throws little rainbows across the floor.',
+    'dc_tt_wisp_lantern': 'A wisp floats inside, glowing softly. It seems to like you.',
+    'dc_y_aurora_lamp': 'A yard lamp that glows green and violet like the northern lights.',
+    'dc_y_koi_pond': 'A still pond with lazy koi. Good for sitting beside.',
+    'dc_y_lowrider_bounce': 'A lowrider that bounces on its springs. Shows off all day.',
+    'dc_glight_lava': 'Slow blobs of orange drift up and down. Mesmerising.',
+    'dc_kit_fridge': 'Rounded chrome and a heavy handle. Keeps the milk cold.',
+    'dc_toilet': 'For a washroom with some style.',
+    'dc_bath_toilet': 'A washroom throne, polished to a shine.',
+    'dc_carnivore_plant': 'It snaps at flies and, now and then, at fingers. Gently.',
+    'dc_chandelier': 'Crystal drops that scatter light over the whole room.',
+    'dc_glight_jukebox': 'Neon tubes and a stack of records. The room starts tapping its feet.',
+    'dc_stat_penguin_gold': 'Pip-Pip insists it looks nothing like him.',
+    'wr_grump_king_crown': "The Grump King's own crown, won fair and square.",
+    'wr_president_crown': "The Smuggler King's crown. Heavy, gaudy, yours.",
+    'wr_golem_crown': 'Carved from golem stone. Surprisingly light.',
+    'wr_halo': 'A ring of starlight that floats just above your head.',
+    'wr_cape_dream': 'It ripples like a dream you almost remember.',
+    'wr_commander_cape': 'A long dark cape. People step aside.',
+    'wr_aurora_hood': 'Shimmers green and violet.',
+    'wr_outfit_starlight': 'A mantle stitched with tiny stars.',
+}
+# Keepsakes say what earned them (c12_12-17).
+REF_WORDS = {'fish_all': 'catching every fish in the log', 'cook_all': 'cooking every recipe', 'ship_150': 'shipping 150 kinds of goods',
+             'decor_50': 'collecting 50 decor pieces', 'decor_200': 'collecting 200 decor pieces', 'legendary_koi': 'landing the legendary koi',
+             'museum_trophy': 'filling the museum shelves', 'mineral_display': 'donating minerals to the museum', 'relic_shelf': 'donating relics to the museum',
+             'curio_jar': 'starting a collection', 'fish_trophy': 'a fine catch for the museum', 'shipper_ribbon': 'keeping the shipping box busy'}
+KEYWORDS = [  # (regex on the name, [lines]); first match wins, a line is picked per id
+    (r'(?i)toilet|bath|tub|sink|basin|vanity|towel|shower', ['For a washroom with some style.', 'Clean lines for the washroom.', 'Makes the washroom feel like a treat.']),
+    (r'(?i)fireplace|hearth|stove', ['Warm light and a crackle on cold nights.', 'Everyone ends up sitting in front of it.', 'The heart of a cosy room.']),
+    (r'(?i)jukebox|piano|organ|record|gramophone|radio|guitar|drum', ['Plays a tune when you walk past.', 'Music for a quiet evening.', 'Fills the room with a song.']),
+    (r'(?i)arcade|pinball|claw', ['Bleeps, bloops and one more go.', 'Lights flash, scores climb.', 'Insert coin. Lose an hour.']),
+    (r'(?i)aquarium|fish ?tank|tank', ['Fish drift in slow circles. Very calming.', 'Bubbles and slow fins.']),
+    (r'(?i)fern|fig|ivy|orchid|succulent|cactus|plant|bonsai|monstera|palm|pot\b|bloom', ['Greenery for a sunny corner.', 'It only asks for a little light.', 'A splash of green that cheers up a room.', 'Water it once a week and it forgives you.']),
+    (r'(?i)lava', ['Slow blobs drift up and down. Mesmerising.']),
+    (r'(?i)chandelier|lamp|light|lantern|candle|sconce|neon', ['A warm glow for the evening.', 'Lights up a dark corner.', 'Soft light, cosy room.', 'Flick it on and the room changes mood.']),
+    (r'(?i)statue|bust|idol|figurine|lion|owl|gargoyle|sculpture', ['A showpiece that makes guests stop and look.', 'Stands proud wherever you put it.', 'Somebody spent a long time carving this.']),
+    (r'(?i)trophy|ribbon|medal|cup\b|pin\b', ['Proof you did the thing.', 'Polished and proudly placed.']),
+    (r'(?i)clock', ['Tick, tock, never late.', 'Keeps the whole house on time.']),
+    (r'(?i)globe|orrery|telescope|map', ['For dreaming about faraway places.', 'Points the way somewhere new.']),
+    (r'(?i)fridge|icebox|oven|cooker|counter|kettle|pantry|cupboard', ['Kitchen kit for a cook who means it.', 'For the kitchen corner.', 'Every good meal starts here.']),
+    (r'(?i)bed\b|cot\b|hammock|bunk', ['A bed to dream in.', 'Soft enough to sleep through a storm.', 'Fluff the pillow and drift off.']),
+    (r'(?i)sofa|couch|armchair|chair|stool|bench|seat|throne|pouf', ['A good seat after a long day.', 'Sit down, put your feet up.', 'Comfy enough to nap in.', 'Guests always pick this seat first.']),
+    (r'(?i)table|desk|counter', ['Sturdy legs, no wobble.', 'A table for meals, maps and mail.', 'Room for a cup and a good book.']),
+    (r'(?i)shelf|bookcase|dresser|wardrobe|cabinet|chest|crate|drawer|trunk|locker|safe', ['Somewhere to keep the clutter out of sight.', 'Shelves and drawers for everything.', 'Holds more than it looks like it should.']),
+    (r'(?i)window', ['Let the daylight in.', 'A window for the wall.', 'A view worth stopping for.']),
+    (r'(?i)painting|portrait|poster|print|scroll|art\b|frame|mirror|canvas|tapestry|banner|sign', ['A picture for the wall.', 'Paint and frame, hung straight.', 'Something for a bare wall.', 'It makes the room feel finished.']),
+    (r'(?i)screen|computer|console|tv\b|monitor|robot|server|terminal', ['Screens and wires, neatly kept.', 'Hums quietly in the corner.', 'Blinks a little, beeps now and then.']),
+    (r'(?i)book|desk|study|ink|quill', ['For long evenings with a book.', 'Ink, paper and a quiet corner.']),
+    (r'(?i)fountain|well\b|pond|pool|birdbath', ['Water for the yard. Birds queue up for it.', 'The trickle of water is the best sound.', 'Sparkles in the afternoon sun.']),
+    (r'(?i)fence|gate|hedge|wall\b|railing', ['Marks the edge of your patch.', 'Keeps the yard neat and tidy.', 'A neat line around your place.']),
+    (r'(?i)path|stone|stepping|cobble|paving|brick', ['A neat way across the yard.', 'Keeps your boots out of the mud.']),
+    (r'(?i)flower|rose|tulip|daisy|garden|planter|bed of|shrub|bush|tree|pine', ['Flowers and leaves for the yard.', 'A bit of colour outside.', 'The bees will thank you.']),
+    (r'(?i)snow|ice|igloo|frost', ['Cool, crisp and sparkly.', 'A touch of winter, any time of year.']),
+    (r'(?i)pumpkin|lantern|wreath|festive|holiday|egg', ['A seasonal touch.', 'Brings the festival home.']),
+    (r'(?i)car\b|lowrider|truck|cart|wagon|bike', ['Parked for show.', 'Shiny wheels, going nowhere.']),
+    (r'(?i)plush|teddy|toy|doll', ['Soft, round and very huggable.', 'Every shelf needs a friend.']),
+]
+CAT_LINES = {
+    'furniture': ['A sturdy piece for your house.', 'Made to be used, and to last.', 'Fits right in, whatever the room.'],
+    'decor': ['A little something for a shelf or table.', 'Small, but it catches the eye.', 'A finishing touch for a room.'],
+    'wall_art': ['Something for a bare wall.', 'Hangs straight, looks good.'],
+    'light': ['A warm glow for the evening.', 'Lights up a dark corner.'],
+    'outdoor': ['Dresses up the yard.', 'Gives the yard some character.', 'Something nice to see from the porch.'],
+    'exterior': ['Restyles your farmhouse.'],
+}
+WEAR_LINES = {
+    'hat': ['Tops off any outfit.', 'Tip it to the neighbours.', 'Keeps the sun out of your eyes.'],
+    'top': ['Comfortable and smart.', 'Looks sharp in any weather.'],
+    'bottom': ['Comfortable for a long day.'],
+    'outfit': ['A whole new look in one go.', 'Head to toe, sorted.'],
+    'acc': ['The little detail that makes the look.', 'Adds a bit of flair.', 'Small touch, big difference.'],
+    'shoes': ['Good for a long walk.', 'Comfortable from the first step.', 'Light on the feet.'],
+}
+_OLD = {'Furniture for your house.', 'Hangs on a wall.', 'A little something for a shelf or table.', 'Lights up a room at night.',
+        'A lamp for your house.', 'Lies flat on the floor.', 'Wallpaper for one room.', 'Flooring for one room.',
+        'A piece for the yard outside.', 'Restyles your farmhouse.', 'One of a kind. There is only one in the whole valley.',
+        'A keepsake from the museum and your collections.'}
+_OLD |= set(default_desc({'cat': c, 'glow': False}) for c in CATS) if isinstance(CATS, (list, dict)) else set()
+for _ls in SUB_DESC.values():
+    _OLD |= set(_ls)
+
+
+# Wardrobe flavour lines and names (c12_12-10): gen_wardrobe.py's hand-written pieces win over
+# the generic wear lines, and the catalogue/bag use the wardrobe's own name.
+import importlib.util as _ilu
+_spec = _ilu.spec_from_file_location('gen_wardrobe_src', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'gen_wardrobe.py'))
+_wm = _ilu.module_from_spec(_spec)
+_spec.loader.exec_module(_wm)
+WR_SRC = {p['id']: p for p in _wm.P if p.get('desc')}
+for _k, _p in WR_SRC.items():
+    _e = ENTRIES.get(_k)
+    if not _e or _e['name'] == _p['name'] or _e['name'].startswith('Replica '):
+        continue
+    if _p['name'] in NAMES or _p['name'] in ITEM_NAMES or len(_p['name']) > 26:
+        continue
+    NAMES.pop(_e['name'], None)
+    NAMES[_p['name']] = _k
+    _e['name'] = _p['name']
+
+
+def _pick(k, lines):
+    return lines[zlib.crc32(k.encode()) % len(lines)]
+
+
+def _style(name, words):
+    s = re.sub(r'(?i)\b(%s)\b' % '|'.join(words), '', name).strip(' :-')
+    return re.sub(r'\s+', ' ', s)
+
+
+def flavour(k, e):
+    n = e['name']
+    if k in DESC:
+        return DESC[k]
+    if k in WR_SRC:
+        return WR_SRC[k]['desc'].strip()
+    if e['sub'] == 'keepsake' and any(s.get('kind') == 'collection' for s in e['sources']):
+        ref = [s['ref'] for s in e['sources'] if s.get('kind') == 'collection'][0]
+        if ref in REF_WORDS:
+            return 'Awarded for %s. A keepsake for your collection.' % REF_WORDS[ref]
+    c = e['cat']
+    if c == 'wallpaper':
+        st = _style(n, ['wallpaper', 'wall', 'walls', 'paper'])
+        return ('%s walls for one room.' % st) if st else 'New walls for one room.'
+    if c == 'flooring':
+        st = _style(n, ['flooring', 'floor', 'floors', 'tiles', 'tile'])
+        return ('%s floors for one room.' % st) if st else 'A new floor for one room.'
+    if c == 'rug':
+        return _pick(k, ['Softens the floor underfoot.', 'Lies flat and ties the room together.', 'Warm under bare feet.'])
+    if c in WEAR_LINES:
+        return _pick(k, WEAR_LINES[c])
+    for rx, lines in KEYWORDS:
+        if re.search(rx, n):
+            return _pick(k, lines)
+    if e['sub'] in SUB_DESC and e['sub'] not in ('furniture', 'decor', 'wall_art'):
+        return _pick(k, SUB_DESC[e['sub']])
+    return _pick(k, CAT_LINES.get(c, CAT_LINES['furniture']))
+
+
+SET_RENAME = {'cottage': 'Cottage Classics Set', 'country': 'Country Comforts Set', 'manor': 'Manor House Set',
+              'neon_noir': 'Neon Noir Set', 'arcade_den': 'Arcade Den Set', 'snow_parlour': 'Snow Parlour Set',
+              'cosy_kitchen': 'Cosy Kitchen Set', 'reading_nook': 'Reading Nook Set', 'rec_trophies': 'Prize Trophy Case Set',
+              'yard_kit': 'Homestead Yard Set', 'yard_gang': 'Back-Lot Hangout Set', 'yard_show': 'Show Ribbon Yard Set',
+              'yard_path': 'Cobble Path Set', 'yard_fence': 'Picket and Rail Set', 'yard_lights': 'Lamplight Yard Set',
+              'yard_seasonal': 'Four Seasons Yard Set'}
+for sid, s in SETS.items():
+    if sid in SET_RENAME:
+        s['name'] = SET_RENAME[sid]
+    elif not s['name'].endswith(' Set'):
+        s['name'] += ' Set'
+for k, e in ENTRIES.items():
+    old = e['desc']
+    boiler = old in _OLD or old.startswith('Part of the ') or (e['cat'] in WEAR_CATS and old.endswith('Looks only, no stats.') and k in DESC)
+    if e['cat'] in WEAR_CATS and old in [default_desc({'cat': e['cat'], 'glow': False})]:
+        boiler = True
+    if boiler:
+        line = flavour(k, e)
+        if e['rarity'] == 'unique':
+            line += ' One of a kind.'
+        elif e.get('set') and e['set'] in SETS and e['cat'] not in WEAR_CATS:
+            extra = ' One piece of the %s.' % SETS[e['set']]['name']
+            if len(line + extra) <= 110:
+                line += extra
+        if e['cat'] in WEAR_CATS:
+            line += ' Looks only, no stats.'
+        e['desc'] = line
+
+
+# "Where" words for the catalogue's From: line (c12_14-13): every source gets a player-facing place.
+_NPC = json.load(open(os.path.join(D, 'npcs.json')))
+def _who(v):
+    r = _NPC.get(v, {}) if isinstance(_NPC, dict) else {}
+    return str(r.get('name', v.replace('_', ' ').title())) if isinstance(r, dict) else v.title()
+_STATIONS = {'anvil': 'the anvil', 'armory': 'the armory bench', 'hack': 'the hacking rig', 'jeweler': "the jeweler's bench",
+             'kiln': 'the kiln', 'loom': 'the loom', 'sawmill': 'the sawmill', 'shaper': 'the shaper', 'workbench': 'the workbench'}
+_SHOPWORDS = {'carpenter': ("Tess's workshop", "Tess's workshop"), 'home_goods': ('shops around the valley', 'shops around the city'),
+              'wall_art': ('shops around the valley', 'shops around the city'), 'wardrobe': ("Lumi's wardrobe counter", "Lumi's wardrobe counter"),
+              'crew_goods': ('crew stalls', 'crew stalls in Hideout town'), 'hub_goods': ('the rare-goods shelves', 'the rare-goods shelves')}
+_QUEST = {'cattopia': 'helping Catkins in the crystal meadow', 'commander': 'beating the Grump Commander', 'docks': 'taking the docks',
+          'neon': 'beating Flame in the neon district', 'tower': 'the top of the tower', 'uptown': 'winning Uptown', 'finale': 'the end of the story'}
+
+
+def where_of(s, gang):
+    kd, ref = s.get('kind'), str(s.get('ref', ''))
+    if kd == 'shop':
+        return _SHOPWORDS.get(ref, ('shops', 'shops'))[1 if gang else 0]
+    if kd == 'loot':
+        if ref == 'fishing':
+            return 'reeled in while fishing'
+        if ref == 'boss':
+            return 'a boss treasure'
+        t = ref.replace('chest_t', '')
+        return 'treasure chests (tier %s)' % t if t.isdigit() else 'treasure chests'
+    if kd == 'craft':
+        return 'crafted at %s' % _STATIONS.get(ref, 'a station')
+    if kd == 'heart':
+        v, h = (ref.split(':') + ['8'])[:2]
+        return 'a gift from %s at ♥%s' % (_who(v), h)
+    if kd == 'commons':
+        return 'the community farm'
+    if kd == 'quest':
+        return 'a story reward: %s' % _QUEST.get(ref, 'the main story')
+    if kd == 'side':
+        return 'a side story reward'
+    if kd == 'mine':
+        return 'reaching mine floor %s' % ref
+    if kd == 'festival':
+        return 'the Harvest Fair Animal Show'
+    if kd in ('prize', 'rec'):
+        return 'the Rec Center prize counter' if not gang else 'the Rec Hall prize counter'
+    if kd == 'collection':
+        if ref.startswith('decor_dc_'):
+            return 'a decor collection reward'
+        if ref == 'mus_all':
+            return 'completing the museum'
+        return REF_WORDS.get(ref, 'collections')
+    if kd == 'house':
+        return 'a house upgrade (tier %s)' % ref
+    if kd == 'set':
+        return 'completing every decor set'
+    if kd in ('secret', 'chest', 'boss'):
+        return 'a secret'
+    return ''
+
+
+_SHELF_OF = {}
+for sk, rows in SHOPS.items():
+    if sk in _SHOPWORDS or sk.startswith('stall:'):
+        continue
+    base = sk[:-5] if sk.endswith('_gang') else sk
+    for _, ids in rows:
+        for i in ids:
+            _SHELF_OF.setdefault(i, []).append((base, sk.endswith('_gang')))
+_PLACE = {'carpenter': "Tess's workshop", 'maple': "Maple's Mercantile", 'gideon': "Gideon's smithy", 'wren': "Wren's potion shop",
+          'rook': "Rook's lodge", 'finn': "Finn's bait shop", 'lumi': "Lumi's wardrobe counter", 'tam': "Tam's ranch counter"}
+_CREW = {'crew_deuce': 'Deuce', 'crew_halo': 'Halo', 'crew_marlene': 'Marlene', 'crew_specs': 'Specs'}
+for k, e in ENTRIES.items():
+    pen, gang = [], []
+    for base, g in _SHELF_OF.get(k, []):
+        nm = "%s's crew table" % _CREW[base] if base in _CREW else _PLACE.get(base, "%s's shop" % _who(base))
+        (gang if (g or base in _CREW) else pen).append(nm)
+    for s in e['sources']:
+        w = where_of(s, False)
+        wg = where_of(s, True)
+        if w:
+            s['where'] = w
+        if wg and wg != w:
+            s['where_gang'] = wg
+    if pen or gang:
+        e['shelves'] = sorted(set(pen))[:2]
+        if gang:
+            e['shelves_gang'] = sorted(set(gang))[:2]
+dfails = []
+for k, e in ENTRIES.items():
+    if DRINK.search(e['desc']):
+        dfails.append('drink word in desc: ' + k)
+    if e['arc'] == 'gangsters' and re.search(r'(?i)valley|penguin|crystal', e['desc']):
+        dfails.append('penguin word in a gangster desc: ' + k)
+if dfails:
+    raise SystemExit('gen_decor: ' + '; '.join(dfails[:10]))
+
 
 # c10b_08-08/09-01/12: catalogue wallpaper/flooring are room surfaces: DecorMode.SURFACE_LAYERS reads
 # layer "wallpaper"/"flooring" (the entry keeps "style" = the tile kit / seamless texture it paints).
