@@ -76,9 +76,27 @@ static func floor_cell(m: GameMap) -> Vector2i:
 	return Vector2i(-1, -1)
 
 
+## Window glass tint per look season (c15_13-08): frosted cool in winter, amber in fall.
+const WINDOW_TINT := {"winter": Color(0.86, 0.92, 1.0), "fall": Color(1.0, 0.93, 0.82)}
+
+
+static func tint_windows(m: GameMap, se: String) -> int:
+	var n := 0
+	var wp = m.get("_win_props")
+	if not (wp is Array) or not WINDOW_TINT.has(se):
+		return 0
+	for e: Array in wp:
+		if e.size() > 0 and e[0] is Sprite2D and is_instance_valid(e[0]):
+			(e[0] as Sprite2D).modulate = WINDOW_TINT[se]
+			n += 1
+	return n
+
+
 static func dress(m: GameMap) -> int:
 	var placed := 0
 	var se := GameState.look_se()
+	if not skip(m):
+		tint_windows(m, se)
 	for pk: Array in picks(m, se):
 		var nm: String = pk[0]
 		if not Art.has("decor", nm):

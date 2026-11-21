@@ -111,6 +111,9 @@ func _run() -> void:
 					var c: Vector2i = p[1]
 					check(not (c.x in wins) and not m.things.has(c), "%s %s: piece off windows/things at %s" % [iid, se, c])
 					check(_uses(m, "decor", str(p[0])), "%s %s: %s hung" % [iid, se, p[0]])
+			var wp: Array = m.get("_win_props")
+			if se == "winter" and not wp.is_empty():
+				check((wp[0][0] as Sprite2D).modulate == InteriorSeason.WINDOW_TINT["winter"], "%s winter: frosted windows" % iid)
 	# --- sprinkle ---
 	check(Scenery.sprinkle_kind("spring") == "petal_pink" and Scenery.sprinkle_kind("fall") == "leaf_orange", "spring petals, fall leaves")
 	check(Scenery.sprinkle_kind("summer") == "leaf_green" and Scenery.sprinkle_kind("winter") == "snowflake", "summer leaves, winter flurries")

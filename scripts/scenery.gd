@@ -36,7 +36,8 @@ const NO_FLOCKS := ["rain", "storm", "snow", "blizzard", "sandstorm", "ash", "fo
 var _drops: Array = []  # rain/storm/drizzle/hail: {p, v, len, a}
 var _snow: Array = []  # snow/blizzard flakes: {p, layer, fall, sway, fq, ph}
 ## C14b: drop count, fall velocity (px/s) and streak length per wet weather.
-const PRECIP := {"rain": [140, Vector2(-40, 260), 10.0], "drizzle": [60, Vector2(-20, 200), 6.0],
+const PRECIP := {"rain": [140, Vector2(-40, 260), 12.0],  # C15 P5 (c15_14-11): 10 -> 12, reads on a phone
+	"drizzle": [60, Vector2(-20, 200), 6.0],
 	"storm": [220, Vector2(-90, 380), 14.0], "hail": [80, Vector2(-30, 320), 4.0]}
 ## Snow depth layers: [count, size px, alpha, fall min, fall max, sway px] (c14b_18-03).
 const SNOW_LAYERS := [[50, 1.5, 0.75, 10.0, 14.0, 3.0], [40, 2.0, 0.9, 18.0, 26.0, 6.0], [20, 3.0, 1.0, 30.0, 40.0, 10.0]]
@@ -46,7 +47,7 @@ var _ov_t := 0.0
 ## Painted aurora band across the top of the sky (crystal meadow / moon nights).
 var aurora := false
 ## Overcast washes per weather (c14_16-02): rainy and grey days are dimmer and cooler than sunny ones.
-const OVERCAST := {"rain": Color(0.1, 0.12, 0.18, 0.15), "fog": Color(0.55, 0.58, 0.64, 0.08), "snow": Color(0.5, 0.55, 0.65, 0.07), "sandstorm": Color(0.45, 0.32, 0.15, 0.1), "ash": Color(0.15, 0.1, 0.1, 0.12)}
+const OVERCAST := {"rain": Color(0.1, 0.12, 0.18, 0.2), "fog": Color(0.55, 0.58, 0.64, 0.08), "snow": Color(0.5, 0.55, 0.65, 0.07), "sandstorm": Color(0.45, 0.32, 0.15, 0.1), "ash": Color(0.15, 0.1, 0.1, 0.12)}
 const OVERLAYS := {"rain": "ov_rain", "storm": "ov_heavy_rain", "snow": "ov_snow", "blizzard": "ov_blizzard", "petals": "ov_petals", "leaves": "ov_leaves", "fireflies": "ov_fireflies", "fog": "ov_fog", "dust": "ov_dust", "sandstorm": "ov_sandstorm", "ash": "ov_ash", "meteors": "ov_meteors"}
 
 
@@ -371,13 +372,25 @@ func _draw_precip() -> void:
 		var dir: Vector2 = (pr[1] as Vector2) + Vector2(-Anim.wind() * 40.0, 0)
 		dir = dir.normalized()
 		var hail := weather == "hail"
+		var near := PackedVector2Array()  # C15 P5 (c15_14-11): a near third of rain drawn 2 px wide
+		var ncols := PackedColorArray()
+		var i := 0
 		for dr: Dictionary in _drops:
 			var p: Vector2 = dr["p"]
-			pts.append(p)
-			pts.append(p + dir * float(dr["len"]))
 			var c := Color(0.85, 0.9, 1.0, float(dr["a"]) * _fade) if not hail else Color(0.95, 0.97, 1.0, 0.8 * _fade)
-			cols.append(c)
-		_canvas.draw_multiline_colors(pts, cols, 2.0 if hail else 1.0)
+			if not hail and weather in ["rain", "storm"] and i % 3 == 0:
+				near.append(p)
+				near.append(p + dir * float(dr["len"]) * 1.2)
+				ncols.append(c)
+			else:
+				pts.append(p)
+				pts.append(p + dir * float(dr["len"]))
+				cols.append(c)
+			i += 1
+		if not pts.is_empty():
+			_canvas.draw_multiline_colors(pts, cols, 2.0 if hail else 1.0)
+		if not near.is_empty():
+			_canvas.draw_multiline_colors(near, ncols, 2.0)
 	if not _snow.is_empty():
 		var bl := weather == "blizzard"
 		for f: Dictionary in _snow:
