@@ -77,24 +77,29 @@
   "w": 3,
   "h": 3,
   "group": "props",
+  "cat": "farm",
+  "seller": "Hazel",
+  "ranch": "coop",
   "tiers": [
    {
     "tier": 1,
     "name": "Coop",
-    "sprite": "coop_small",
+    "sprite": "coop_1",
+    "group": "buildings",
     "cost": {
      "wood": 120,
      "stone": 40
     },
     "permit": 100,
     "days": 1,
-    "desc": "Two hens, a rooster and a chick.",
+    "desc": "Chickens: eggs every morning you care for them. Room for 4.",
     "price": 850
    },
    {
     "tier": 2,
     "name": "Big Coop",
-    "sprite": "coop_big",
+    "sprite": "coop_2",
+    "group": "buildings",
     "cost": {
      "plank": 60,
      "nails": 30,
@@ -102,18 +107,39 @@
     },
     "permit": 400,
     "days": 2,
+    "desc": "Room for ducks too; birds eat silo hay. Room for 8. Adds a silo feeder, an incubator.",
+    "price": 2360,
     "unlock": {
      "skill": [
       "building",
       3
      ]
+    }
+   },
+   {
+    "tier": 3,
+    "name": "Deluxe Coop",
+    "sprite": "coop_3",
+    "group": "buildings",
+    "cost": {
+     "hardwood_plank": 20,
+     "glass": 12,
+     "iron_bar": 6
     },
-    "desc": "Two more hens, two ducks, and an incubator (hold an egg, tap the coop).",
-    "price": 3170
+    "permit": 900,
+    "days": 3,
+    "desc": "The biggest flock, warm all winter. Room for 12. Adds automatic water, a heater for winter.",
+    "price": 6080,
+    "unlock": {
+     "skill": [
+      "ranching",
+      5
+     ],
+     "progress": 1,
+     "hint": "Ranching level 5"
+    }
    }
-  ],
-  "cat": "farm",
-  "seller": "Hazel"
+  ]
  },
  "barn": {
   "label": "Barn",
@@ -124,24 +150,29 @@
   "w": 4,
   "h": 3,
   "group": "props",
+  "cat": "farm",
+  "seller": "Benno",
+  "ranch": "barn",
   "tiers": [
    {
     "tier": 1,
     "name": "Barn",
-    "sprite": "barn_small",
+    "sprite": "barn_1",
+    "group": "buildings",
     "cost": {
      "wood": 200,
      "stone": 80
     },
     "permit": 200,
     "days": 2,
-    "desc": "Two cows, a sheep, a calf and a lamb.",
+    "desc": "Cows and sheep: milk and wool. Room for 4.",
     "price": 1380
    },
    {
     "tier": 2,
     "name": "Big Barn",
-    "sprite": "barn_big",
+    "sprite": "barn_2",
+    "group": "buildings",
     "cost": {
      "beam": 30,
      "brick": 60,
@@ -149,18 +180,39 @@
     },
     "permit": 800,
     "days": 3,
+    "desc": "Goats and llamas too; barn animals eat silo hay. Room for 8. Adds a silo feeder, a breeding pen.",
+    "price": 6130,
     "unlock": {
      "skill": [
       "building",
       5
      ]
+    }
+   },
+   {
+    "tier": 3,
+    "name": "Deluxe Barn",
+    "sprite": "barn_3",
+    "group": "buildings",
+    "cost": {
+     "beam": 40,
+     "tile": 30,
+     "steel_bar": 6
     },
-    "desc": "Goats and a llama; barn animals eat silo hay when you visit them.",
-    "price": 6060
+    "permit": 1600,
+    "days": 3,
+    "desc": "The biggest herd, warm all winter. Room for 12. Adds automatic water, a heater for winter.",
+    "price": 13630,
+    "unlock": {
+     "skill": [
+      "ranching",
+      7
+     ],
+     "progress": 2,
+     "hint": "Ranching level 7"
+    }
    }
-  ],
-  "cat": "farm",
-  "seller": "Hazel"
+  ]
  },
  "silo": {
   "label": "Silo",
@@ -171,11 +223,16 @@
   "w": 1,
   "h": 3,
   "group": "props",
+  "cat": "farm",
+  "seller": "Benno",
+  "ranch": "silo",
+  "thing": "silo",
   "tiers": [
    {
     "tier": 1,
     "name": "Silo",
     "sprite": "silo2",
+    "group": "props",
     "cost": {
      "stone": 60,
      "wood": 30
@@ -184,10 +241,52 @@
     "days": 1,
     "desc": "Stores 240 hay. Scythed hay and wheat chaff go straight in; tap to store or take hay.",
     "price": 550
+   },
+   {
+    "tier": 2,
+    "name": "Tall Silo",
+    "sprite": "farm_silo_b",
+    "group": "props",
+    "cost": {
+     "brick": 60,
+     "plank": 30,
+     "iron_bar": 2
+    },
+    "permit": 200,
+    "days": 1,
+    "desc": "Stores 480 hay: enough for a winter with a full coop.",
+    "price": 3230,
+    "unlock": {
+     "skill": [
+      "ranching",
+      2
+     ],
+     "hint": "Ranching level 2"
+    }
+   },
+   {
+    "tier": 3,
+    "name": "Twin Silo",
+    "sprite": "farm_silo_b",
+    "group": "props",
+    "cost": {
+     "brick": 100,
+     "beam": 12,
+     "steel_bar": 3
+    },
+    "permit": 500,
+    "days": 2,
+    "desc": "Stores 720 hay: a whole ranch through winter.",
+    "price": 7450,
+    "unlock": {
+     "skill": [
+      "ranching",
+      5
+     ],
+     "hint": "Ranching level 5"
+    }
    }
-  ],
-  "cat": "farm",
-  "seller": "Hazel"
+  ]
  },
  "shed": {
   "label": "Shed",
@@ -246,29 +345,31 @@
   "w": 3,
   "h": 3,
   "group": "props",
+  "cat": "farm",
+  "seller": "Benno",
+  "ranch": "stable",
   "tiers": [
    {
     "tier": 1,
     "name": "Stable",
     "sprite": "stable2",
+    "group": "props",
     "cost": {
      "wood": 150,
      "iron_bar": 2
     },
     "permit": 300,
     "days": 2,
+    "desc": "Your horse sleeps here; it rides 10% faster.",
+    "price": 1460,
     "unlock": {
      "friend": [
       "benno",
       2
      ]
-    },
-    "desc": "Your horse sleeps here; it rides 10% faster.",
-    "price": 1430
+    }
    }
-  ],
-  "cat": "farm",
-  "seller": "Hazel"
+  ]
  },
  "mill": {
   "label": "Mill",
@@ -761,7 +862,7 @@
   }
  },
  "beehive": {
-  "label": "Beehive",
+  "label": "Apiary",
   "cell": [
    29,
    19
@@ -769,24 +870,70 @@
   "w": 0,
   "h": 1,
   "group": "props",
+  "cat": "farm",
+  "seller": "Hazel",
+  "ranch": "apiary",
   "thing": "beehive",
   "tiers": [
    {
     "tier": 1,
     "name": "Beehive",
-    "sprite": "beehive3_a",
+    "sprite": "apiary_1",
+    "group": "buildings",
     "cost": {
      "wood": 15,
      "fiber": 10
     },
     "permit": 0,
     "days": 0,
-    "desc": "Honey every three days.",
+    "desc": "Honey every few days; flowers nearby make it finer. Holds 2 hives.",
     "price": 240
+   },
+   {
+    "tier": 2,
+    "name": "Bee House",
+    "sprite": "apiary_2",
+    "group": "buildings",
+    "cost": {
+     "plank": 20,
+     "nails": 10,
+     "glass": 4
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "More hives, more honey. Holds 4 hives. Adds a breeding pen.",
+    "price": 1280,
+    "unlock": {
+     "skill": [
+      "ranching",
+      3
+     ],
+     "hint": "Ranching level 3"
+    }
+   },
+   {
+    "tier": 3,
+    "name": "Apiary",
+    "sprite": "apiary_2",
+    "group": "buildings",
+    "cost": {
+     "hardwood_plank": 10,
+     "glass": 10,
+     "gear": 2
+    },
+    "permit": 200,
+    "days": 2,
+    "desc": "A whole row of hives. Holds 6 hives.",
+    "price": 3480,
+    "unlock": {
+     "skill": [
+      "ranching",
+      6
+     ],
+     "hint": "Ranching level 6"
+    }
    }
-  ],
-  "cat": "farm",
-  "seller": "Hazel"
+  ]
  },
  "resonator": {
   "label": "Crystal Resonator",
@@ -3426,6 +3573,235 @@
      "skill": [
       "building",
       7
+     ]
+    },
+    "art_missing": false
+   }
+  ]
+ },
+ "hutch": {
+  "label": "Rabbit Hutch",
+  "cell": [
+   38,
+   9
+  ],
+  "w": 2,
+  "h": 2,
+  "group": "props",
+  "cat": "farm",
+  "seller": "Hazel",
+  "ranch": "hutch",
+  "thing": "hutch",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Rabbit Hutch",
+    "sprite": "hutch_1",
+    "group": "buildings",
+    "cost": {
+     "wood": 60,
+     "fiber": 20,
+     "plank": 10
+    },
+    "permit": 80,
+    "days": 1,
+    "desc": "Rabbits: soft fur for the loom. Room for 4. Adds a breeding pen.",
+    "price": 590,
+    "unlock": {
+     "hint": "learn the Hutch Blueprint (Ranching tree)"
+    }
+   },
+   {
+    "tier": 2,
+    "name": "Big Hutch",
+    "sprite": "hutch_2",
+    "group": "buildings",
+    "cost": {
+     "plank": 30,
+     "nails": 16,
+     "copper_bar": 2
+    },
+    "permit": 300,
+    "days": 2,
+    "desc": "More rabbits. Room for 8. Adds a silo feeder, a heater for winter.",
+    "price": 1580,
+    "unlock": {
+     "skill": [
+      "ranching",
+      4
+     ],
+     "hint": "Ranching level 4"
+    }
+   }
+  ]
+ },
+ "sty": {
+  "label": "Pig Sty",
+  "cell": [
+   41,
+   9
+  ],
+  "w": 3,
+  "h": 2,
+  "group": "props",
+  "cat": "farm",
+  "seller": "Benno",
+  "ranch": "sty",
+  "thing": "sty",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Pig Sty",
+    "sprite": "sty_1",
+    "group": "buildings",
+    "cost": {
+     "wood": 100,
+     "stone": 40
+    },
+    "permit": 150,
+    "days": 1,
+    "desc": "Pigs: they dig up truffles outdoors. Room for 2.",
+    "price": 770,
+    "unlock": {
+     "hint": "learn the Sty Blueprint (Ranching tree)"
+    }
+   },
+   {
+    "tier": 2,
+    "name": "Big Sty",
+    "sprite": "sty_2",
+    "group": "buildings",
+    "cost": {
+     "plank": 40,
+     "brick": 30,
+     "iron_bar": 3
+    },
+    "permit": 500,
+    "days": 2,
+    "desc": "More pigs. Room for 4. Adds a breeding pen, a silo feeder.",
+    "price": 2900,
+    "unlock": {
+     "skill": [
+      "ranching",
+      6
+     ],
+     "hint": "Ranching level 6"
+    }
+   }
+  ]
+ },
+ "mayo": {
+  "label": "Mayo Machine",
+  "cell": [
+   13,
+   24
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "pantry",
+  "seller": "Hazel",
+  "station": {
+   "skill": "ranching",
+   "verb": "Whip",
+   "book": "mayo"
+  },
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Mayo Machine",
+    "sprite": "mayo_machine_1",
+    "group": "stations",
+    "cost": {
+     "plank": 15,
+     "copper_bar": 2,
+     "clay_pot": 2
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Eggs into mayonnaise.",
+    "price": 800,
+    "art_missing": false
+   },
+   {
+    "tier": 2,
+    "name": "Deluxe Mayo Machine",
+    "sprite": "mayo_machine_2",
+    "group": "stations",
+    "cost": {
+     "iron_bar": 4,
+     "glass": 6,
+     "gear": 2
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, every recipe already open. Duck eggs and big eggs too.",
+    "price": 2780,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "ranching",
+      3
+     ]
+    },
+    "art_missing": false
+   }
+  ]
+ },
+ "extractor": {
+  "label": "Honey Extractor",
+  "cell": [
+   13,
+   21
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "pantry",
+  "seller": "Hazel",
+  "station": {
+   "skill": "ranching",
+   "verb": "Spin",
+   "book": "extractor"
+  },
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Honey Extractor",
+    "sprite": "honey_extractor",
+    "group": "stations",
+    "cost": {
+     "plank": 12,
+     "copper_bar": 2,
+     "glass": 4
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Honeycomb into honey and beeswax.",
+    "price": 910,
+    "art_missing": false
+   },
+   {
+    "tier": 2,
+    "name": "Honey House",
+    "sprite": "honey_extractor",
+    "group": "stations",
+    "cost": {
+     "iron_bar": 4,
+     "glass": 10,
+     "gear": 2
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, every recipe already open. Jars of honey and beeswax candles.",
+    "price": 3050,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "ranching",
+      3
      ]
     },
     "art_missing": false

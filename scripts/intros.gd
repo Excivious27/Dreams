@@ -41,7 +41,7 @@ const LINES := {
 		"both": ["Theo, librarian. The library's south-east of the plaza; I'm there most of the day and I keep the town's records.", "If you find old coins or books, bring them. Books especially. Nobody brings books."],
 	},
 	"hazel": {
-		"both": ["Another farmer! About time. Hazel; my farmhouse is down the south-west lane. I'm in the yard at dawn and at the market in the morning.", "Water before nine, plant what's in season, and don't till more than you can water. Ask me anything about crops. I mean it."],
+		"both": ["Another farmer! About time. Hazel; my farmhouse is down the south-west lane. I'm in the yard at dawn and at the market in the morning.", "Water before nine, plant what's in season, and don't till more than you can water. Ask me anything about crops, or hens: put up a coop and I've chicks looking for a home."],
 	},
 	"tess": {
 		"pen": ["Hi! Tess. I'm the carpenter: the old warehouse up by the farm road is my workshop now.", "Chairs, beds, shelves, rugs, garden benches and lamp posts. Eight till six. New pieces come off the bench every few days, so come and look often."],
@@ -73,7 +73,11 @@ const LINES := {
 		"both": ["Hi. I'm Mabel. Hazel's my mum. I'm going to be a farmer too, but better.", "After school I'm in the park or at the bandstand. Your turnips look small. Mum says that's normal at first."],
 	},
 	"benno": {
-		"both": ["Benno, stable hand. The stable's at the south end of the avenue, by the beach road. Horses, hay, and a saddle when you're ready for one.", "I'm with the horses most of the day; mornings I'm at the market for feed."],
+		"both": ["Benno, stable hand. The stable's at the south end of the avenue, by the beach road. Horses, hay, and a saddle when you're ready for one.", "I'm with the horses most of the day; mornings I'm at the market for feed. Build a barn and I'll talk you through cows."],
+	},
+	"tam": {
+		"pen": ["Tam. Shepherd. The hut up in the orchard hills is mine, and so are the sheep. They're all called Dolly. Saves time.", "Wool, cheese now and then, and advice about animals if you ask. Mornings I'm with the flock; evenings by the stove."],
+		"gang": ["Tam. Shepherd, up in the orchard hills. Sheep don't care who you run with. Neither do I.", "Wool and cheese if you need them, and advice about animals if you ask. Mornings with the flock, evenings by the stove."],
 	},
 	"ivy": {
 		"pen": ["Ivy, from the bank, at the top of the avenue by the farm road. Deposits, a little interest, very little excitement.", "Eight to five at the window. Lunch on the plaza bench, if you want to talk numbers. Nobody does."],

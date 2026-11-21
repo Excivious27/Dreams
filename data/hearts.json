@@ -826,6 +826,10 @@
      {
       "who": "Hazel",
       "text": "Two for the house, one for the town fair, and the lumpy one's yours. It's the best one. Don't tell the others."
+     },
+     {
+      "who": "Hazel",
+      "text": "And take Saffron. My best layer, gold as a yolk. Nine years she's laid for me; she's earned a good coop. If it's full, she can wait here till you've room."
      }
     ]
    },
@@ -987,6 +991,10 @@
      {
       "who": "Posy",
       "text": "I'm scared to make it in case it's wrong. I'm more scared not to."
+     },
+     {
+      "who": "Posy",
+      "text": "Oh, and Crumpet. My silver rabbit. She sits in the flour sacks and I can't sell flour with fur in it. She'd love a hutch of her own. When you have room, she's yours."
      }
     ],
     "8": [
@@ -1835,6 +1843,10 @@
      {
       "who": "Benno",
       "text": "She knew. Horses always know. She stood like a statue till I stopped shaking."
+     },
+     {
+      "who": "Benno",
+      "text": "One more thing. Tinker, the goat kid I bottle-fed this spring. She follows me everywhere and the mare's jealous. Give her a corner of your barn when there's room."
      }
     ],
     "10": [
@@ -1995,7 +2007,7 @@
      },
      {
       "who": "Tam",
-      "text": "A lamb's due. First of the year. If you're about when it comes, you can name it, and it won't be Dolly."
+      "text": "A lamb's due. First of the year. If you're about when it comes, she's yours to name, and it won't be Dolly."
      },
      {
       "who": "Tam",
@@ -2017,7 +2029,11 @@
      },
      {
       "who": "Tam",
-      "text": "She's called Bramble. She's eaten two of my hats. Feed her and she's yours for life."
+      "text": "I've been calling her Bramble. She's eaten two of my hats. Call her what you like once she's in your barn; she's yours for life."
+     },
+     {
+      "who": "",
+      "text": "(Tam will bring her up to your farm once you have a barn with room. Rename her on the Animals page.)"
      }
     ],
     "10": [
@@ -2031,7 +2047,7 @@
      },
      {
       "who": "Tam",
-      "text": "Watch the lamb while I'm gone. If I don't come back, she's the flock. You're the shepherd. Sheep don't care who you are."
+      "text": "Watch the lamb while I'm gone. Bring her down to the Harvest Fair; I'll be back for it. If I don't come back, she's the flock. You're the shepherd. Sheep don't care who you are."
      },
      {
       "who": "Tam",
