@@ -99,12 +99,12 @@ static func gate_of(scene: String) -> String:
 static func st() -> Dictionary:
 	var r := GameState.run
 	if r.is_empty():
-		return {"open": {}, "won": {}, "c": {}, "fight": {}}
+		return {"open": {}, "won": {}, "c": {}, "fight": {}, "long": {}}
 	if not (r.get("campaign") is Dictionary):
 		r["campaign"] = {"v": 1, "open": {}, "won": {}, "c": {}, "fight": {}}
 		_migrate(r["campaign"])
 	var s: Dictionary = r["campaign"]
-	for k in ["open", "won", "c", "fight"]:
+	for k in ["open", "won", "c", "fight", "long"]:
 		if not (s.get(k) is Dictionary):
 			s[k] = {}
 	return s
@@ -156,7 +156,10 @@ static func region_open(scene: String) -> bool:
 	var cid := gate_of(scene)
 	if cid == "":
 		return true
-	return is_won(cid) or st()["open"].has(scene)
+	if is_won(cid) or st()["open"].has(scene):
+		return true
+	_long_settle(cid)  # a long way under way arrives once its day comes
+	return st()["open"].has(scene)
 
 
 ## "" when this campaign can be fought now, else why not.
@@ -185,6 +188,246 @@ static func plan_lock(cid: String) -> String:
 static func unlock_all() -> void:
 	for cid: String in all():
 		st()["open"][str(all()[cid]["region"])] = true
+
+
+# ---- the long way (C16b P3) ------------------------------------------------------
+## Battles never block a cozy player: every campaign-held region also opens by a
+## slower, non-combat route (Tom C16b). Data: battles.json campaign "long_way"
+## (gen_battles.py, P5) = {kind: quest|toll|travel|story, id, cost: {money, items},
+## steps, text, text_gang, unlock_after: loss|skip|always, days}; any part missing
+## falls back to a toll + a one-day favour scaled by the campaign's tier. Taking
+## it opens the region and sets the same story flag as a win (campaign_<region>),
+## but no stars, chest or win rewards: is_won() stays false and the board stays
+## playable for its prizes. Save: st()["long"][cid] = {"day", "due", "done"}.
+const LONG_MONEY := [0, 300, 900, 2000, 4000, 7000]
+const LONG_ITEMS := [{}, {"wood": 20}, {"hardwood": 10}, {"iron_bar": 3}, {"gold_bar": 2}, {"gold_bar": 4}]
+
+
+static func long_way(cid: String) -> Dictionary:
+	var c := get_c(cid)
+	if c.is_empty():
+		return {}
+	var raw: Variant = c.get("long_way", {})
+	var lw: Dictionary = (raw as Dictionary).duplicate(true) if raw is Dictionary else {}
+	if lw.get(arc()) is Dictionary:  # per-arc rows are allowed too
+		lw = (lw[arc()] as Dictionary).duplicate(true)
+	var t := clampi(int(c.get("tier", 1)), 1, 5)
+	var reg := str(c.get("region", ""))
+	if str(lw.get("kind", "")) == "":
+		lw["kind"] = "toll"
+	if not (lw.get("cost") is Dictionary):
+		lw["cost"] = {"money": LONG_MONEY[t], "items": (LONG_ITEMS[t] as Dictionary).duplicate()}
+	var cost: Dictionary = lw["cost"]
+	cost["money"] = int(cost.get("money", 0))
+	if not (cost.get("items") is Dictionary):
+		cost["items"] = {}
+	for it: String in (cost["items"] as Dictionary).keys():  # never ask for an item the game lacks
+		if not GameState.items.has(it):
+			(cost["items"] as Dictionary).erase(it)
+	if not lw.has("days"):
+		lw["days"] = 0 if str(lw["kind"]) == "story" else 1
+	if str(lw.get("unlock_after", "")) == "":
+		lw["unlock_after"] = "always"
+	if str(lw.get("id", "")) == "":
+		lw["id"] = "lw_" + reg
+	if not (lw.get("steps") is Array):
+		lw["steps"] = []
+	lw["cid"] = cid
+	lw["region"] = reg
+	var tx := text(lw, "text_gang") if arc() == "gangsters" and lw.has("text_gang") else text(lw, "text")
+	if tx == "":
+		var due := "You're through by morning." if int(lw["days"]) > 0 else "You're through today."
+		tx = ("%s knows a slower path round to %s, away from the fighting: %s for the guides. %s" if arc() == "penguins"
+			else "%s knows a back way into %s, nowhere near the crews: %s for the right people. %s") % [who(cid), region_phrase(c), long_cost_words(cost), due]
+	lw["words"] = tx
+	return lw
+
+
+## "◆300 and Wood ×20" (or "nothing" when free).
+static func long_cost_words(cost: Dictionary) -> String:
+	var parts: Array = []
+	if int(cost.get("money", 0)) > 0:
+		parts.append(Money.amount(int(cost["money"])))
+	var its: Dictionary = cost.get("items", {})
+	for it: String in its:
+		parts.append(ItemWords.count_id(it, int(its[it])))
+	if parts.is_empty():
+		return "nothing but your time"
+	return " and ".join(parts) if parts.size() <= 2 else ", ".join(parts.slice(0, parts.size() - 1)) + " and " + str(parts[-1])
+
+
+## The button word for the board, the loss card and the border:
+## "Take the long way (◆300, Wood ×20)".
+static func long_way_label(cid: String) -> String:
+	var lw := long_way(cid)
+	if lw.is_empty():
+		return ""
+	return "Take the long way (%s)" % long_cost_words(lw["cost"]).replace(" and ", ", ")
+
+
+static func long_state(cid: String) -> Dictionary:
+	var v: Variant = st()["long"].get(cid)
+	return v if v is Dictionary else {}
+
+
+## True once the long way has opened the region.
+static func long_way_taken(cid: String) -> bool:
+	return bool(long_state(cid).get("done", false))
+
+
+## On the road (paid, the favour takes a day) but not there yet.
+static func long_way_pending(cid: String) -> bool:
+	var ls := long_state(cid)
+	return not ls.is_empty() and not bool(ls.get("done", false))
+
+
+## "" when the long way can be taken now, else why not (shown on the button).
+static func long_way_lock(cid: String) -> String:
+	var c := get_c(cid)
+	if c.is_empty():
+		return "No such campaign."
+	var reg := str(c["region"])
+	if is_won(cid) or long_way_taken(cid) or st()["open"].has(reg):
+		return "The way is already open."
+	if long_way_pending(cid):
+		return "You're already on the long way. You'll be through by morning."
+	if Net.visiting():
+		return "You're visiting a friend's farm. The long way waits until you're home."
+	for a in c.get("after", []):
+		if all().has(a) and str(all()[a].get("arc", "both")) in ["both", arc()] and not region_open(str(all()[a]["region"])):
+			return "Open %s first (win it, or take its long way)." % region_phrase(all()[a])
+	if GameState.progress_tier() < int(c.get("min_pt", 0)):
+		return "Get further in the story first."
+	var lw := long_way(cid)
+	if str(lw.get("unlock_after", "always")) == "loss":
+		var s: Dictionary = st()["c"].get(cid, {})
+		if int(s.get("losses", 0)) + int(s.get("retreats", 0)) < 1:
+			return "Try the campaign once first. If it goes badly, the long way opens."
+	var cost: Dictionary = lw["cost"]
+	if int(GameState.run.get("crystals", 0)) < int(cost.get("money", 0)):
+		return "You need %s for the long way." % Money.amount(int(cost["money"]))
+	var its: Dictionary = cost.get("items", {})
+	for it: String in its:
+		if GameState.count(it) < int(its[it]):
+			return "Bring %s for the long way (you have %d)." % [ItemWords.count_id(it, int(its[it])), GameState.count(it)]
+	return ""
+
+
+## Worth offering: takeable now, or only short of its toll (the pick then says what to bring).
+static func long_way_offerable(cid: String) -> bool:
+	var lk := long_way_lock(cid)
+	return lk == "" or lk.begins_with("You need") or lk.begins_with("Bring")
+
+
+static func can_take_long_way(cid: String) -> bool:
+	return long_way_lock(cid) == ""
+
+
+## Pay the toll / start the favour / open the travel link. Returns dialogue
+## lines ([] when it can't be taken now). A day-long way arrives next morning
+## (region_open settles it lazily); a 0-day way opens at once.
+static func take_long_way(cid: String) -> Array:
+	if not can_take_long_way(cid):
+		return []
+	var lw := long_way(cid)
+	var cost: Dictionary = lw["cost"]
+	if int(cost.get("money", 0)) > 0:
+		GameState.run["crystals"] = int(GameState.run.get("crystals", 0)) - int(cost["money"])  # spending: a plain subtraction
+	var its: Dictionary = cost.get("items", {})
+	for it: String in its:
+		GameState.add_item(it, -int(its[it]))
+	var day := int(GameState.run.get("day", 1))
+	st()["long"][cid] = {"day": day, "due": day + int(lw.get("days", 1)), "done": false}
+	var lines: Array = [{"who": who(cid), "text": str(lw["words"])}]
+	for stp in lw.get("steps", []):
+		if str(stp) != "":
+			lines.append({"who": "", "text": str(stp)})
+	if int(lw.get("days", 1)) <= 0:
+		lines.append_array(long_way_done(cid))
+	else:
+		lines.append({"text": "You're on the long way to %s. Sleep, and you'll be through by morning." % region_phrase(get_c(cid))})
+	return lines
+
+
+## The long way arrives: the region opens and its story flag is set exactly as a
+## win does for access and story, with none of the win rewards or stars.
+static func long_way_done(cid: String) -> Array:
+	var c := get_c(cid)
+	if c.is_empty():
+		return []
+	var reg := str(c["region"])
+	var day := int(GameState.run.get("day", 1))
+	var ls := long_state(cid)
+	if ls.is_empty():
+		ls = {"day": day, "due": day}
+	ls["done"] = true
+	ls["arrived"] = day
+	st()["long"][cid] = ls
+	st()["open"][reg] = true
+	if not GameState.run.is_empty():
+		if not (GameState.run.get("flags") is Dictionary):
+			GameState.run["flags"] = {}
+		GameState.run["flags"]["campaign_" + reg] = true
+		GameState.run["flags"]["long_way_" + reg] = true
+	return [{"text": "%s is open! You came the long way round. (The campaign is still there for its prizes.)" % region_phrase(c, true)}]
+
+
+static func _long_settle(cid: String) -> void:
+	if GameState.run.is_empty():
+		return
+	var ls := long_state(cid)
+	if ls.is_empty() or bool(ls.get("done", false)):
+		return
+	if int(GameState.run.get("day", 1)) >= int(ls.get("due", 0)):
+		long_way_done(cid)
+
+
+## Retry the last node you lost on this campaign; easier = one assist step for
+## that battle only (fewer foes and tickets, slower waves; the save's Difficulty
+## never changes). With a map, launches the fight straight away. False when
+## there's nothing to retry.
+static func retry(cid: String, easier := false, m: GameMap = null) -> bool:
+	if get_c(cid).is_empty() or is_won(cid):
+		return false
+	var s := cs(cid)
+	var nid := str(s.get("last_lost", ""))
+	if nid == "" or node(cid, nid).is_empty() or taken(cid, nid):
+		return false
+	if not (s.get("assist") is Dictionary):
+		s["assist"] = {}
+	if easier:
+		s["assist"][nid] = mini(2, int(s["assist"].get(nid, 0)) + 1)
+	if not linked(cid, str(s["at"]), nid):
+		var sg := staging(cid, nid)
+		if sg == "":
+			return false
+		s["at"] = sg
+	if m != null:
+		launch(m, cid, nid)
+	return true
+
+
+## Easier-retry steps on node nid (0..2).
+static func assist(cid: String, nid: String) -> int:
+	var a: Variant = cs(cid).get("assist", {})
+	return clampi(int((a as Dictionary).get(nid, 0)), 0, 2) if a is Dictionary else 0
+
+
+## The choices after a loss or a retreat: [[key, label], ...]; way out last.
+static func loss_choices(cid: String) -> Array:
+	var out: Array = []
+	var s := cs(cid)
+	var nid := str(s.get("last_lost", ""))
+	if nid != "" and not taken(cid, nid) and not is_won(cid) and not Net.visiting():
+		out.append(["retry", "Try again now"])
+		if assist(cid, nid) < 2:
+			out.append(["easier", "Try again, easier (this fight only)"])
+	if not long_way(cid).is_empty() and not is_won(cid) and not long_way_taken(cid) and not long_way_pending(cid):
+		var lk := long_way_lock(cid)
+		out.append(["long", long_way_label(cid) if lk == "" else "The long way: " + lk])
+	out.append(["board", "Back to the campaign map"])
+	out.append(["leave", "Not now"])
+	return out
 
 
 # ---- the board -----------------------------------------------------------------
@@ -506,6 +749,10 @@ static func battle_data(base: Dictionary, f: Dictionary) -> Dictionary:
 	var d := base.duplicate(true)
 	var typ := str(n.get("type", "skirmish"))
 	var morale := int(s.get("morale", MORALE_START))
+	var asst := assist(cid, nid)  # easier retry (this fight only)
+	if asst > 0:
+		morale = maxi(morale, MORALE_START)  # a retry never starts worse than the first try
+	d["assist"] = asst
 	d["campaign"] = cid
 	d["node"] = nid
 	d["mode"] = typ
@@ -520,11 +767,11 @@ static func battle_data(base: Dictionary, f: Dictionary) -> Dictionary:
 	d["tickets_max"] = tk
 	var et := int(n.get("enemy_tickets", 120))
 	if typ != "defend" and typ != "escort":
-		et = maxi(10, int(et * Difficulty.mul("enemy_tickets")))
+		et = maxi(10, int(et * Difficulty.mul("enemy_tickets") * [1.0, 0.85, 0.7][asst]))
 	d["enemy_tickets"] = et
 	d["supply"] = int(base.get("supply", 15)) + int(s.get("supply", 0))
-	d["wave_every"] = float(n.get("wave_every", d.get("wave_every", 7.0))) * Difficulty.mul("wave_every")
-	d["enemy_cap"] = maxi(3, int(n.get("enemy_cap", d.get("enemy_cap", 14))) + Difficulty.add("enemy_cap"))
+	d["wave_every"] = float(n.get("wave_every", d.get("wave_every", 7.0))) * Difficulty.mul("wave_every") * [1.0, 1.15, 1.3][asst]
+	d["enemy_cap"] = maxi(3, int(n.get("enemy_cap", d.get("enemy_cap", 14))) + Difficulty.add("enemy_cap") - [0, 2, 4][asst])
 	d["foe_capture"] = Difficulty.mul("capture")  # Battle._capture: enemy capture speed
 	d["supply_mul"] = Difficulty.mul("supply")  # Battle._tick: supply trickle
 	d["inspired"] = morale >= 85
@@ -539,11 +786,11 @@ static func battle_data(base: Dictionary, f: Dictionary) -> Dictionary:
 	elif typ == "escort":
 		d["win_by"] = "convoy"
 		d["convoy"] = cf.get("convoy", [])
-		d["convoy_hp"] = maxi(20, int(n.get("convoy_hp", 80)) + Difficulty.add("convoy"))
+		d["convoy_hp"] = maxi(20, int(n.get("convoy_hp", 80)) + Difficulty.add("convoy") + 20 * asst)
 		d["vehicle"] = str(cf.get("vehicle", "wagon" if arc() == "penguins" else "truck"))
 	elif typ == "defend":
 		d["win_by"] = "hold"
-		d["hold"] = maxi(45, int(n.get("hold", 150)) + Difficulty.add("hold"))
+		d["hold"] = maxi(45, int(n.get("hold", 150)) + Difficulty.add("hold") - 20 * asst)
 	var back: Array = f.get("back", [])
 	if back.size() >= 3:
 		d["back"] = [str(back[0]), float(back[1]) / GameMap.TILE, float(back[2]) / GameMap.TILE]
@@ -566,6 +813,10 @@ static func finish(won: bool, supply_left: int) -> Array:
 	if won:
 		s["taken"][nid] = true
 		s["at"] = nid
+		if s.get("assist") is Dictionary:
+			(s["assist"] as Dictionary).erase(nid)
+		if str(s.get("last_lost", "")) == nid:
+			s.erase("last_lost")
 		if Engine.get_main_loop() is SceneTree:
 			var all_taken := true
 			for nd: Dictionary in c.get("nodes", []):
@@ -592,8 +843,15 @@ static func finish(won: bool, supply_left: int) -> Array:
 			lines.append_array(_unlock(cid))
 	else:
 		s["losses"] = int(s.get("losses", 0)) + 1
+		if not (s.get("lost") is Dictionary):
+			s["lost"] = {}
+		s["lost"][nid] = int(s["lost"].get(nid, 0)) + 1
+		s["last_lost"] = nid
+		st()["after_loss"] = cid  # reopen_later shows the loss card (retry / easier / long way)
 		s["supply"] = clampi(maxi(10, supply_left / 3), 0, SUPPLY_CAP)  # never too poor to place one helper
-		s["morale"] = int(s["morale"]) - Difficulty.add("morale_loss")
+		# The first loss on a node costs half: a retry never starts much worse than the first try.
+		var ml := Difficulty.add("morale_loss")
+		s["morale"] = int(s["morale"]) - (ml / 2 if int(s["lost"][nid]) == 1 else ml)
 		if int(s["morale"]) <= 0:
 			s["morale"] = 40
 			s["supply"] = 0
@@ -603,19 +861,27 @@ static func finish(won: bool, supply_left: int) -> Array:
 			var lf := flavour(cid, nid, false)
 			if lf != "":
 				lines.append({"who": w, "text": lf})
-			lines.append({"who": w, "text": "We fall back from %s. Morale %d (%s). Rest at a camp, or try again." % [str(n["name"]), int(s["morale"]), morale_word(int(s["morale"]))]})
+			lines.append({"who": w, "text": "We fall back from %s. Morale %d (%s). Try again, easier if you like, or take the long way round." % [str(n["name"]), int(s["morale"]), morale_word(int(s["morale"]))]})
 	return lines
 
 
 ## Penguin-arc colour after a campaign fight (Tom C3): the Grumps were Crystopia
 ## crystals the Dark Crystal turned, so winning turns them back. Meow Pow Wow is
-## only mentioned once Nova knows it. Gangster fights need no extra line ("").
+## only mentioned once Nova knows it. Gangster fights get their own lines.
 static func flavour(cid: String, nid: String, won: bool) -> String:
-	if arc() != "penguins":
-		return ""
 	var n := node(cid, nid)
 	var typ := str(n.get("type", ""))
 	var i := absi(hash(cid + nid)) % 3
+	if arc() != "penguins":  # c16b_14-05: the gang arc gets a story voice too (all ages: nobody hurt, nobody caught)
+		if not won:
+			return ["We regroup. Nobody's hurt, nobody's caught. We come back smarter.",
+				"They had more cars than we had plans. Next time.",
+				"Fall back to the cars. This street will still be here tomorrow."][i]
+		if typ in ["boss", "gate"]:
+			return "Their captain drives off and doesn't look back. One by one, the street lights come on."
+		return ["The lookouts pile into their cars and leave. A shopkeeper flips her sign back to OPEN.",
+			"Nobody on that block owes the President a cent tonight.",
+			"Sal counts heads: everybody's here. Good."][i]
 	if not won:
 		return ["They're not bad, you know. They've forgotten what they were. We'll come back and remind them.",
 			"Their hearts are frozen hard today. Rest, and we'll try again.",
@@ -643,8 +909,15 @@ static func retreat(supply_left: int) -> void:
 		return
 	var s := cs(cid)
 	s["retreats"] = int(s.get("retreats", 0)) + 1
-	s["morale"] = maxi(10, int(s["morale"]) - 15)
-	s["supply"] = clampi(supply_left / 3, 0, SUPPLY_CAP)
+	# Never worse than a loss (c16b_08-10).
+	s["morale"] = maxi(10, int(s["morale"]) - maxi(5, Difficulty.add("morale_loss") - 5))
+	s["supply"] = clampi(maxi(10, supply_left / 3), 0, SUPPLY_CAP)
+	var nid := str(f.get("nid", ""))
+	if nid != "" and not node(cid, nid).is_empty():
+		s["last_lost"] = nid
+	st()["after_loss"] = cid
+	if Engine.get_main_loop() is SceneTree and not Net.visiting():
+		reopen_later(Engine.get_main_loop() as SceneTree, cid)
 
 
 ## The gate fell: the region opens.
@@ -689,6 +962,8 @@ static func story_pointer(qid: String) -> String:
 		return ""
 	cid = first_in_chain(cid)
 	var c := get_c(cid)
+	if long_way_pending(cid):
+		return ("On the long way to %s: sleep, and you'll be through by morning." % region_phrase(c)).left(112)
 	var held := ""
 	if started(cid) and taken_count(cid) > 1:
 		held = " (%d/%d held)" % [taken_count(cid) - 1, (c["nodes"] as Array).size() - 1]
@@ -702,12 +977,24 @@ static func story_pointer(qid: String) -> String:
 		# Goal line budget (~112 chars): the step, then the campaign; no "X is guarded."
 		var st := first.left(1).to_lower() + first.substr(1)
 		var has_map := first.contains("campaign map")
+		if not long_way(cid).is_empty():  # C16b: never battle as the only way
+			for ln in ["First: %s Then win \"%s\", or take the long way round at its border." % [st, str(c["title"])],
+					"Open %s: win \"%s\" (train first), or take the long way round at its border." % [region_phrase(c), str(c["title"])],
+					"Open %s: win \"%s\", or take the long way round." % [region_phrase(c), str(c["title"])]]:
+				if ln.length() <= 112:
+					return ln
 		for where in (["."] if has_map else [" (campaign map, MENU > Map).", " on the campaign map.", " (campaign map)."]):
 			var line := "First: %s Then win \"%s\"%s" % [st, str(c["title"]), where]
 			if line.length() <= 112:
 				return line
 		return ("First: %s (campaign map)" % st).left(112)
-	return "Open %s: win \"%s\" on the campaign map (MENU > Map)%s." % [region_phrase(c), str(c["title"]), held]
+	var tail := "Open %s: win \"%s\" on the campaign map (MENU > Map)%s." % [region_phrase(c), str(c["title"]), held]
+	var alt := "Open %s: win \"%s\" (MENU > Map), or take the long way round at its border%s." % [region_phrase(c), str(c["title"]), held]
+	if alt.length() > 112:
+		alt = "Open %s: win \"%s\" (MENU > Map), or take the long way round%s." % [region_phrase(c), str(c["title"]), held]
+	if not long_way(cid).is_empty() and alt.length() <= 112:
+		return alt
+	return tail
 
 
 ## The first campaign in cid's chain of prerequisites that still holds its
@@ -770,18 +1057,41 @@ static func offer(m: GameMap, cid: String) -> void:
 	if Net.visiting():  # the board's Muster/Attack wait until home: no dead-end offer on a friend's world
 		lines = [{"who": "", "text": VISIT_GATE}]
 	var dl := Dialogue.instance(m.get_tree())
-	if not bool(gw["board"]) or Net.visiting():
+	# The long way (C16b): offered at the border once its campaign is the next one.
+	var lcid := str(gw.get("cid", cid))
+	var lway := not Net.visiting() and str(gw["stage"]) in ["after", "gather", "ready", "under_way", "train"] \
+		and long_way_offerable(lcid)
+	if (not bool(gw["board"]) and not lway) or Net.visiting():
 		dl.say(lines)
 		await dl.finished
 		_last_offer = Time.get_ticks_msec()
 		return
-	lines[lines.size() - 1]["choice"] = ["Open the campaign map", "Not now"]
+	if lway:
+		lines[lines.size() - 1]["text"] = str(lines[lines.size() - 1]["text"]) + (" Or skip the fighting: %s." % long_way_label(lcid).to_lower())
+	var choices: Array = []
+	if bool(gw["board"]):
+		choices.append("Open the campaign map")
+	if lway:
+		choices.append(long_way_label(lcid))
+	choices.append("Not now")
+	lines[lines.size() - 1]["choice"] = choices
 	lines[lines.size() - 1]["key"] = ""
 	dl.say(lines)
 	await dl.finished
 	_last_offer = Time.get_ticks_msec()
-	if dl.last_choice == 0 and is_instance_valid(m):
-		CampaignScreen.open(m, str(gw.get("cid", cid)))
+	if not is_instance_valid(m) or dl.last_choice < 0 or dl.last_choice >= choices.size():
+		return
+	var picked := str(choices[dl.last_choice])
+	if picked == "Open the campaign map":
+		CampaignScreen.open(m, lcid)
+	elif lway and picked == long_way_label(lcid):
+		var res := take_long_way(lcid)
+		if res.is_empty():
+			res = [{"who": "", "text": "The long way: " + long_way_lock(lcid)}]
+		dl.say(res)
+		await dl.finished
+		_last_offer = Time.get_ticks_msec()
+		GameState.save()
 
 
 ## What you sense walking up to a region campaign `cid` still holds, and the one
@@ -867,4 +1177,50 @@ static func reopen_later(tree: SceneTree, cid: String, tries := 12) -> void:
 			if tries > 0:
 				reopen_later(tree, cid, tries - 1)
 			return
+		if cid != "" and str(st().get("after_loss", "")) == cid:
+			loss_card(gm, cid)
+			return
 		CampaignScreen.open(gm, cid))
+
+
+## After a loss or a retreat (c16b_08-03): Try again / Try again, easier / Take
+## the long way / Back to the campaign map / Not now.
+static func loss_card(m: GameMap, cid: String) -> void:
+	st().erase("after_loss")
+	if not is_instance_valid(m) or get_c(cid).is_empty():
+		return
+	var ch := loss_choices(cid)
+	var w := who(cid)
+	var t := ("We could try again, or there's a slower way round. Your call." if arc() == "penguins"
+		else "We go again, or we go round. Your call, boss.")
+	var labels: Array = []
+	for c in ch:
+		labels.append(str(c[1]))
+	var dl := Dialogue.instance(m.get_tree())
+	dl.say([{"who": w, "text": t, "choice": labels, "key": ""}])
+	await dl.finished
+	if not is_instance_valid(m):
+		return
+	var pick := dl.last_choice
+	var key := str(ch[pick][0]) if pick >= 0 and pick < ch.size() else "leave"
+	await loss_pick(m, cid, key)
+
+
+## Carry out one loss-card choice (also used by tests).
+static func loss_pick(m: GameMap, cid: String, key: String) -> void:
+	match key:
+		"retry", "easier":
+			if not retry(cid, key == "easier", m) and is_instance_valid(m):
+				CampaignScreen.open(m, cid)
+		"long":
+			var lines := take_long_way(cid)
+			if lines.is_empty():
+				lines = [{"who": "", "text": "The long way: " + long_way_lock(cid)}]
+			if is_instance_valid(m):
+				var dl := Dialogue.instance(m.get_tree())
+				dl.say(lines)
+				await dl.finished
+				GameState.save()
+		"board":
+			if is_instance_valid(m):
+				CampaignScreen.open(m, cid)

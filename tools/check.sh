@@ -1461,3 +1461,10 @@ echo "$c16p4fout" | grep -E "FAIL|SCRIPT ERROR|c16a_p4_fish_test" || true
 if echo "$c16p4fout" | grep -q "SCRIPT ERROR" || ! echo "$c16p4fout" | grep -q "c16a_p4_fish_test: 0 failures"; then
   echo "C16a P4 fish test failed"; exit 1
 fi
+
+# C16b P3: zero-win reachability (both arcs, the long way), retry flow
+zwout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/zero_win_test.gd 2>&1)"
+echo "$zwout" | grep -E "FAIL|SCRIPT ERROR|zero_win_test" || true
+if echo "$zwout" | grep -q "SCRIPT ERROR" || ! echo "$zwout" | grep -q "zero_win_test: 0 fails"; then
+  echo "Zero-win test failed"; exit 1
+fi
