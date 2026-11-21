@@ -1,0 +1,155 @@
+{
+ "sha": "b25cd5d3f2795c20558816fb9dfed1eb19651278",
+ "ref": "ci/c12p4-1fb7650b",
+ "run": "44879560018",
+ "finished": 1795246404.4232976,
+ "pass": true,
+ "relay": {},
+ "relay_pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 62,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "1fb7650bbfae5510040b3735564232a6d65d5444",
+  "label": "c12p4",
+  "branch": "c12f/p4",
+  "shards": [
+   1,
+   4,
+   6
+  ],
+  "bots": false,
+  "playtest": true,
+  "relay": false,
+  "server_changed": false,
+  "e2e": false,
+  "e2e_strict": false
+ },
+ "max_job_secs": 347,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 0,
+   "secs": 299,
+   "failed_steps": []
+  },
+  {
+   "shard": 4,
+   "rc": 0,
+   "secs": 341,
+   "failed_steps": []
+  },
+  {
+   "shard": 6,
+   "rc": 0,
+   "secs": 347,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 131.3
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 81.1
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 72.6
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 0,
+   "secs": 50.0
+  },
+  {
+   "step": 5,
+   "name": "exits and spawns",
+   "rc": 0,
+   "secs": 44.3
+  },
+  {
+   "step": 55,
+   "name": "commons_test",
+   "rc": 0,
+   "secs": 43.7
+  },
+  {
+   "step": 169,
+   "name": "C9 P6: generated data in sync",
+   "rc": 0,
+   "secs": 42.5
+  },
+  {
+   "step": 14,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 42.3
+  },
+  {
+   "step": 85,
+   "name": "music: every map has a song; web streaming works offline",
+   "rc": 0,
+   "secs": 38.4
+  },
+  {
+   "step": 131,
+   "name": "menu sweep: every menu button, both arcs (C2)",
+   "rc": 0,
+   "secs": 26.7
+  },
+  {
+   "step": 127,
+   "name": "mega regions: the new worlds walk end to end",
+   "rc": 0,
+   "secs": 21.3
+  },
+  {
+   "step": 119,
+   "name": "saves: first run, slots, opening Skip, reopen at early milestones, old",
+   "rc": 0,
+   "secs": 20.9
+  },
+  {
+   "step": 44,
+   "name": "gang_play_test",
+   "rc": 0,
+   "secs": 18.8
+  },
+  {
+   "step": 161,
+   "name": "S1 P3: Steam Deck text floor (every screen at 1280x800)",
+   "rc": 0,
+   "secs": 12.7
+  },
+  {
+   "step": 122,
+   "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew",
+   "rc": 0,
+   "secs": 10.9
+  }
+ ]
+}
