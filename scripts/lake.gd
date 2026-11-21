@@ -223,6 +223,46 @@ static func winter_look(name: String) -> String:
 const LIGHTHOUSE_LAMP := Vector2(-2, -187)
 
 
+## C14b P3 (c14b_01-10): the mill as one still building (no 4-render jitter) with its
+## wheel as a separate round sprite turning smoothly on game time about the hub, and a
+## few droplets thrown off the paddles at its foot (none under reduced motion).
+func _mill_rotor(feet: Vector2) -> void:
+	var bi := Art.info("buildings", "c14bp3_water_mill_base")
+	var bw := float(bi.get("w", 177))
+	var bh := float(bi.get("h", 176))
+	var body := Sprite2D.new()
+	body.texture = Art.tex("buildings", "c14bp3_water_mill_base")
+	body.position = feet
+	body.offset = Vector2(0, -bh / 2.0)
+	body.name = "MillBody"
+	add_child(body)
+	_canopies.append(body)
+	CrispArt.apply(body)
+	var hub: Array = bi.get("hub", [97, 115])
+	var wheel := Sprite2D.new()
+	wheel.texture = Art.tex("buildings", "c14bp3_water_mill_wheel")
+	wheel.position = Vector2(float(hub[0]) - bw / 2.0, float(hub[1]) - bh)
+	wheel.scale = Vector2(0.85, 0.85)
+	wheel.name = "MillWheel"
+	body.add_child(wheel)
+	var am := AmbientMotion.of(self)
+	am.spin(wheel, 0.7, false)
+	if not AmbientMotion.reduced():
+		var sp := CPUParticles2D.new()
+		sp.amount = 6
+		sp.lifetime = 0.8
+		sp.position = wheel.position + Vector2(-8, 40)
+		sp.direction = Vector2(-0.4, -1)
+		sp.spread = 25.0
+		sp.initial_velocity_min = 18.0
+		sp.initial_velocity_max = 30.0
+		sp.gravity = Vector2(0, 70)
+		sp.scale_amount_min = 1.0
+		sp.scale_amount_max = 2.0
+		sp.color = Color(0.75, 0.9, 1.0, 0.8)
+		body.add_child(sp)
+
+
 func _shore_building(name: String, c: Vector2i, interior: String, hint: String, door: Vector2i, animated := false) -> void:
 	if not Art.has("buildings", name):
 		return
@@ -277,6 +317,10 @@ func _shore_building(name: String, c: Vector2i, interior: String, hint: String, 
 		add_child(ls)
 		_canopies.append(ls)
 		LighthouseBeam.attach(ls, LIGHTHOUSE_LAMP)
+	elif name == "water_mill" and GameState.look_se() != "winter" and Art.has("buildings", "c14bp3_water_mill_base") and Art.has("buildings", "c14bp3_water_mill_wheel"):
+		_mill_rotor(cell_pos(c.x + w_cells / 2.0, base.y + 1))  # C14b P3 (c14b_01-10)
+	elif name == "water_mill" and GameState.look_se() == "winter":
+		prop("buildings", winter_look(name), base, w_cells - 1, 0.0, false, 1.0)  # the frozen wheel stands still in winter (no 4-render jitter)
 	elif animated and int(info.get("frames", 1)) > 1:
 		var a := AnimatedSprite2D.new()
 		a.sprite_frames = Art.frames("buildings", {"idle": winter_look(name)}, {"idle": 4.0})

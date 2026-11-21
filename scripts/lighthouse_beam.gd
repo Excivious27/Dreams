@@ -9,7 +9,7 @@ extends Node2D
 
 const PERIOD := 6.5  # seconds per full turn
 var length := 70.0   # art px (the node inherits the tower sprite's scale)
-var half_w := 9.0
+var half_w := 12.0
 
 
 ## Add a beam to a lighthouse sprite. `lamp` is the lamp centre in the sprite's
@@ -20,11 +20,32 @@ static func attach(tower: Node2D, lamp: Vector2) -> LighthouseBeam:
 	var b := LighthouseBeam.new()
 	b.name = "Beam"
 	b.position = lamp
-	var mat := CanvasItemMaterial.new()
-	mat.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
-	b.material = mat
 	tower.add_child(b)
 	return b
+
+
+## The light is drawn on its own canvas layer above the map's night CanvasModulate
+## (like NightGlow), following this anchor, so the night tint doesn't swallow it.
+var _layer: CanvasLayer
+var _drawer: Node2D
+
+
+func _ready() -> void:
+	_layer = CanvasLayer.new()
+	_layer.layer = 1
+	_layer.follow_viewport_enabled = true
+	_drawer = Node2D.new()
+	var mat := CanvasItemMaterial.new()
+	mat.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	_drawer.material = mat
+	_drawer.draw.connect(_draw_beam)
+	_layer.add_child(_drawer)
+	add_child(_layer)
+
+
+func _exit_tree() -> void:
+	if is_instance_valid(_layer):
+		_layer.queue_free()
 
 
 ## The lit-lamp, no-beam frame of the lighthouse strip (frame 1) as a texture.
@@ -51,14 +72,18 @@ static func strength() -> float:
 
 
 func _process(_d: float) -> void:
-	queue_redraw()
+	if _drawer:
+		_drawer.transform = get_global_transform()
+		_drawer.visible = is_visible_in_tree()
+		_drawer.queue_redraw()
 
 
-func _draw() -> void:
+func _draw_beam() -> void:
+	var d := _drawer
 	var s := strength()
 	var glow := Color(1.0, 0.93, 0.62, 0.35 * s)
-	draw_circle(Vector2.ZERO, 7.0, glow)
-	draw_circle(Vector2.ZERO, 4.0, Color(1, 0.97, 0.8, 0.45 * s))
+	d.draw_circle(Vector2.ZERO, 7.0, glow)
+	d.draw_circle(Vector2.ZERO, 4.0, Color(1, 0.97, 0.8, 0.45 * s))
 	if AmbientMotion.reduced():
 		return
 	var a := PlayClock.now() * TAU / PERIOD
@@ -69,8 +94,8 @@ func _draw() -> void:
 		if absf(reach) < 2.0:
 			continue
 		var facing: float = 0.55 + 0.45 * sin(a) * side
-		var col := Color(1.0, 0.92, 0.6, 0.5 * s * facing)
+		var col := Color(1.0, 0.92, 0.6, 0.6 * s * facing)
 		var tip := Color(1.0, 0.92, 0.6, 0.0)
 		var hw := half_w * (0.6 + 0.4 * absf(c))
-		draw_polygon(PackedVector2Array([Vector2(0, -2.5), Vector2(reach, -hw), Vector2(reach, hw), Vector2(0, 2.5)]),
+		d.draw_polygon(PackedVector2Array([Vector2(0, -2.5), Vector2(reach, -hw), Vector2(reach, hw), Vector2(0, 2.5)]),
 			PackedColorArray([col, tip, tip, col]))

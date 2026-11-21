@@ -27,17 +27,22 @@ static func make(host: Node, m: String, river_px := Rect2(), plaza_px := Vector2
 	f.mode = m
 	f.river = river_px
 	f.plaza = plaza_px
-	f.z_index = 50
 	var mat := CanvasItemMaterial.new()
 	mat.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
 	f.material = mat
 	f._rng.seed = int(GameState.run.get("day", 1)) * 977 + (1 if m == "star" else 2)
-	host.add_child(f)
+	# Above the map's night CanvasModulate (like NightGlow), so the lights aren't darkened.
+	var cl := CanvasLayer.new()
+	cl.name = "FestivalSkyLayer"
+	cl.layer = 1
+	cl.follow_viewport_enabled = true
+	cl.add_child(f)
+	host.add_child(cl)
 	return f
 
 
 static func of(host: Node) -> FestivalSky:
-	var n := host.get_node_or_null("FestivalSky") if host else null
+	var n := host.get_node_or_null("FestivalSkyLayer/FestivalSky") if host else null
 	return n as FestivalSky
 
 

@@ -74,12 +74,13 @@ func breathe(node: Node2D, amt := 0.018, period := 3.6) -> void:
 	_items.append([node, KIND_BREATHE, amt, period, phase(node.position) * TAU, node.position, node.rotation, node.scale.y])
 
 
-## Continuous turn (rad/s at wind 1; calm still turns at 40%).
-func spin(node: Node2D, rad_s := 0.9) -> void:
+## Continuous turn (rad/s at wind 1; calm still turns at 40%). windy=false: a steady
+## turn (a water wheel follows the stream, not the wind).
+func spin(node: Node2D, rad_s := 0.9, windy := true) -> void:
 	if node == null:
 		return
-	node.rotation = phase(node.position) * TAU
-	_items.append([node, KIND_SPIN, rad_s, 0.0, 0.0, node.position, node.rotation, 0.0])
+	node.rotation = phase(node.position + Vector2(node.get_instance_id() % 97, 0)) * TAU
+	_items.append([node, KIND_SPIN, rad_s, 0.0, 0.0, node.position, node.rotation, 1.0 if windy else 0.0])
 
 
 func _process(delta: float) -> void:
@@ -108,5 +109,6 @@ func _process(delta: float) -> void:
 				var b := 0.5 + 0.5 * sin(t * TAU / float(e[3]) + float(e[4]))
 				n.scale.y = float(e[7]) * (1.0 + float(e[2]) * k * b * b)
 			KIND_SPIN:
-				n.rotation += float(e[2]) * delta * (0.4 + 0.6 * wv) * (0.25 if reduced() else 1.0)
+				var wk := (0.4 + 0.6 * wv) if float(e[7]) > 0.5 else 1.0
+				n.rotation += float(e[2]) * delta * wk * (0.25 if reduced() else 1.0)
 		i -= 1
