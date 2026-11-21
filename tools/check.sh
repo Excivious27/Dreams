@@ -1513,3 +1513,10 @@ fi
 if ! python3 tools/slice_c16bp4.py check; then
   echo "C16b P4 chest icons missing"; exit 1
 fi
+
+echo "== net size: maxed host world vs HOST_CAP, push delta and cost (C17 P6) =="
+nzout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/net_size_test.gd 2>&1)"
+echo "$nzout" | grep -E "FAIL|SCRIPT ERROR|max world|push median|net_size_test" || true
+if ! echo "$nzout" | grep -q "net_size_test: [0-9]* checks, 0 failures"; then
+  echo "net_size_test failed"; exit 1
+fi
