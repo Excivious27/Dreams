@@ -168,6 +168,7 @@ func _run() -> void:
 	check(Enemy.shot_for("thug", "dark", true, true) == "shot", "gang arc: a thug fires a gun")
 	check(Enemy.shot_for("drone", "", true, false) == "laser" and Enemy.shot_for("eel", "", true, false) == "bubble", "drones fire lasers, eels spit bubbles")
 	check(Enemy.shot_for("grump_archer", "", false, true) == "bow", "archers loose arrows")
+	check(Enemy.summon_sound("president", true) == "whistle" and Enemy.summon_sound("commander", false) == "war_horn" and Enemy.summon_sound("dark_crystal", false) == "spell_dark", "summons sound like who calls")
 	check(HackGame.TONE.size() == 4 and HackGame.TONE["up"] != HackGame.TONE["left"], "hack terminal: four pitched wire tones")
 	var gal := FileAccess.get_file_as_string("res://scripts/arcade_gallery.gd")
 	check(gal.contains("sfx(\"frog\"") and not gal.contains("croak"), "shooting-gallery frog croaks with the real frog take")

@@ -145,7 +145,7 @@ const TONE := {"up": 1.0, "right": 1.19, "down": 1.33, "left": 1.5}
 
 
 func _tone(d: String) -> void:
-	Music.instance(get_tree()).sfx_pitched("hack_tone" if Music.instance(get_tree()).has_sfx("hack_tone") else "beat_tick", "beep", float(TONE.get(d, 1.0)), -4.0)
+	Music.instance(get_tree()).sfx_pitched("beat_tick", "beep", float(TONE.get(d, 1.0)), -4.0)
 
 
 func _press(d: String) -> void:

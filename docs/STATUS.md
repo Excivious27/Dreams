@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C13 P4: story/scene/minigame audio cues - every live key beat cued, per-ending songs on branch line 0, mood_* scene songs via Dialogue.scene_song (arc take, safe fallback), dream/Hale/tension beats, chapter title cards both arcs, heart/side-story moods, drill/capture/hack/shot/summon cues; test tools/story_audio_test.gd
+
 ## 2026-11-21 — C12 integration: P5/P6 merged; hooks across packages (shop deals never send away your partner, gift-block toasts, post-ending penguin letters, bell cause unified, elder moon lines, keepsakes, herbs, talk variants, tracker words, festival letters, side-story compass, arrival verbs); Tess ♥6 quest; CI test fixes.
 ## 2026-11-20 — C12 P6 (items/ranch/decor/UI text): every item has a description; decor lines varied (518 distinct, was 81) with real catalogue sources; wardrobe flavour shows; creature where-from lines; region names with articles in gate words; device-correct button/menu words (PadInput '(MENU'/'Menu >', tool hints, battle brief, casino how-to, hud hint); achievements text; c12_items_ui_text_test.
 ## 2026-11-20 — C12 P4 (hearts/romance/gifts): one Mabel-father story, Sel gangster words + 'they', Tam/Sel stay for a partner (if_partner), Juniper retired as candidate, locket/house refusals, Tess heart arc, perk texts match scenes and show cash, gift tastes for ranch/arc goods/crew, gift_lines when/default/birthday_plain, no ammo gifts, ItemWords 'X of Y'; test c12_hearts_gifts_test.
