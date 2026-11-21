@@ -258,11 +258,20 @@ OLD = {
     "bf_shattered_vale": dict(theme=CRYSTAL, border_trees=BT_PINE, region_count=150,
                               scatter=["crystal_rock", "mine_crystal_rock_1", "mine_crystal_rock_3", "ccrystal_1", "ccrystal_2", "ccrystal_3",
                                        "crystal_tree", "crystal_tree_pink", "moon_crystal_blue", "moon_crystal_pink", "boulder_l"]),
-    "bf_rail_yards": dict(theme=CITY, border_trees=BT_DEAD),
+    # C16b P5 (c16b_18-18): the rail yards get freight cars, a coal hopper and a signal mast
+    "bf_rail_yards": dict(theme=CITY, border_trees=BT_DEAD,
+                          extra_props=[_p("train_car", 12, 62, 5, 2), _p("train_car", 84, 60, 5, 2), _p("ir_coal_hopper", 6, 36, 3, 4),
+                                       _p("ir_signal_tower", 102, 38, 2, 5), _p("rusted_car", 30, 70, 3, 1)],
+                          scatter=["drums", "tyres", "crates_a", "oil_drums", "cargo_red", "cargo_grey"]),
     "bf_dockside": dict(theme=DECK, ground="concrete_pier", ground_seam="dock_concrete", border={"n": "water", "s": "trees", "w": "trees", "e": "cliff"}, water_shore="sand",
                         extra_props=[_p("bk_pier_straight", 44, 3, 4, 2), _p("bk_pier_straight", 74, 3, 4, 2), _p("bollard_a", 40, 8, 1), _p("bollard_a", 82, 8, 1)],
                         scatter=["crates_a", "crates_pallet", "barrel_a", "oil_drums", "bollard_a", "rope_coil"]),
-    "bf_neon_block": dict(theme=CITY, border_trees=BT_CITY),
+    # C16b P5 (c16b_04-13): the Neon Block gets its neon: signs, tall street lamps, a getaway car
+    "bf_neon_block": dict(theme=CITY, border_trees=BT_CITY,
+                          extra_props=[_p("neon_sign_0", 8, 40, 2, 2), _p("neon_sign_3", 96, 40, 2, 2), _p("neon_sign_5", 34, 66, 2, 2),
+                                       _p("neon_sign_6", 72, 64, 2, 2), _p("neon_open", 70, 34, 3, 1), _p("lamp2_tall_0", 40, 74, 2, 5),
+                                       _p("lamp2_tall_2", 64, 74, 2, 5), _p("veh_getaway_car_side", 86, 76, 5, 2)],
+                          scatter=["crates_a", "oil_drums", "neon_sign_1", "neon_sign_2", "neon_sign_4", "lamp2_short_0"]),
     "bf_ash_wastes": dict(theme=ASH, border_trees=BT_DEAD),
     "bf_orchard_line": dict(),
     "bf_bog_crossing": dict(theme={"band": ["reeds2_0", "reeds2_3", "cattail_0", "props/mk_reeds_1"]}),
@@ -288,7 +297,7 @@ def tweak_old(R, fid):
     if o.get("theme", {}).get("trees") == []:
         rr["gen"]["clumps"] = 0
         rr["gen"]["scatter"] = 40
-    rr["props"] = list(rr.get("props", [])) + list(o.get("extra_props", []))
+    rr["props"] = list(rr.get("props", [])) + _off_lanes(list(o.get("extra_props", [])), rr.get("paths", []), rr["battle"]["points"])
 
 
 def _off_lanes(props, lanes, pts):
