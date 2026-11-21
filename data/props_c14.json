@@ -1690,6 +1690,14 @@
   },
   {
    "cell": [
+    19,
+    13
+   ],
+   "id": "nature/dune_5",
+   "layer": "deco"
+  },
+  {
+   "cell": [
     30,
     26
    ],
@@ -1781,37 +1789,37 @@
     3,
     36
    ],
-   "id": "nature/dune_8",
+   "id": "props/crates_a",
    "layer": "prop"
-  },
-  {
-   "cell": [
-    19,
-    17
-   ],
-   "id": "props/cart_covered",
-   "layer": "prop"
-  },
-  {
-   "cell": [
-    11,
-    10
-   ],
-   "id": "props/cart_covered",
-   "layer": "deco"
   },
   {
    "cell": [
     14,
-    12
+    11
    ],
    "id": "props/crates_a",
    "layer": "prop"
   },
   {
    "cell": [
-    5,
-    11
+    15,
+    17
+   ],
+   "id": "props/crates_a",
+   "layer": "deco"
+  },
+  {
+   "cell": [
+    7,
+    3
+   ],
+   "id": "props/crates_a",
+   "layer": "deco"
+  },
+  {
+   "cell": [
+    11,
+    34
    ],
    "id": "props/barrel_a",
    "layer": "prop"
@@ -1834,19 +1842,11 @@
   },
   {
    "cell": [
-    15,
-    3
+    28,
+    7
    ],
-   "id": "props/barrel_a",
-   "layer": "prop"
-  },
-  {
-   "cell": [
-    4,
-    3
-   ],
-   "id": "props/crates_a",
-   "layer": "prop"
+   "id": "props/barrel2_a",
+   "layer": "deco"
   }
  ],
  "frost_hearthhold": [
@@ -1880,6 +1880,62 @@
     25
    ],
    "id": "props/planter2_1_winter",
+   "layer": "prop"
+  },
+  {
+   "cell": [
+    16,
+    16
+   ],
+   "id": "props/bench2_wood_a_winter",
+   "layer": "prop"
+  },
+  {
+   "cell": [
+    16,
+    23
+   ],
+   "id": "props/planter2_0_winter",
+   "layer": "prop"
+  },
+  {
+   "cell": [
+    27,
+    23
+   ],
+   "id": "props/planter2_0_winter",
+   "layer": "prop"
+  },
+  {
+   "cell": [
+    25,
+    21
+   ],
+   "id": "props/planter2_1_winter",
+   "layer": "prop"
+  },
+  {
+   "cell": [
+    30,
+    21
+   ],
+   "id": "props/planter2_0_winter",
+   "layer": "prop"
+  },
+  {
+   "cell": [
+    18,
+    12
+   ],
+   "id": "props/bench2_wood_a_winter",
+   "layer": "prop"
+  },
+  {
+   "cell": [
+    18,
+    16
+   ],
+   "id": "props/barrel2_a",
    "layer": "prop"
   },
   {
@@ -1924,11 +1980,11 @@
   },
   {
    "cell": [
-    17,
-    23
+    40,
+    13
    ],
-   "id": "props/snowdrift_4",
-   "layer": "prop"
+   "id": "props/snowdrift_5",
+   "layer": "deco"
   },
   {
    "cell": [
@@ -1936,6 +1992,14 @@
     4
    ],
    "id": "props/snowdrift_0",
+   "layer": "prop"
+  },
+  {
+   "cell": [
+    12,
+    24
+   ],
+   "id": "props/snowdrift_5",
    "layer": "prop"
   },
   {
@@ -1981,14 +2045,14 @@
   {
    "cell": [
     5,
-    22
+    23
    ],
-   "id": "props/snowdrift_0",
+   "id": "props/snowdrift_4",
    "layer": "prop"
   },
   {
    "cell": [
-    36,
+    37,
     36
    ],
    "id": "props/snowdrift_2",
@@ -2023,7 +2087,7 @@
     8,
     36
    ],
-   "id": "props/snowdrift_0",
+   "id": "nature/log_snow",
    "layer": "prop"
   },
   {
@@ -2080,14 +2144,6 @@
     33
    ],
    "id": "props/barrel2_b",
-   "layer": "deco"
-  },
-  {
-   "cell": [
-    18,
-    12
-   ],
-   "id": "props/crates_a",
    "layer": "deco"
   },
   {
@@ -2158,6 +2214,46 @@
   },
   {
    "cell": [
+    15,
+    23
+   ],
+   "id": "props/planter2_1",
+   "layer": "prop"
+  },
+  {
+   "cell": [
+    18,
+    12
+   ],
+   "id": "props/topiary_a",
+   "layer": "prop"
+  },
+  {
+   "cell": [
+    21,
+    12
+   ],
+   "id": "props/planter2_0",
+   "layer": "prop"
+  },
+  {
+   "cell": [
+    18,
+    16
+   ],
+   "id": "props/bench2_green_a",
+   "layer": "prop"
+  },
+  {
+   "cell": [
+    21,
+    16
+   ],
+   "id": "props/topiary_b",
+   "layer": "prop"
+  },
+  {
+   "cell": [
     32,
     5
    ],
@@ -2206,19 +2302,11 @@
   },
   {
    "cell": [
-    12,
-    22
-   ],
-   "id": "props/topiary_a",
-   "layer": "deco"
-  },
-  {
-   "cell": [
     27,
-    6
+    7
    ],
-   "id": "props/topiary_b",
-   "layer": "prop"
+   "id": "props/topiary_c",
+   "layer": "deco"
   },
   {
    "cell": [
@@ -2273,56 +2361,40 @@
     38,
     5
    ],
-   "id": "props/planter2_3",
+   "id": "props/hedge2_pot",
+   "layer": "prop"
+  },
+  {
+   "cell": [
+    20,
+    6
+   ],
+   "id": "props/flowerbed_pink",
    "layer": "deco"
   },
   {
    "cell": [
-    34,
-    32
-   ],
-   "id": "props/planter2_3",
-   "layer": "deco"
-  },
-  {
-   "cell": [
-    6,
-    7
-   ],
-   "id": "props/flowerbed_yellow",
-   "layer": "prop"
-  },
-  {
-   "cell": [
-    25,
-    36
-   ],
-   "id": "props/planter2_3",
-   "layer": "prop"
-  },
-  {
-   "cell": [
-    39,
-    34
-   ],
-   "id": "props/planter2_3",
-   "layer": "prop"
-  },
-  {
-   "cell": [
-    22,
-    5
+    20,
+    9
    ],
    "id": "props/flowerbed_blue",
-   "layer": "prop"
+   "layer": "deco"
   },
   {
    "cell": [
-    36,
-    34
+    17,
+    6
    ],
-   "id": "props/planter2_3",
-   "layer": "prop"
+   "id": "props/flowerbed_blue",
+   "layer": "deco"
+  },
+  {
+   "cell": [
+    19,
+    36
+   ],
+   "id": "props/planter2_2",
+   "layer": "deco"
   },
   {
    "cell": [
@@ -2342,19 +2414,11 @@
   },
   {
    "cell": [
-    27,
-    29
+    8,
+    13
    ],
-   "id": "props/flowerbed_pink",
+   "id": "props/planter2_2",
    "layer": "prop"
-  },
-  {
-   "cell": [
-    27,
-    22
-   ],
-   "id": "props/planter2_3",
-   "layer": "deco"
   },
   {
    "cell": [
@@ -2374,6 +2438,14 @@
   },
   {
    "cell": [
+    25,
+    11
+   ],
+   "id": "props/planter2_3",
+   "layer": "prop"
+  },
+  {
+   "cell": [
     4,
     13
    ],
@@ -2382,11 +2454,27 @@
   },
   {
    "cell": [
+    15,
+    10
+   ],
+   "id": "props/flowerbed_pink",
+   "layer": "deco"
+  },
+  {
+   "cell": [
     28,
     15
    ],
-   "id": "props/statue2_founder",
+   "id": "props/planter2_2",
    "layer": "prop"
+  },
+  {
+   "cell": [
+    15,
+    8
+   ],
+   "id": "props/flowerbed_yellow",
+   "layer": "deco"
   },
   {
    "cell": [
@@ -2398,19 +2486,27 @@
   },
   {
    "cell": [
-    32,
-    30
-   ],
-   "id": "props/statue2_founder",
-   "layer": "prop"
-  },
-  {
-   "cell": [
     36,
     12
    ],
    "id": "props/statue2_founder",
    "layer": "deco"
+  },
+  {
+   "cell": [
+    36,
+    9
+   ],
+   "id": "props/statue2_founder",
+   "layer": "deco"
+  },
+  {
+   "cell": [
+    36,
+    27
+   ],
+   "id": "props/bench2_green_b",
+   "layer": "prop"
   }
  ],
  "iron_freight_yards": [
@@ -3152,46 +3248,6 @@
   },
   {
    "cell": [
-    3,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    4,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    5,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    6,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    7,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
     11,
     26
    ],
@@ -3201,174 +3257,6 @@
   {
    "cell": [
     12,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    13,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    14,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    15,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    16,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    17,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    18,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    19,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    20,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    21,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    22,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    23,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    32,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    33,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    34,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    35,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    36,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    37,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    43,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    48,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    49,
-    26
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    50,
     26
    ],
    "id": "props/rail_h",
@@ -3824,15 +3712,7 @@
   },
   {
    "cell": [
-    24,
-    30
-   ],
-   "id": "props/crates_b",
-   "layer": "prop"
-  },
-  {
-   "cell": [
-    10,
+    41,
     3
    ],
    "id": "props/crates_pallet_b",
@@ -3840,8 +3720,8 @@
   },
   {
    "cell": [
-    32,
-    24
+    22,
+    38
    ],
    "id": "props/crates2_b",
    "layer": "deco"
@@ -3872,42 +3752,26 @@
   },
   {
    "cell": [
-    38,
-    23
-   ],
-   "id": "props/crates_b",
-   "layer": "deco"
-  },
-  {
-   "cell": [
-    49,
-    37
-   ],
-   "id": "props/crates_pallet_b",
-   "layer": "deco"
-  },
-  {
-   "cell": [
-    32,
-    39
-   ],
-   "id": "props/crates2_b",
-   "layer": "prop"
-  },
-  {
-   "cell": [
-    34,
-    15
+    16,
+    6
    ],
    "id": "props/city_pallets",
+   "layer": "deco"
+  },
+  {
+   "cell": [
+    20,
+    17
+   ],
+   "id": "props/barrel2_a",
    "layer": "prop"
   },
   {
    "cell": [
-    18,
+    38,
     38
    ],
-   "id": "props/barrel2_b",
+   "id": "props/crates_b",
    "layer": "deco"
   },
   {
@@ -3920,63 +3784,63 @@
   },
   {
    "cell": [
-    15,
-    26
+    39,
+    34
    ],
    "id": "props/barrel2_b",
+   "layer": "deco"
+  },
+  {
+   "cell": [
+    24,
+    10
+   ],
+   "id": "props/crates2_b",
    "layer": "prop"
   },
   {
    "cell": [
-    39,
-    39
+    16,
+    40
+   ],
+   "id": "props/barrel2_a",
+   "layer": "prop"
+  },
+  {
+   "cell": [
+    37,
+    35
    ],
    "id": "props/city_pallets",
    "layer": "deco"
   },
   {
    "cell": [
-    35,
-    30
-   ],
-   "id": "props/crates2_b",
-   "layer": "prop"
-  },
-  {
-   "cell": [
     4,
-    24
+    21
    ],
-   "id": "props/crates2_b",
-   "layer": "prop"
-  },
-  {
-   "cell": [
-    30,
-    32
-   ],
-   "id": "props/crates_b",
+   "id": "props/city_pallets",
    "layer": "deco"
   },
   {
    "cell": [
-    3,
-    32
+    44,
+    37
    ],
    "id": "props/crates_a",
-   "layer": "deco"
+   "layer": "prop"
   },
   {
    "cell": [
-    13,
-    10
+    45,
+    6
    ],
-   "id": "props/crates_b",
-   "layer": "deco"
+   "id": "props/crates_pallet_b",
+   "layer": "prop"
   },
   {
    "cell": [
-    20,
+    9,
     16
    ],
    "id": "props/crates_a",
@@ -3984,48 +3848,72 @@
   },
   {
    "cell": [
-    24,
-    9
+    13,
+    16
+   ],
+   "id": "props/barrel2_b",
+   "layer": "deco"
+  },
+  {
+   "cell": [
+    42,
+    39
+   ],
+   "id": "props/crates_b",
+   "layer": "deco"
+  },
+  {
+   "cell": [
+    48,
+    16
+   ],
+   "id": "props/crates2_b",
+   "layer": "prop"
+  },
+  {
+   "cell": [
+    8,
+    5
    ],
    "id": "props/rope_coil",
    "layer": "deco"
   },
   {
    "cell": [
-    16,
+    50,
+    37
+   ],
+   "id": "props/rope_coil",
+   "layer": "deco"
+  },
+  {
+   "cell": [
+    32,
+    16
+   ],
+   "id": "props/bollard_c",
+   "layer": "prop"
+  },
+  {
+   "cell": [
+    28,
+    34
+   ],
+   "id": "props/bollard_c",
+   "layer": "deco"
+  },
+  {
+   "cell": [
+    50,
     40
    ],
    "id": "props/rope_coil",
-   "layer": "prop"
+   "layer": "deco"
   },
   {
    "cell": [
-    23,
-    39
-   ],
-   "id": "props/bollard_c",
-   "layer": "prop"
-  },
-  {
-   "cell": [
-    43,
-    7
-   ],
-   "id": "props/bollard_c",
-   "layer": "prop"
-  },
-  {
-   "cell": [
-    44,
-    37
-   ],
-   "id": "props/bollard_c",
-   "layer": "prop"
-  },
-  {
-   "cell": [
-    45,
-    6
+    34,
+    40
    ],
    "id": "props/bollard_c",
    "layer": "deco"
@@ -4034,16 +3922,8 @@
  "iron_junction": [
   {
    "cell": [
-    17,
-    14
-   ],
-   "id": "props/bench2_iron_a",
-   "layer": "prop"
-  },
-  {
-   "cell": [
-    20,
-    14
+    28,
+    17
    ],
    "id": "props/city_planter",
    "layer": "prop"
@@ -4051,9 +3931,33 @@
   {
    "cell": [
     28,
-    17
+    23
+   ],
+   "id": "props/mailbox2_red",
+   "layer": "prop"
+  },
+  {
+   "cell": [
+    17,
+    15
+   ],
+   "id": "props/bench2_iron_a",
+   "layer": "prop"
+  },
+  {
+   "cell": [
+    17,
+    22
    ],
    "id": "props/city_planter",
+   "layer": "prop"
+  },
+  {
+   "cell": [
+    26,
+    22
+   ],
+   "id": "props/mailbox2_red",
    "layer": "prop"
   },
   {
@@ -4074,70 +3978,6 @@
   },
   {
    "cell": [
-    3,
-    14
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    4,
-    14
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    10,
-    14
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    11,
-    14
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    12,
-    14
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    13,
-    14
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    14,
-    14
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    15,
-    14
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
     22,
     14
    ],
@@ -4147,30 +3987,6 @@
   {
    "cell": [
     23,
-    14
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    24,
-    14
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    25,
-    14
-   ],
-   "id": "props/rail_h",
-   "layer": "under"
-  },
-  {
-   "cell": [
-    40,
     14
    ],
    "id": "props/rail_h",
@@ -4610,14 +4426,6 @@
   },
   {
    "cell": [
-    17,
-    23
-   ],
-   "id": "props/barrel2_a",
-   "layer": "prop"
-  },
-  {
-   "cell": [
     33,
     6
    ],
@@ -4661,7 +4469,7 @@
     6,
     34
    ],
-   "id": "props/bollard_a",
+   "id": "props/crates_a",
    "layer": "deco"
   },
   {
@@ -4698,15 +4506,7 @@
   },
   {
    "cell": [
-    4,
-    14
-   ],
-   "id": "props/bollard_a",
-   "layer": "deco"
-  },
-  {
-   "cell": [
-    32,
+    37,
     9
    ],
    "id": "props/city_planter",
@@ -4716,6 +4516,22 @@
    "cell": [
     40,
     31
+   ],
+   "id": "props/signpost",
+   "layer": "prop"
+  },
+  {
+   "cell": [
+    9,
+    34
+   ],
+   "id": "props/city_planter",
+   "layer": "deco"
+  },
+  {
+   "cell": [
+    8,
+    32
    ],
    "id": "props/signpost",
    "layer": "prop"
@@ -5118,19 +4934,11 @@
   },
   {
    "cell": [
-    25,
-    32
+    10,
+    16
    ],
-   "id": "props/skydeco_3",
+   "id": "props/skydeco_2",
    "layer": "deco"
-  },
-  {
-   "cell": [
-    30,
-    22
-   ],
-   "id": "props/bench2_wood_a",
-   "layer": "prop"
   },
   {
    "cell": [
@@ -5202,6 +5010,14 @@
     24
    ],
    "id": "props/bench2_wood_a",
+   "layer": "prop"
+  },
+  {
+   "cell": [
+    3,
+    21
+   ],
+   "id": "props/starflower_blue",
    "layer": "prop"
   }
  ],
