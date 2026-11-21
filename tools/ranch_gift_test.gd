@@ -115,7 +115,7 @@ func _chests() -> void:
 	var c := Storage.label("p:house:3,4")
 	check(a.begins_with("Chest 1 (") and b.begins_with("Chest 2 ("), "placed chests are numbered: %s / %s" % [a, b])
 	check(c == "Chest 3 (in the house)", "indoor chest label: %s" % c)
-	check(not ("chest at" in Helpers.chest_name("p:10,10")), "chores show the friendly name")
+	check(not ("chest at" in Chores.chest_name("p:10,10")), "chores show the friendly name")
 	Storage.rename("p:10,10", "Seeds")
 	check(Storage.label("p:10,10") == "Seeds", "a renamed chest keeps its name")
 
