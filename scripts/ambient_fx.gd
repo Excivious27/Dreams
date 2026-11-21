@@ -136,3 +136,28 @@ static func splash(parent: Node2D, at: Vector2, n := 10) -> CPUParticles2D:
 	d.color_ramp = g
 	parent.add_child(d)
 	return d
+
+
+## Casino and arcade lights (c14b_04-17): slot machines, marquees, signs,
+## jukeboxes and arcade cabinets hum: a soft per-prop brightness pulse (never in
+## step), a little faster on marquees. Off under reduced motion. One tween each.
+const HUM_WORDS := ["casino_slot", "casino_marquee", "casino_ace_sign", "jukebox", "arcade_cab", "neon_sign", "slot_machine"]
+
+
+static func hums(name: String) -> bool:
+	for w: String in HUM_WORDS:
+		if w in name:
+			return true
+	return false
+
+
+static func hum(ci: CanvasItem, name := "") -> Tween:
+	if ci == null or Settings.reduced_motion() or not ci.is_inside_tree():
+		return null
+	var ph := phase(ci.position if ci is Node2D else Vector2.ZERO)
+	var period := (0.9 if "marquee" in name or "sign" in name else 1.8) * (0.85 + 0.3 * ph)
+	var hi := Color(1.1, 1.07, 1.0)
+	var tw := ci.create_tween().set_loops()
+	tw.tween_property(ci, "modulate", hi, period * 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tw.tween_property(ci, "modulate", Color.WHITE, period * 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	return tw

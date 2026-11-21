@@ -51,7 +51,7 @@ func _run() -> void:
 	# interiors
 	GameState.new_run("penguins", "kairi", "Kairi", "Dreamhollow", "Biscuit")
 	GameState.run["time"] = 12 * 60  # midday
-	for room in ["chapel", "smith", "lighthouse"]:
+	for room in ["chapel", "smith", "lighthouse", "gilt_casino"]:
 		GameMap.next_interior = room
 		GameMap.next_spawn = Vector2.ZERO
 		change_scene_to_file("res://scenes/interior.tscn")
@@ -88,5 +88,20 @@ func _run() -> void:
 				_ok(fire, "the forge is a fire light")
 			"lighthouse":
 				_ok(steam or Settings.reduced_motion(), "the kettle stove steams")
+			"gilt_casino":
+				var slot: Sprite2D = null
+				for n in m.get_children():
+					if n is Sprite2D and NightGlow.art_name(n) == "dc_casino_slot":
+						slot = n
+				_ok(slot != null, "the casino has slot machines")
+				if slot and not Settings.reduced_motion():
+					var lit := false
+					var gt := 0.0
+					while gt < 1.2:
+						paused = false
+						await process_frame
+						gt += root.get_process_delta_time()
+						lit = lit or slot.modulate.r > 1.02
+					_ok(lit, "slot machine lights hum")
 	print("glow_kinds_test: %s (%d fails)" % ["PASS" if fails == 0 else "FAIL", fails])
 	quit(1 if fails else 0)

@@ -261,6 +261,8 @@ func after_ready() -> void:
 		var maxh := TILE * 1.5 if on_wall else minf(TILE * 3.4, (c.y + 1) * TILE)
 		var sc := minf(0.5, minf(maxw / maxf(1.0, tw), maxh / maxf(1.0, th)))
 		var ps := prop(g, nm, c, w, 0.0, bool(p.get("solid", true)), sc)
+		if ps and AmbientFx.hums(nm):  # casino/arcade lights hum (c14b_04-17)
+			AmbientFx.hum(ps, nm)
 		if ps and AmbientFx.steams(nm):  # kettles, stoves and pots steam softly (c14b_04-07)
 			AmbientFx.steam(ps, Vector2(0, -th * 0.85), 2.5, 22.0, 1.0)
 		if ps and nm in ["window_day", "window_night"]:
