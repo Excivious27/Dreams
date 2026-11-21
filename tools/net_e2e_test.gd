@@ -130,7 +130,7 @@ func _probe_world(code: String) -> Dictionary:
 			continue
 		if not sent:
 			sent = true
-			ws.send_text(JSON.stringify({"t": "join", "room": code, "create": false, "token": "e2e-probe-%d" % Time.get_ticks_usec(), "name": "Probe", "look": {}, "arc": "penguins"}))
+			ws.send_text(JSON.stringify({"t": "join", "room": code, "create": false, "token": "e2e-probe-%d" % Time.get_ticks_usec(), "name": "Probe", "look": {}, "arc": "penguins", "proto": NetNode.PROTO}))
 		while ws.get_available_packet_count() > 0:
 			var m: Variant = JSON.parse_string(ws.get_packet().get_string_from_utf8())
 			if m is Dictionary and str(m.get("t", "")) == "world" and m.get("d") is Dictionary:
