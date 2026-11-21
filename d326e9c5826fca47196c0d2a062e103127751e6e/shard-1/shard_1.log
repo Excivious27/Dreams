@@ -1,0 +1,238 @@
+
+#### step 1: import (shard 1/6)
+== import ==
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | special.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sad.png[39m[0m
+[  99% ] [90m[1mreimport[22m | run.png[39m[0m
+[  99% ] [90m[1mreimport[22m | produce.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | happy.png[39m[0m
+[  99% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | produce.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sad.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | cheer.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (2071 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 102.1s
+
+#### step 2: smoke test (shard 1/6)
+== smoke test ==
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+SMOKE OK res://scenes/beach.tscn
+SMOKE OK res://scenes/bf_ash_wastes.tscn
+SMOKE OK res://scenes/bf_bog_crossing.tscn
+SMOKE OK res://scenes/bf_cloud_stair.tscn
+SMOKE OK res://scenes/bf_dockside.tscn
+SMOKE OK res://scenes/bf_frostfield.tscn
+SMOKE OK res://scenes/bf_highland_pass.tscn
+SMOKE OK res://scenes/bf_jungle_grove.tscn
+SMOKE OK res://scenes/bf_kelp_beds.tscn
+SMOKE OK res://scenes/bf_neon_block.tscn
+SMOKE OK res://scenes/bf_orchard_line.tscn
+SMOKE OK res://scenes/bf_quarry_cut.tscn
+SMOKE OK res://scenes/bf_rail_yards.tscn
+SMOKE OK res://scenes/bf_reef_shallows.tscn
+SMOKE OK res://scenes/bf_river_ford.tscn
+SMOKE OK res://scenes/bf_ruin_court.tscn
+SMOKE OK res://scenes/bf_sewer_works.tscn
+SMOKE OK res://scenes/bf_shattered_vale.tscn
+SMOKE OK res://scenes/bf_station_deck.tscn
+SMOKE OK res://scenes/bf_uptown_plaza.tscn
+SMOKE OK res://scenes/colony_coral.tscn
+SMOKE OK res://scenes/colony_ember.tscn
+SMOKE OK res://scenes/colony_ice.tscn
+SMOKE OK res://scenes/colony_kelp.tscn
+SMOKE OK res://scenes/community_farm.tscn
+SMOKE OK res://scenes/countryside.tscn
+SMOKE OK res://scenes/crystal_meadow.tscn
+SMOKE OK res://scenes/desert_dune_sea.tscn
+SMOKE OK res://scenes/desert_glass_canyon.tscn
+SMOKE OK res://scenes/desert_mirage_post.tscn
+SMOKE OK res://scenes/desert_sunken_temple.tscn
+SMOKE OK res://scenes/docks.tscn
+SMOKE OK res://scenes/farm.tscn
+SMOKE OK res://scenes/forest.tscn
+SMOKE OK res://scenes/frost_caverns.tscn
+SMOKE OK res://scenes/frost_falls.tscn
+SMOKE OK res://scenes/frost_glacier.tscn
+SMOKE OK res://scenes/frost_hearthhold.tscn
+SMOKE OK res://scenes/frost_summit.tscn
+SMOKE OK res://scenes/gilt_casino_row.tscn
+SMOKE OK res://scenes/gilt_gardens.tscn
+SMOKE OK res://scenes/gilt_grand_plaza.tscn
+SMOKE OK res://scenes/gilt_vaults.tscn
+SMOKE OK res://scenes/gloam_crystal_thicket.tscn
+SMOKE OK res://scenes/gloam_lanternfall.tscn
+SMOKE OK res://scenes/gloam_moonpool.tscn
+SMOKE OK res://scenes/gloam_violet_glade.tscn
+SMOKE OK res://scenes/hideout.tscn
+SMOKE OK res://scenes/highlands.tscn
+SMOKE OK res://scenes/hollow_deeps.tscn
+SMOKE OK res://scenes/hollow_heart.tscn
+SMOKE OK res://scenes/house.tscn
+SMOKE OK res://scenes/interior.tscn
+SMOKE OK res://scenes/iron_freight_yards.tscn
+SMOKE OK res://scenes/iron_junction.tscn
+SMOKE OK res://scenes/iron_mill_district.tscn
+SMOKE OK res://scenes/iron_tunnels.tscn
+SMOKE OK res://scenes/jungle.tscn
+SMOKE OK res://scenes/lake.tscn
+SMOKE OK res://scenes/marsh.tscn
+SMOKE OK res://scenes/meadow.tscn
+SMOKE OK res://scenes/mine.tscn
+SMOKE OK res://scenes/moon.tscn
+SMOKE OK res://scenes/mountain.tscn
+SMOKE OK res://scenes/neon.tscn
+SMOKE OK res://scenes/orchard_hills.tscn
+SMOKE OK res://scenes/quarry.tscn
+SMOKE OK res://scenes/riverlands.tscn
+SMOKE OK res://scenes/ruins.tscn
+SMOKE OK res://scenes/sky.tscn
+SMOKE OK res://scenes/sky_reaches.tscn
+SMOKE OK res://scenes/station.tscn
+SMOKE OK res://scenes/test_map.tscn
+SMOKE OK res://scenes/title.tscn
+SMOKE OK res://scenes/town.tscn
+SMOKE OK res://scenes/underground.tscn
+SMOKE OK res://scenes/uptown.tscn
+SMOKE OK res://scenes/wastes.tscn
+SMOKE OK res://scenes/wind_breezehaven.tscn
+SMOKE OK res://scenes/wind_starfall_garden.tscn
+SMOKE OK res://scenes/wind_storm_shelf.tscn
+SMOKE OK res://scenes/wind_sunrise_shelf.tscn
+SMOKE DONE, failures: 0
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)
+Smoke test passed
+#### step 2 smoke test: PASS in 56.6s
+
+#### step 8: no invisible walls (rocket pad, moon) (shard 1/6)
+== no invisible walls (rocket pad, moon) ==
+[penguins] mountain: 0 invisible wall cells [] ; 0 open cells unreachable
+[penguins] moon: 0 invisible wall cells [] ; 0 open cells unreachable
+[gangsters] mountain: 0 invisible wall cells [] ; 0 open cells unreachable
+[gangsters] moon: 0 invisible wall cells [] ; 0 open cells unreachable
+invisible_walls: 0 failures
+#### step 8 no invisible walls (rocket pad, moon): PASS in 4.0s
+
+#### step 14: first hours on the maps: goal line, arrow, mailbox, tour (both arcs) (shard 1/6)
+== first hours on the maps: goal line, arrow, mailbox, tour (both arcs) ==
+first_hours_test: 0 failures
+#### step 14 first hours on the maps: goal line, arrow, mailbox, tour (both arcs): PASS in 43.7s
+
+#### step 20: dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1) (shard 1/6)
+== dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1) ==
+ROMANCE DONE, failures: 0
+#### step 20 dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1): PASS in 5.1s
+
+#### step 26: decor catalogue: box, uniques, rolls, rotation, prices, migration (C10 (shard 1/6)
+== decor catalogue: box, uniques, rolls, rotation, prices, migration (C10a) ==
+decor_test: 6674 checks, 0 failures
+#### step 26 decor catalogue: box, uniques, rolls, rotation, prices, migration (C10: PASS in 7.0s
+
+#### step 32: rec_reno_test (shard 1/6)
+rec_reno_test: 0 failures
+#### step 32 rec_reno_test: PASS in 3.1s
+
+#### step 38: farm_week_test (shard 1/6)
+farm_week_test: OK (0 fails)
+#### step 38 farm_week_test: PASS in 6.2s
+
+#### step 44: anim_test (shard 1/6)
+anim_test: 0 failures
+#### step 44 anim_test: PASS in 3.5s
+
+#### step 50: ranch_p2_test (shard 1/6)
+ranch_p2_test: 0 failures
+#### step 50 ranch_p2_test: PASS in 3.1s
+
+#### step 56: town_first_test (shard 1/6)
+town_first_test: 0 failures
+#### step 56 town_first_test: PASS in 5.0s
+
+#### step 62: text size floors (7 px) (shard 1/6)
+== text size floors (7 px) ==
+text floors: 0 under 7 px
+#### step 62 text size floors (7 px): PASS in 0.1s
+
+#### step 68: economy: no money loops, crops and brews inside their bands (shard 1/6)
+== economy: no money loops, crops and brews inside their bands ==
+econ check: 134 crops, 405 recipes, 2 warnings, 0 failures
+#### step 68 economy: no money loops, crops and brews inside their bands: PASS in 0.1s
+
+#### step 74: footstep_test (shard 1/6)
+footstep_test: 0 failures
+#### step 74 footstep_test: PASS in 7.1s
+
+#### step 80: keeper encounters keep real hp (floor-1 swarms topped up) (shard 1/6)
+== keeper encounters keep real hp (floor-1 swarms topped up) ==
+keeper_min_hp_test: 0 failures
+#### step 80 keeper encounters keep real hp (floor-1 swarms topped up): PASS in 4.4s
+
+#### step 86: region campaigns: boards, locks, convoy (shard 1/6)
+== region campaigns: boards, locks, convoy ==
+campaign_map_test: 0 fails
+#### step 86 region campaigns: boards, locks, convoy: PASS in 9.4s
+
+#### step 92: farm_debris_test (shard 1/6)
+farm_debris_test: 0 fails
+#### step 92 farm_debris_test: PASS in 5.3s
+
+#### step 98: skill_glow_test (shard 1/6)
+skill_glow_test: 0 fails
+#### step 98 skill_glow_test: PASS in 4.6s
+
+#### step 104: gangster first hours: intro, day 2, meadow, Hideout, first crew (shard 1/6)
+== gangster first hours: intro, day 2, meadow, Hideout, first crew ==
+gang_start_test: 0 failures
+#### step 104 gangster first hours: intro, day 2, meadow, Hideout, first crew: PASS in 13.3s
+
+#### step 110: hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) (shard 1/6)
+== hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) ==
+hidden_area_test: PASS (0 fails)
+#### step 110 hidden areas: a pocket and a secret way in every mega area (CONDUCT 4): PASS in 12.1s
+
+#### step 116: jumper_test (shard 1/6)
+jumper_test: 0 failures
+#### step 116 jumper_test: PASS in 3.3s
+
+#### step 122: toasts: never over a boss card, a region card, the pup strip or the en (shard 1/6)
+== toasts: never over a boss card, a region card, the pup strip or the energy bar ==
+toast_layout_test: 0 failures
+#### step 122 toasts: never over a boss card, a region card, the pup strip or the en: PASS in 8.2s
+
+#### step 128: C11a P5: ranch villagers, mail, festivals, pen sounds (shard 1/6)
+== C11a P5: ranch villagers, mail, festivals, pen sounds ==
+ranch_villagers_test: OK
+#### step 128 C11a P5: ranch villagers, mail, festivals, pen sounds: PASS in 3.5s
+
+#### step 134: C9 P1: controller bindings and field play (shard 1/6)
+== C9 P1: controller bindings and field play ==
+pad_test: 0 failures
+#### step 134 C9 P1: controller bindings and field play: PASS in 4.2s
+
+#### step 140: C9 P6: forest border buckets (shard 1/6)
+== C9 P6: forest border buckets ==
+border_bucket_test: 0 failures
+#### step 140 C9 P6: forest border buckets: PASS in 5.0s
+
+#### shard 1/6 done in 320s: PASS

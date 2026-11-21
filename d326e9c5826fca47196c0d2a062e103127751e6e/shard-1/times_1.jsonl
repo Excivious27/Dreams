@@ -1,0 +1,25 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 102.1}
+{"step": 2, "name": "smoke test", "rc": 0, "secs": 56.6}
+{"step": 8, "name": "no invisible walls (rocket pad, moon)", "rc": 0, "secs": 4.0}
+{"step": 14, "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)", "rc": 0, "secs": 43.7}
+{"step": 20, "name": "dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1)", "rc": 0, "secs": 5.1}
+{"step": 26, "name": "decor catalogue: box, uniques, rolls, rotation, prices, migration (C10", "rc": 0, "secs": 7.0}
+{"step": 32, "name": "rec_reno_test", "rc": 0, "secs": 3.1}
+{"step": 38, "name": "farm_week_test", "rc": 0, "secs": 6.2}
+{"step": 44, "name": "anim_test", "rc": 0, "secs": 3.5}
+{"step": 50, "name": "ranch_p2_test", "rc": 0, "secs": 3.1}
+{"step": 56, "name": "town_first_test", "rc": 0, "secs": 5.0}
+{"step": 62, "name": "text size floors (7 px)", "rc": 0, "secs": 0.1}
+{"step": 68, "name": "economy: no money loops, crops and brews inside their bands", "rc": 0, "secs": 0.1}
+{"step": 74, "name": "footstep_test", "rc": 0, "secs": 7.1}
+{"step": 80, "name": "keeper encounters keep real hp (floor-1 swarms topped up)", "rc": 0, "secs": 4.4}
+{"step": 86, "name": "region campaigns: boards, locks, convoy", "rc": 0, "secs": 9.4}
+{"step": 92, "name": "farm_debris_test", "rc": 0, "secs": 5.3}
+{"step": 98, "name": "skill_glow_test", "rc": 0, "secs": 4.6}
+{"step": 104, "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew", "rc": 0, "secs": 13.3}
+{"step": 110, "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)", "rc": 0, "secs": 12.1}
+{"step": 116, "name": "jumper_test", "rc": 0, "secs": 3.3}
+{"step": 122, "name": "toasts: never over a boss card, a region card, the pup strip or the en", "rc": 0, "secs": 8.2}
+{"step": 128, "name": "C11a P5: ranch villagers, mail, festivals, pen sounds", "rc": 0, "secs": 3.5}
+{"step": 134, "name": "C9 P1: controller bindings and field play", "rc": 0, "secs": 4.2}
+{"step": 140, "name": "C9 P6: forest border buckets", "rc": 0, "secs": 5.0}

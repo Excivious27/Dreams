@@ -1,0 +1,12 @@
+CONDUCT CI FAIL  d326e9c582  (ci/c11bp2b-8928ebbc, run 44853000449)
+
+subset run: shards [1], bots off, playtest on
+check shards (1/1):
+  shard 1: PASS  320s
+playtest: FAIL (twice in a row)  88s  21 screenshots (results playtest/shots/)
+  FAIL tap-to-move walks to the tapped cell (14 away)
+  FAIL boss appeared after 5 kills
+
+longest job: 320s
+slowest check steps: import 102.1s; smoke test 56.6s; first hours on the maps: goal line, arrow, mailbox, tour (both arcs) 43.7s; gangster first hours: intro, day 2, meadow, Hideout, first crew 13.3s; hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) 12.1s; region campaigns: boards, locks, convoy 9.4s; toasts: never over a boss card, a region card, the pup strip or the en 8.2s; footstep_test 7.1s
+distinct errors/fails/warns:

@@ -1,0 +1,138 @@
+{
+ "sha": "d326e9c5826fca47196c0d2a062e103127751e6e",
+ "ref": "ci/c11bp2b-8928ebbc",
+ "run": "44853000449",
+ "finished": 1795227121.25081,
+ "pass": false,
+ "playtest": {
+  "rc": 1,
+  "secs": 88,
+  "shots": 21,
+  "fails": [
+   "FAIL tap-to-move walks to the tapped cell (14 away)",
+   "FAIL boss appeared after 5 kills"
+  ],
+  "attempts": 2,
+  "first_rc": 1,
+  "first_fail": "  FAIL tap-to-move walks to the tapped cell (8 away)"
+ },
+ "playtest_pass": false,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "8928ebbcbb147ec105221270f5d6ff3c4593c16e",
+  "label": "c11bp2b",
+  "branch": "c11bf/p2",
+  "shards": [
+   1
+  ],
+  "bots": false,
+  "playtest": true
+ },
+ "max_job_secs": 320,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 0,
+   "secs": 320,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 102.1
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 0,
+   "secs": 56.6
+  },
+  {
+   "step": 14,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 43.7
+  },
+  {
+   "step": 104,
+   "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew",
+   "rc": 0,
+   "secs": 13.3
+  },
+  {
+   "step": 110,
+   "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)",
+   "rc": 0,
+   "secs": 12.1
+  },
+  {
+   "step": 86,
+   "name": "region campaigns: boards, locks, convoy",
+   "rc": 0,
+   "secs": 9.4
+  },
+  {
+   "step": 122,
+   "name": "toasts: never over a boss card, a region card, the pup strip or the en",
+   "rc": 0,
+   "secs": 8.2
+  },
+  {
+   "step": 74,
+   "name": "footstep_test",
+   "rc": 0,
+   "secs": 7.1
+  },
+  {
+   "step": 26,
+   "name": "decor catalogue: box, uniques, rolls, rotation, prices, migration (C10",
+   "rc": 0,
+   "secs": 7.0
+  },
+  {
+   "step": 38,
+   "name": "farm_week_test",
+   "rc": 0,
+   "secs": 6.2
+  },
+  {
+   "step": 92,
+   "name": "farm_debris_test",
+   "rc": 0,
+   "secs": 5.3
+  },
+  {
+   "step": 20,
+   "name": "dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1)",
+   "rc": 0,
+   "secs": 5.1
+  },
+  {
+   "step": 56,
+   "name": "town_first_test",
+   "rc": 0,
+   "secs": 5.0
+  },
+  {
+   "step": 140,
+   "name": "C9 P6: forest border buckets",
+   "rc": 0,
+   "secs": 5.0
+  },
+  {
+   "step": 98,
+   "name": "skill_glow_test",
+   "rc": 0,
+   "secs": 4.6
+  }
+ ]
+}
