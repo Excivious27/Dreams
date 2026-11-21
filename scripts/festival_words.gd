@@ -22,15 +22,16 @@ const EGG_COUNT := 12
 
 
 static func egg_call() -> String:
+	var n := "Twelve" if egg_count() == EGG_COUNT else "Sixteen, and one of them is golden,"
 	if GameState.is_penguins():
-		return "The egg hunt! Twelve eggs hidden round the plaza. Find them before the kids do."
-	return "Egg hunt. Twelve hidden round the plaza. The kids are fast and they don't play fair."
+		return "The egg hunt! %s eggs hidden round the plaza. Find them before the kids do." % n
+	return "Stash hunt. %s envelopes hidden round the plaza. The kids are fast and they don't play fair." % n
 
 
 static func egg_prize_text() -> String:
 	if GameState.is_penguins():
 		return "Every last egg! Mayor Alder hands you %s and a sticky handful of candy." % Money.amount(200)
-	return "Every last egg. Alder peels %s off his own roll." % Money.amount(200)
+	return "Every last envelope. Halo peels %s off the roll." % Money.amount(200)
 
 
 static func lantern_tail() -> String:
@@ -129,3 +130,75 @@ static func host_of(id: String, fallback := "Mayor Alder") -> String:
 	if h == "Alder":
 		return "Mayor Alder"
 	return fest_host(h)
+
+
+## C15 P6 egg hunt words (arc voice: penguins hunt eggs, the crew hunts cash envelopes).
+static func egg_count() -> int:
+	return EGG_COUNT + 4 if year_of(int(GameState.run.get("day", 1))) >= 2 else EGG_COUNT
+
+
+static func egg_go_text(n: int) -> String:
+	return ("%d eggs hidden. Go!" if GameState.is_penguins() else "%d envelopes stashed. Go!") % n
+
+
+static func egg_left_text(n: int) -> String:
+	if GameState.is_penguins():
+		return "%d eggs left." % n if n != 1 else "1 egg left."
+	return "%d envelopes left." % n if n != 1 else "1 envelope left."
+
+
+static func egg_hint(golden: bool) -> String:
+	if golden:
+		return "A: a golden egg!" if GameState.is_penguins() else "A: a gold envelope!"
+	return "A: an egg!" if GameState.is_penguins() else "A: an envelope!"
+
+
+static func golden_egg_text() -> String:
+	return "The golden egg! Something special is inside." if GameState.is_penguins() else "The gold envelope. Something better than cash inside."
+
+
+## The host's line when you've already had your turn today (eggs_left > 0: the hunt is still on).
+static func again_text(fest: String, eggs_left := 0) -> String:
+	var pen := GameState.is_penguins()
+	if fest == "egg" and eggs_left > 0:
+		return ("Keep looking! %s still hidden." if pen else "Still %s out there. Keep moving.") % egg_left_text(eggs_left).trim_suffix(" left.").to_lower()
+	var again := {
+		"egg": ["You've had your hunt. Go and eat your candy before the kids find it.", "You've had your run. Spend it somewhere nice."],
+		"lantern": ["Your lantern's on the water. Watch the river for a while.", "Your light's on the water. Watch it go."],
+		"harvest": ["The judges have your entry. Have a look round the Harvest Fair!", "Entry's in. Go walk the Street Fair."],
+		"star": ["One wish a year. Enjoy the Star Festival!", "One wish. That's the deal. Enjoy the roof."],
+		"blossom": ["You've had your dance. Enjoy the petals!", "You've had your turn on the floor."],
+		"founders": ["You've had your questions. Enjoy the parade!", "You've had your questions. Enjoy Turf Day."],
+		"hollow": ["You've walked the maze. Mind the bedsheet ghosts!", "You've walked the alley. Keep the mask on."],
+		"winter_market": ["Your sculptures are judged. Stay warm!", "You've had your entry. Stay warm out there."],
+		"gift_swap": ["Your gift's given. Happy year's end!", "Gift's given. Good year."],
+	}
+	if again.has(fest):
+		return str(again[fest][0 if pen else 1])
+	return "You've had your turn. Enjoy the %s!" % name_of(fest)
+
+
+## The toast when a festival thing is used outside its hours.
+static func not_open_text(fest: String, fh: Vector2, early: bool) -> String:
+	var a := int(floor(fh.x))
+	var b := int(ceil(fh.y))
+	if early:
+		return "The %s starts at %s." % [name_of(fest), TownHours.hours_text(a, b).split(" to ")[0]]
+	return "The %s is over for this year." % name_of(fest)
+
+
+## C15 P6: a festival's hours from its row (hours day 9-18 | evening sunset-4..sunset+3.5 |
+## night sunset..sunset+4 | allday 6-24), in game hours. Vector2.ZERO for an unknown id.
+static func hours_of(fest: String) -> Vector2:
+	var r := def(fest)
+	if r.is_empty():
+		return Vector2.ZERO
+	var ss := GameState.sunset() / 60.0
+	match str(r.get("hours", "day")):
+		"evening":
+			return Vector2(ss - 4.0, minf(23.5, ss + 3.5))
+		"night":
+			return Vector2(ss, minf(24.0, ss + 4.0))
+		"allday":
+			return Vector2(6.0, 24.0)
+	return Vector2(9.0, 18.0)

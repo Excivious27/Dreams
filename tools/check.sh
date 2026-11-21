@@ -1323,3 +1323,10 @@ echo "$clout" | grep -E "FAIL|SCRIPT ERROR|creature_life_test" || true
 if ! echo "$clout" | grep -q "creature_life_test: PASS"; then
   echo "creature_life_test failed"; exit 1
 fi
+
+echo "== C15 P6: festival year (festivals.json, arc names, year gates, rules) =="
+fcout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/festival_calendar_test.gd 2>&1)"
+echo "$fcout" | grep -E "FAIL|SCRIPT ERROR|festival_calendar_test" || true
+if ! echo "$fcout" | grep -q "festival_calendar_test: OK" || echo "$fcout" | grep -q "SCRIPT ERROR"; then
+  echo "festival_calendar_test failed"; exit 1
+fi
