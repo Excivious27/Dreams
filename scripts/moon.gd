@@ -105,7 +105,7 @@ func after_ready() -> void:
 		hard.erase(Vector2i(23, 20))
 	# C14b P4 (c14b_05-18): the animated warp pad is the teleporter's look; the old
 	# static teleporter sprite on the same cell hid its glow ring.
-	if t and not Art.has("props", "warp_pad"):
+	if t:  # C14b integ: keep the teleporter body (its 2-cell footprint is solid; without it cell 25,20 is an invisible wall)
 		var a := AnimatedSprite2D.new()
 		a.sprite_frames = Art.frames("props", {"idle": "teleporter"}, {"idle": 2.0})
 		a.animation = "idle"
