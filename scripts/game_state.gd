@@ -678,6 +678,11 @@ static func unit_sell_value(id: String) -> float:
 		unit *= 1.0 + bonus("farming", "crop_value")
 	if str(items.get(id, {}).get("type", "")) == "fish":
 		unit *= 1.0 + bonus("fishing", "fish_value")
+	# C16a P6 (c16a_12-03): tree-specific sell perks that fill rows the old caps left dead.
+	if str(items.get(id, {}).get("type", "")) == "flower":
+		unit *= 1.0 + bonus("farming", "flower_value")
+	if str(items.get(id, {}).get("type", "")) in ["drop", "treasure", "junk"]:
+		unit *= 1.0 + bonus("bartering", "loot_value")
 	if Crew.perk_level("fence") >= 1 and str(items.get(id, {}).get("type", "")) in ["drop", "treasure", "junk"] and str(run.get("arc", "")) == "gangsters":
 		unit *= 1.2
 	return unit
@@ -1395,7 +1400,7 @@ const BONUS_CAPS := {"farm_energy": 0.6, "mine_energy": 0.6, "block": 0.25, "cri
 	"wood_bonus": 8.0, "stone_bonus": 6.0, "seed_back": 0.25, "smelt_discount": 1.0, "chop_bonus": 4.0, "wash_bonus": 0.05, "job_pay": 0.5, "chop_power": 2.0, "mine_power": 2.0,
 	"xp_gain": 0.5, "energy": 40.0, "hp": 60.0, "mana": 60.0, "start_supply": 30.0, "helper_hp": 40.0, "pet_hp": 60.0, "move_speed": 0.1,
 	"regrowth": 2.0, "last_stand": 1.0, "free_cast": 0.15,
-	"wide_water": 1.0, "timber": 1.0, "tremor": 1.0, "tidecall": 1.0, "quick_build": 1.0, "jackpot": 0.05, "pet_dmg": 24.0, "gun_damage": 6.0, "damage": 8.0, "kill_energy": 8.0, "team_heal": 15.0, "team_damage": 8.0, "pet_bond": 40.0,
+	"wide_water": 1.0, "timber": 1.0, "tremor": 1.0, "tidecall": 1.0, "quick_build": 1.0, "jackpot": 0.05, "pet_dmg": 24.0, "gun_damage": 6.0, "damage": 8.0, "flower_value": 0.5, "bounty": 0.4, "loot_value": 0.3, "kill_energy": 8.0, "team_heal": 15.0, "team_damage": 8.0, "pet_bond": 40.0,
 	"big_goods": 0.3, "animal_quality": 3.0, "hand_work": 0.5, "care_grace": 1.0, "hatch_fast": 1.0, "hand_slot": 2.0, "feeder": 1.0}
 ## Per-tree overrides of BONUS_CAPS (Combat's own nodes give 120 hp: Tough,
 ## Warrior, Legend). tools/gen_skill_trees.py reads this too.

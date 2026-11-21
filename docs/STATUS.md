@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-21 — C16a P6: skill column ladder (col X at 64 pts), per-tree XP pace, damage/kill-energy/team-heal/farming caps, partner power XP only on effect + partner ranks, pup bite XP cap, slower helper/crew/team progression, exotic team species, gang Tech tree
+
 ## 2026-11-21 — C15 integ CI fix 2: NPC chats never stop someone mid-walk and a chat re-paths them home (volunteer stranded on the road); Dialogue.input_blocked frame-bounded (fast CI outlasted the playtest's 20-frame wait)
 
 ## 2026-11-21 — C15 integ: plaza-only festivals pull the town (Calendar.town_festival_today), gilt_gala -> winter 23, SeasonCal wraps Calendar, crew birthdays on the gang calendar, Crew at festivals, festival row icons/where, talk lines for new festivals, row music stand-ins; test tools/c15_integ_test.gd

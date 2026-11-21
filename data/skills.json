@@ -48,46 +48,46 @@
     },
     {
      "id": "farming_0_2",
-     "name": "Practice",
-     "desc": "+3% faster levelling in this skill (per rank)",
+     "name": "Sprout Song",
+     "desc": "+3% flower sell value (per rank)",
      "ranks": 3,
      "tier": 2,
      "row": 0,
      "effect": {
-      "xp_gain": 0.03
+      "flower_value": 0.03
      }
     },
     {
      "id": "farming_0_3",
-     "name": "Study",
-     "desc": "+3% faster levelling in this skill (per rank)",
+     "name": "Tender Care",
+     "desc": "+3% flower sell value (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 0,
      "effect": {
-      "xp_gain": 0.03
+      "flower_value": 0.03
      }
     },
     {
      "id": "farming_0_4",
-     "name": "Lessons",
-     "desc": "+3% faster levelling in this skill (per rank)",
+     "name": "Full Rows",
+     "desc": "+3% flower sell value (per rank)",
      "ranks": 3,
      "tier": 4,
      "row": 0,
      "effect": {
-      "xp_gain": 0.03
+      "flower_value": 0.03
      }
     },
     {
      "id": "farming_0_5",
-     "name": "Know-How",
-     "desc": "+3% faster levelling in this skill (per rank)",
+     "name": "Heavy Stalks",
+     "desc": "+3% flower sell value (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 0,
      "effect": {
-      "xp_gain": 0.03
+      "flower_value": 0.03
      }
     },
     {
@@ -103,13 +103,13 @@
     },
     {
      "id": "farming_0_7",
-     "name": "Experience",
-     "desc": "+3% faster levelling in this skill (per rank)",
+     "name": "Plenty",
+     "desc": "+3% flower sell value (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 0,
      "effect": {
-      "xp_gain": 0.03
+      "flower_value": 0.03
      }
     },
     {
@@ -171,14 +171,17 @@
     },
     {
      "id": "farming_1_3",
-     "name": "Insight",
-     "desc": "+3% faster levelling in this skill",
-     "ranks": 1,
+     "name": "Practice",
+     "desc": "+3% faster levelling in this skill (per rank)",
+     "ranks": 3,
      "tier": 3,
      "row": 1,
      "effect": {
       "xp_gain": 0.03
-     }
+     },
+     "aka": [
+      "Lessons"
+     ]
     },
     {
      "id": "rich_soil",
@@ -216,47 +219,55 @@
     },
     {
      "id": "farming_1_7",
-     "name": "Drills",
-     "desc": "+3% faster levelling in this skill",
-     "ranks": 1,
+     "name": "Light Hoe",
+     "desc": "+3% flower sell value (per rank)",
+     "ranks": 2,
      "tier": 7,
      "row": 1,
      "effect": {
-      "xp_gain": 0.03
+      "flower_value": 0.03
      }
     },
     {
      "id": "farming_1_8",
-     "name": "Rain Reader",
+     "name": "Study",
+     "desc": "+3% faster levelling in this skill (per rank)",
+     "ranks": 2,
+     "tier": 8,
+     "row": 1,
+     "effect": {
+      "xp_gain": 0.03
+     },
+     "aka": [
+      "Experience",
+      "Lessons"
+     ]
+    },
+    {
+     "id": "farming_1_9",
+     "name": "Loam Lore",
      "desc": "+5% chance to get a seed back",
      "ranks": 1,
-     "tier": 8,
+     "tier": 9,
      "row": 1,
      "effect": {
       "seed_back": 0.05
      }
     },
     {
-     "id": "farming_1_9",
-     "name": "Loam Lore",
-     "desc": "+3% less energy to hoe and water",
-     "ranks": 1,
-     "tier": 9,
-     "row": 1,
-     "effect": {
-      "farm_energy": 0.03
-     }
-    },
-    {
      "id": "farming_2_0",
-     "name": "Clean Cuts",
-     "desc": "+3% crop sell value",
-     "ranks": 1,
+     "name": "Lessons",
+     "desc": "+3% faster levelling in this skill (per rank)",
+     "ranks": 3,
      "tier": 0,
      "row": 2,
      "effect": {
-      "crop_value": 0.03
-     }
+      "xp_gain": 0.03
+     },
+     "aka": [
+      "Insight",
+      "Know-How"
+     ]
     },
     {
      "id": "farming_u_press_blueprint",
@@ -283,46 +294,52 @@
     },
     {
      "id": "farming_2_3",
-     "name": "Homework",
-     "desc": "+2% faster levelling in this skill",
-     "ranks": 1,
+     "name": "Know-How",
+     "desc": "+3% faster levelling in this skill (per rank)",
+     "ranks": 3,
      "tier": 3,
      "row": 2,
      "effect": {
-      "xp_gain": 0.02
-     }
+      "xp_gain": 0.03
+     },
+     "aka": [
+      "Experience"
+     ]
     },
     {
      "id": "farming_2_4",
-     "name": "Basket Lore",
-     "desc": "+1% crop sell value",
-     "ranks": 1,
+     "name": "Experience",
+     "desc": "+3% faster levelling in this skill (per rank)",
+     "ranks": 3,
      "tier": 4,
      "row": 2,
      "effect": {
-      "crop_value": 0.01
-     }
+      "xp_gain": 0.03
+     },
+     "aka": [
+      "Insight"
+     ]
     },
     {
      "id": "farming_2_5",
-     "name": "Morning Pick",
-     "desc": "+5% chance to get a seed back",
+     "name": "Insight",
+     "desc": "+3% faster levelling in this skill",
      "ranks": 1,
      "tier": 5,
      "row": 2,
      "effect": {
-      "seed_back": 0.05
+      "xp_gain": 0.03
      }
     },
     {
      "id": "farming_2_6",
-     "name": "Gentle Wash",
-     "desc": "+3% faster crop growth",
+     "name": "Drills",
+     "desc": "+3% faster levelling in this skill",
      "ranks": 1,
      "tier": 6,
      "row": 2,
      "effect": {
-      "growth": 0.03
+      "xp_gain": 0.03
      }
     },
     {
@@ -339,23 +356,23 @@
     {
      "id": "farming_2_8",
      "name": "Field Ledger",
-     "desc": "+5% chance to get a seed back",
+     "desc": "+2% flower sell value",
      "ranks": 1,
      "tier": 8,
      "row": 2,
      "effect": {
-      "seed_back": 0.05
+      "flower_value": 0.02
      }
     },
     {
      "id": "farming_2_9",
      "name": "Ripe Eye",
-     "desc": "+6% faster crop growth",
+     "desc": "+1% crop sell value",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "growth": 0.06
+      "crop_value": 0.01
      }
     },
     {
@@ -2160,8 +2177,8 @@
     {
      "id": "combat_2_3",
      "name": "Deep Breaths",
-     "desc": "+2 max energy",
-     "ranks": 1,
+     "desc": "+2 max energy (per rank)",
+     "ranks": 3,
      "tier": 3,
      "row": 2,
      "effect": {
@@ -2182,12 +2199,12 @@
     {
      "id": "combat_2_5",
      "name": "Hearty",
-     "desc": "+2 max health",
-     "ranks": 1,
+     "desc": "+3% money from beaten foes (per rank)",
+     "ranks": 3,
      "tier": 5,
      "row": 2,
      "effect": {
-      "hp": 2
+      "bounty": 0.03
      }
     },
     {
@@ -2203,13 +2220,13 @@
     },
     {
      "id": "combat_2_7",
-     "name": "Drills",
-     "desc": "+2% faster levelling in this skill",
-     "ranks": 1,
+     "name": "Big Lungs",
+     "desc": "+3% money from beaten foes (per rank)",
+     "ranks": 2,
      "tier": 7,
      "row": 2,
      "effect": {
-      "xp_gain": 0.02
+      "bounty": 0.03
      }
     },
     {
@@ -2250,34 +2267,34 @@
     {
      "id": "combat_3_1",
      "name": "Battle Cry",
-     "desc": "+1 energy back per foe beaten",
-     "ranks": 1,
+     "desc": "+3% money from beaten foes (per rank)",
+     "ranks": 3,
      "tier": 1,
      "row": 3,
      "effect": {
-      "kill_energy": 1
+      "bounty": 0.03
      }
     },
     {
      "id": "combat_3_2",
      "name": "Hunter's Eye",
-     "desc": "+3% critical hit chance",
-     "ranks": 1,
+     "desc": "+3% money from beaten foes (per rank)",
+     "ranks": 3,
      "tier": 2,
      "row": 3,
      "effect": {
-      "crit": 0.03
+      "bounty": 0.03
      }
     },
     {
      "id": "combat_3_3",
-     "name": "Chain Fighter",
-     "desc": "+1 energy back per foe beaten",
+     "name": "Sturdy Frame",
+     "desc": "+2 max health",
      "ranks": 1,
      "tier": 3,
      "row": 3,
      "effect": {
-      "kill_energy": 1
+      "hp": 2
      }
     },
     {
@@ -2314,34 +2331,34 @@
     {
      "id": "combat_3_7",
      "name": "Adrenaline",
+     "desc": "+3% money from beaten foes (per rank)",
+     "ranks": 2,
+     "tier": 7,
+     "row": 3,
+     "effect": {
+      "bounty": 0.03
+     }
+    },
+    {
+     "id": "combat_3_8",
+     "name": "Fury",
      "desc": "+1 energy back per foe beaten",
      "ranks": 1,
-     "tier": 7,
+     "tier": 8,
      "row": 3,
      "effect": {
       "kill_energy": 1
      }
     },
     {
-     "id": "combat_3_8",
-     "name": "Fury",
-     "desc": "+3% critical hit chance",
-     "ranks": 1,
-     "tier": 8,
-     "row": 3,
-     "effect": {
-      "crit": 0.03
-     }
-    },
-    {
      "id": "combat_3_9",
      "name": "Unstoppable",
-     "desc": "+2 energy back per foe beaten",
+     "desc": "+1% money from beaten foes",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "kill_energy": 2
+      "bounty": 0.01
      }
     }
    ]
@@ -2566,13 +2583,13 @@
     },
     {
      "id": "bartering_1_8",
-     "name": "Stamina",
-     "desc": "+2 max energy",
-     "ranks": 1,
+     "name": "Insider",
+     "desc": "+3% sell value of loot and treasure (per rank)",
+     "ranks": 2,
      "tier": 8,
      "row": 1,
      "effect": {
-      "energy": 2
+      "loot_value": 0.03
      }
     },
     {
@@ -2589,24 +2606,24 @@
     },
     {
      "id": "bartering_2_0",
-     "name": "Endurance",
-     "desc": "+2 max energy (per rank)",
+     "name": "Warm Smile",
+     "desc": "+3% sell value of loot and treasure (per rank)",
      "ranks": 3,
      "tier": 0,
      "row": 2,
      "effect": {
-      "energy": 2
+      "loot_value": 0.03
      }
     },
     {
      "id": "bartering_2_1",
-     "name": "Hardy",
-     "desc": "+2 max health",
-     "ranks": 1,
+     "name": "Remember Names",
+     "desc": "+3% sell value of loot and treasure (per rank)",
+     "ranks": 3,
      "tier": 1,
      "row": 2,
      "effect": {
-      "hp": 2
+      "loot_value": 0.03
      }
     },
     {
@@ -2622,13 +2639,13 @@
     },
     {
      "id": "bartering_2_3",
-     "name": "Sturdy Frame",
-     "desc": "+2 max health",
+     "name": "Stamina",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 3,
      "row": 2,
      "effect": {
-      "hp": 2
+      "energy": 2
      }
     },
     {
@@ -2667,42 +2684,45 @@
     },
     {
      "id": "bartering_2_7",
-     "name": "Tough Hide",
-     "desc": "+2 max health",
-     "ranks": 1,
+     "name": "Good Listener",
+     "desc": "+3% sell value of loot and treasure (per rank)",
+     "ranks": 2,
      "tier": 7,
      "row": 2,
      "effect": {
-      "hp": 2
+      "loot_value": 0.03
      }
     },
     {
      "id": "bartering_2_8",
-     "name": "Early Riser",
+     "name": "Endurance",
      "desc": "+2 max energy",
      "ranks": 1,
      "tier": 8,
      "row": 2,
      "effect": {
       "energy": 2
-     }
+     },
+     "aka": [
+      "Early Riser"
+     ]
     },
     {
      "id": "bartering_2_9",
-     "name": "Deep Breath",
-     "desc": "+2 max energy",
+     "name": "Hardy",
+     "desc": "+3 max health",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "energy": 2
+      "hp": 3
      }
     },
     {
      "id": "bartering_3_0",
-     "name": "Good Health",
-     "desc": "+2 max health",
-     "ranks": 1,
+     "name": "Sturdy Frame",
+     "desc": "+2 max health (per rank)",
+     "ranks": 3,
      "tier": 0,
      "row": 3,
      "effect": {
@@ -2711,13 +2731,13 @@
     },
     {
      "id": "bartering_3_1",
-     "name": "Drills",
-     "desc": "+2% faster levelling in this skill",
+     "name": "Tough Hide",
+     "desc": "+2 max health",
      "ranks": 1,
      "tier": 1,
      "row": 3,
      "effect": {
-      "xp_gain": 0.02
+      "hp": 2
      }
     },
     {
@@ -2730,35 +2750,35 @@
     },
     {
      "id": "bartering_3_3",
-     "name": "Coin Counter",
-     "desc": "+2% off shop prices",
+     "name": "Good Health",
+     "desc": "+2 max health",
      "ranks": 1,
      "tier": 3,
      "row": 3,
      "effect": {
-      "buy_discount": 0.02
+      "hp": 2
      }
     },
     {
      "id": "bartering_3_4",
-     "name": "Compound",
-     "desc": "+0.1% daily interest on savings, capped by your progress",
+     "name": "Early Riser",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 4,
      "row": 3,
      "effect": {
-      "interest": 0.001
+      "energy": 2
      }
     },
     {
      "id": "bartering_3_5",
-     "name": "Nest Egg",
-     "desc": "+0.3% daily interest on savings, capped by your progress",
+     "name": "Deep Breath",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 5,
      "row": 3,
      "effect": {
-      "interest": 0.003
+      "energy": 2
      }
     },
     {
@@ -2774,13 +2794,13 @@
     },
     {
      "id": "bartering_3_7",
-     "name": "Investor",
-     "desc": "+0.3% daily interest on savings, capped by your progress",
+     "name": "Hardy II",
+     "desc": "+2 max health",
      "ranks": 1,
      "tier": 7,
      "row": 3,
      "effect": {
-      "interest": 0.003
+      "hp": 2
      }
     },
     {
@@ -2797,12 +2817,12 @@
     {
      "id": "bartering_3_9",
      "name": "Vault Key",
-     "desc": "+0.6% daily interest on savings, capped by your progress",
+     "desc": "+2% off shop prices",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "interest": 0.006
+      "buy_discount": 0.02
      }
     }
    ]
@@ -5755,8 +5775,8 @@
     {
      "id": "hustle_1_1",
      "name": "Spin Cycle",
-     "desc": "+2 max health (per rank)",
-     "ranks": 3,
+     "desc": "+2 max health",
+     "ranks": 1,
      "tier": 1,
      "row": 1,
      "effect": {
@@ -6105,8 +6125,8 @@
     {
      "id": "harmony_0_1",
      "name": "Trust",
-     "desc": "+2 max health (per rank)",
-     "ranks": 3,
+     "desc": "+2 max health",
+     "ranks": 1,
      "tier": 1,
      "row": 0,
      "effect": {

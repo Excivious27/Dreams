@@ -11,7 +11,7 @@ R = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 base = json.load(open(f"{R}/data/skills_base.json"))
 ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
 # Per-rank amount for filler nodes, by effect key.
-AMT = {"growth": 0.03, "extra_crop": 0.04, "farm_energy": 0.04, "crop_value": 0.03, "extra_day": 0.04, "animal_yield": 0.06, "star_chance": 0.02,
+AMT = {"flower_value": 0.03, "bounty": 0.03, "loot_value": 0.03, "growth": 0.03, "extra_crop": 0.04, "farm_energy": 0.04, "crop_value": 0.03, "extra_day": 0.04, "animal_yield": 0.06, "star_chance": 0.02,
        "double_harvest": 0.03, "seed_back": 0.05, "stone_bonus": 1, "ore_bonus": 0.05, "mine_energy": 0.04, "gem_chance": 0.01,
        "shard_bonus": 0.06, "double_hit": 0.04, "forage_bonus": 1, "wood_bonus": 1, "chop_bonus": 1, "sap_chance": 0.06,
        "rare_forage": 0.03, "bite_speed": 0.05, "rare_fish": 0.03, "escape_less": 0.06, "chest_chance": 0.02, "fish_value": 0.06,
@@ -25,7 +25,7 @@ AMT = {"growth": 0.03, "extra_crop": 0.04, "farm_energy": 0.04, "crop_value": 0.
        "team_damage": 1, "team_defense": 0.02, "team_heal": 2, "friend_gain": 0.05, "pet_bond": 5, "team_xp": 0.04, "xp_gain": 0.03, "buy_discount": 0.02, "regrowth": 1,
        # Ranching (C11a P3): read by Ranch / GameMap / Helpers through GameState.bonus("ranching", key)
        "big_goods": 0.02, "animal_quality": 0.12, "ranch_value": 0.03, "breed_chance": 0.03, "grow_speed": 0.12, "animal_friend": 0.03, "hand_work": 0.04}
-DESC = {"xp_gain": "faster levelling in this skill", "growth": "faster crop growth", "extra_crop": "chance of an extra crop", "farm_energy": "less energy to hoe and water", "crop_value": "crop sell value",
+DESC = {"flower_value": "flower sell value", "bounty": "money from beaten foes", "loot_value": "sell value of loot and treasure", "xp_gain": "faster levelling in this skill", "growth": "faster crop growth", "extra_crop": "chance of an extra crop", "farm_energy": "less energy to hoe and water", "crop_value": "crop sell value",
         "extra_day": "chance a crop grows an extra day overnight", "animal_yield": "animal products", "star_chance": "chance of a star harvest",
         "double_harvest": "chance of a double harvest", "seed_back": "chance to get a seed back", "stone_bonus": "toward an extra stone per rock; 3 make one more",
         "ore_bonus": "extra ore", "mine_energy": "less energy to mine", "gem_chance": "gem chance", "shard_bonus": "crystal shards",
@@ -180,8 +180,8 @@ def _caps():
 
 
 BASE_CAPS, SKILL_CAPS = _caps()
-FALLBACK = {"farming": ["growth", "seed_back"], "ranching": ["animal_yield", "ranch_value", "animal_friend", "hand_work"], "mining": ["stone_bonus", "mine_energy"], "foraging": ["wood_bonus", "forage_bonus"],
-            "fishing": ["fish_value", "double_fish", "bite_speed", "escape_less"], "combat": ["xp_gain", "hp", "energy"], "bartering": ["sell_bonus", "interest", "xp_gain", "gift_bonus", "buy_discount"],
+FALLBACK = {"farming": ["growth", "seed_back", "flower_value"], "ranching": ["animal_yield", "ranch_value", "animal_friend", "hand_work"], "mining": ["stone_bonus", "mine_energy"], "foraging": ["wood_bonus", "forage_bonus"],
+            "fishing": ["fish_value", "double_fish", "bite_speed", "escape_less"], "combat": ["xp_gain", "hp", "energy", "bounty"], "bartering": ["sell_bonus", "interest", "xp_gain", "gift_bonus", "buy_discount", "loot_value"],
             "building": ["energy", "craft_speed"], "magic": ["mana"], "pup": ["pet_hp", "pet_dmg"],
             "hustle": ["hp"], "harmony": ["mana"], "leadership": ["team_heal"], "strategist": ["start_supply"]}
 
