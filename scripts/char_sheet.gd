@@ -486,16 +486,18 @@ static func stats() -> Array:
 	out.append({"id": "mine", "name": "Mine power", "icon": ["items", Hud.icon_for("pickaxe")], "value": str(1 + (pk + 1) / 2 + int(GameState.bonus("mining", "mine_power"))), "parts": p,
 		"note": mn + "Harder ores also need a pickaxe tier and Mining level."})
 	# Fishing
-	var fl := GameState.skill_level("fishing")
+	var fl := GameState.skill_level_eff("fishing")  # C16a P4 (c16a_05-14): the real Fishing rules
 	var lit: bool = GameState.run.get("flags", {}).has("lighthouse_lit")
-	p = [["Fishing level %d" % fl, "%d kinds" % (1 + fl)], ["Night", "+2 kinds, +40 value" if lit else "light the lighthouse first"], ["Bait", "+1 kind"]]
+	p = [["Fishing level %d" % fl, "%d kinds" % Fishing.reach_n(fl, false, false)], ["Night", "+2 kinds, +%s value" % Money.num(int(Fishing.T["cap_night"])) if lit else "light the lighthouse first"], ["Bait", "+1 kind"]]
+	if GameState.tool_tier("rod") > 0:
+		p.append(["Rod", "+%d value, +%d kinds" % [int(Fishing.T["cap_per_rod"]) * GameState.tool_tier("rod"), GameState.tool_tier("rod") / 2]])
 	var rare := GameState.bonus("fishing", "rare_fish") + (0.1 if GameState.has_friend_perk("finn", 8) else 0.0)
 	if rare > 0.0:
 		p.append(["Rare catch chance", _pct(rare)])
 	if GameState.bonus("fishing", "bite_speed") > 0.0:
 		p.append(["Faster bites", _pct(GameState.bonus("fishing", "bite_speed"))])
-	out.append({"id": "fish", "name": "Fishing reach", "icon": ["items", Hud.icon_for("rod")], "value": "%d kinds" % (1 + fl), "parts": p,
-		"note": "Fish worth up to %d◆ can bite (more with bait%s)." % [25 + 15 * fl, ", or at night" if lit else ""]})
+	out.append({"id": "fish", "name": "Fishing reach", "icon": ["items", Hud.icon_for("rod")], "value": "%d kinds" % Fishing.reach_n(fl, false, false), "parts": p,
+		"note": "Fish worth up to %s can bite (more with bait%s)." % [Money.amount(Fishing.ceiling(fl, false, false, 0)), ", or at night" if lit else ""]})
 	# Recovery
 	var every := roundi(GameState.mana_regen_secs())
 	p = [["Mana", "+1 every %d s" % every], ["Food energy left today", str(maxi(0, int(r.get("max_energy", 100)) - fed))], ["Sleep", "full health, energy, mana"]]

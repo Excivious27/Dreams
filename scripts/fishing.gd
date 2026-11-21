@@ -8,7 +8,8 @@ const T := {
 	"cheap_value": 30,          # a fish this cheap or less counts as a "common"
 	"commons_min": 2,           # valley waters with fewer commons get minnow + sunfish
 	"commons": ["minnow", "sunfish"],
-	"cap_base": 25, "cap_per_level": 15, "cap_night": 40, "cap_bait": 10,
+	"cap_base": 25, "cap_per_level": 12,  # C16a P4: 15 -> 12, on skill_level_eff (cap 20)
+	 "cap_night": 40, "cap_bait": 10,
 	"cap_per_rod": 10,          # each rod upgrade lifts the value ceiling
 	"cap_per_luck": 5,          # luck (buff + gear) lifts the ceiling
 	"cap_per_area_tier": 30,    # a mega water's own fish are within reach of its tier
@@ -29,8 +30,7 @@ const T := {
 	"sea_waters": ["beach", "colony_coral", "colony_kelp", "colony_ice", "colony_ember", "docks", "the_shoals", "blue_deep"],
 	# XP per catch: base + value / per (capped); boots give the floor.
 	"xp_base": 3, "xp_per_value": 25, "xp_max": 14, "xp_boot": 2,
-	# Legendary Koi: the lake at night under the lit lighthouse, baited, Fishing 10+.
-	"koi": {"scene": "lake", "level": 10, "chance": 0.012},
+	# (C16a P4: the Legendary Koi's one rule set is Collections LEGENDS / gen_collections.py.)
 	# Time of day: these only bite by night / by day (the rest any time). Sorted pools
 	# that would lose every fish keep them all.
 	"when": {"mooncarp": "night", "starfin": "night", "ghost_fish": "night", "sun_trout": "day", "goldfish": "day"},
@@ -134,7 +134,8 @@ static func seasons_of(fish: String) -> Array:
 	return (s as Array).duplicate() if s is Array and not (s as Array).is_empty() else ["spring", "summer", "fall", "winter"]
 
 
-## The koi is one of a kind: only under the lit lighthouse, and only until you have one (c10_07).
+## The koi is one of a kind: true while it can still be caught (lighthouse lit, not caught yet). The bite
+## itself is Collections.legend_roll (one rule set, C16a P4).
 static func koi_open() -> bool:
 	if not GameState.run.get("flags", {}).has("lighthouse_lit"):
 		return false
@@ -152,13 +153,13 @@ static func luck() -> float:
 static func ceiling(lvl: int, night: bool, baited: bool, area_tier: int) -> int:
 	return int(T["cap_base"]) + int(T["cap_per_level"]) * lvl + (int(T["cap_night"]) if night else 0) \
 		+ (int(T["cap_bait"]) if baited else 0) + int(T["cap_per_rod"]) * GameState.tool_tier("rod") \
-		+ int(float(T["cap_per_luck"]) * luck()) + int(T["cap_per_area_tier"]) * maxi(0, area_tier)
+		+ int(float(T["cap_per_luck"]) * luck()) + int(T["cap_per_area_tier"]) * maxi(0, area_tier) + bait_ceiling_bonus(night)
 
 
 static func reach_n(lvl: int, night: bool, baited: bool) -> int:
 	var wx := GameState.weather_today()
 	var w := 1 if wx == "storm" else (-1 if wx == "blizzard" else 0)  # C15 P4: storms stir the deep fish up
-	return maxi(1, 1 + lvl + (2 if night else 0) + (1 if baited else 0) + GameState.tool_tier("rod") / 2 + w)
+	return maxi(1, 1 + lvl + (2 if night else 0) + (1 if baited else 0) + GameState.tool_tier("rod") / 2 + w + bait_reach_bonus())
 
 
 ## True when bait would open a fish the bare hook can't reach here (bait is
@@ -171,10 +172,7 @@ static func bait_helps(pool: Array, lvl: int, night: bool, area_tier: int) -> bo
 
 ## Picks the fish at the bite (so the window can fit it). Returns "boot" for junk.
 ## rare: chance of a Rare Catch roll (skill + perks); picks from the top of reach.
-static func pick(pool: Array, lvl: int, night: bool, baited: bool, area_tier: int, rare: float, scene := "") -> String:
-	var k: Dictionary = T["koi"]
-	if scene == str(k["scene"]) and night and baited and lvl >= int(k["level"]) and koi_open() and randf() < float(k["chance"]):
-		return "legendary_koi"
+static func pick(pool: Array, lvl: int, night: bool, baited: bool, area_tier: int, rare: float, _scene := "") -> String:
 	if randf() < float(T["boot"]):
 		return "boot"
 	var cap := ceiling(lvl, night, baited, area_tier)
@@ -182,7 +180,8 @@ static func pick(pool: Array, lvl: int, night: bool, baited: bool, area_tier: in
 	if open.is_empty():
 		open = [pool[0]]
 	var reach := mini(open.size(), reach_n(lvl, night, baited))
-	var ratio := 0.8 if baited else 0.67
+	# C16a P4 (c16a_05-05): skill shifts the mix up (0.67 + 0.01/eff level, bait +0.08, cap 0.92).
+	var ratio := minf(0.92, 0.67 + 0.01 * mini(lvl, GameState.LEVEL_EFFECT_CAP) + (0.08 if baited else 0.0))
 	if randf() < rare + minf(float(T["rare_luck_cap"]), float(T["rare_per_luck"]) * luck()):
 		# Rare Catch: one more fish and +40 ceiling, picked from the TOP down.
 		var up := pool.filter(func(f: String) -> bool: return GameState.item_value(f) <= cap + 40)
@@ -203,7 +202,7 @@ static func window_for(fish: String) -> float:
 ## Treasure after a catch, or "" (chest_chance scaled by where you fish).
 static func treasure(scene: String, area_tier: int) -> String:
 	var mults: Array = T["treasure_mult"]
-	var ch := GameState.bonus("fishing", "chest_chance") * float(mults[clampi(area_tier, 0, mults.size() - 1)])
+	var ch := GameState.bonus("fishing", "chest_chance") * float(mults[clampi(area_tier, 0, mults.size() - 1)]) * (2.0 if cur_bait == "magnet_bait" else 1.0)
 	if randf() >= ch:
 		return ""
 	# C10a P4: some treasure catches are a home piece instead (decor box, toast queued).
@@ -245,3 +244,78 @@ static func weighted(lo: int, hi: int, ratio := 0.67) -> int:
 		if r <= 0.0:
 			return i
 	return maxi(lo, hi - 1)
+
+
+## C16a P4 (c16a_05-02): quality from the reel. react = time from the bite to your tap / the bite window
+## (0 = at once). A quick tap is silver, a very quick one gold; rarer fish give a little more room for a star
+## (their windows are shorter). Boots and legends never take a star (legends are one of a kind already).
+const QUALITY_GOLD := 0.22
+const QUALITY_SILVER := 0.5
+
+
+static func quality_for(react: float, fish: String) -> String:
+	if fish == "boot" or not GameState.items.has(fish) or str(GameState.items[fish].get("type", "")) != "fish":
+		return ""
+	if Collections.data().get("legends", {}).has(fish):
+		return ""
+	var room := 0.03 * band(fish)
+	if react <= QUALITY_GOLD + room:
+		return "g"
+	if react <= QUALITY_SILVER + room:
+		return "s"
+	return ""
+
+
+## A catch's size in cm: from the fish's value (bigger fish are worth more), +-25%, skewed up by quality.
+static func size_for(fish: String, q := "") -> int:
+	if fish == "boot" or not GameState.items.has(fish):
+		return 0
+	var it: Dictionary = GameState.items[fish]
+	var base := 8.0 + 3.2 * sqrt(float(maxi(1, int(it.get("value", 10)))))
+	if it.get("size", null) is Array:
+		var sz: Array = it["size"]
+		base = (float(sz[0]) + float(sz[1])) * 0.5
+	var lo := 0.75 + (0.15 if q == "g" else (0.08 if q == "s" else 0.0))
+	return maxi(1, roundi(base * randf_range(lo, 1.25)))
+
+
+## C16a P4 (c16a_05-03): special baits (items from gen_collections SPECIAL_BAITS, sold by Finn once your Fishing
+## level allows). The best one in the bag goes on the hook with each cast (Fishing.cur_bait for that cast):
+## glow +1 reach and half the night ceiling by day; deep +1 area tier of ceiling; magnet treasure x2;
+## wild +0.15 double catch. Each also works as plain bait (faster bite, bait ceiling).
+const SPECIAL_BAITS := ["wild_bait", "magnet_bait", "deep_bait", "glow_bait"]
+static var cur_bait := ""
+
+
+static func shop_baits() -> Array:
+	var out := []
+	for id: String in ["glow_bait", "deep_bait", "magnet_bait", "wild_bait"]:
+		if GameState.items.has(id) and GameState.skill_level("fishing") >= int(GameState.items[id].get("bait_lvl", 99)):
+			out.append(id)
+	return out
+
+
+## Takes the best special bait from the bag for this cast ("" = none); sets cur_bait.
+static func take_special_bait() -> String:
+	cur_bait = ""
+	for id: String in SPECIAL_BAITS:
+		if GameState.count(id) > 0:
+			GameState.add_item(id, -1)
+			cur_bait = id
+			break
+	return cur_bait
+
+
+static func bait_ceiling_bonus(night: bool) -> int:
+	match cur_bait:
+		"glow_bait": return 0 if night else int(T["cap_night"]) / 2
+		"deep_bait": return int(T["cap_per_area_tier"])
+	return 0
+
+
+static func bait_reach_bonus() -> int:
+	return 1 if cur_bait == "glow_bait" else 0
+
+
+static func double_chance() -> float:
+	return GameState.bonus("fishing", "double_fish") + (0.15 if cur_bait == "wild_bait" else 0.0)

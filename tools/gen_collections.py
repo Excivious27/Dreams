@@ -47,13 +47,14 @@ WINGS = [
 
 # Hand hints where a scan can't say it well (shown for missing entries).
 WHERE = {
-    "legendary_koi": "The lake, at dawn in rain or winter. Fishing 8+. Only one exists.",
+    "legendary_koi": "The lake, at dawn in rain or winter, from year 3. Fishing 30+. Only one exists.",
     "tuna": "A gift from the Sanctuary pool, or a lucky weekly perk.",
+    "tuna@gangsters": "The docks charters and the cold colonies.",  # C16a P4 (c16a_14-08): no penguin places in the gang arc
     "crab": "The beach shallows (forage).",
     "ancient_urn": "Buried caches (dig with the hoe where the ground looks turned).",
     "eagle_feather": "Mountain forage, now and then.",
     "goat_horn": "Mountain forage, rarely.",
-    "otter_whisker": "Dropped by otters by the water.",
+    "otter_whisker": "The river serpent drops it, now and then.",  # C16a P4 (c16a_14-02): the real source
     "book": "Old chests and the library's lost-and-found.",
 }
 
@@ -67,13 +68,86 @@ NOT_ROD = ["tuna", "crab"]
 
 # Legends: replace a normal catch once per run when the place and moment fit (bypass the value ceiling).
 LEGENDS = {
-    "legendary_koi": {"scene": "lake", "lvl": 8, "when": "rain_or_winter_dawn", "chance": 0.04, "first_decor": "dc_koi_scroll"},
+    # C16a P4 (c16a_05-04): one rule set (Fishing.T koi removed); legends spread over years 1-3 by level + year.
+    "legendary_koi": {"scene": "lake", "lvl": 30, "when": "rain_or_winter_dawn", "chance": 0.008, "year": 3, "first_decor": "dc_koi_scroll"},
     # C15 P4 (c15_09-14): a legend per season (gen_mega_new SEASON_LEGENDS); "year" = first year it can bite
-    "prism_trout": {"scene": "forest", "lvl": 6, "when": "season:spring", "chance": 0.03},
-    "sailfish": {"scene": "beach", "lvl": 7, "when": "season:summer", "chance": 0.03},
-    "soul_salmon": {"scene": "lake", "lvl": 8, "when": "season:fall", "chance": 0.03},
-    "frost_pike": {"scene": "forest", "lvl": 9, "when": "season:winter", "chance": 0.03, "year": 2},
+    "prism_trout": {"scene": "forest", "lvl": 14, "when": "season:spring", "chance": 0.012},
+    "sailfish": {"scene": "beach", "lvl": 18, "when": "season:summer", "chance": 0.012},
+    "soul_salmon": {"scene": "lake", "lvl": 22, "when": "season:fall", "chance": 0.01, "year": 2},
+    "frost_pike": {"scene": "forest", "lvl": 26, "when": "season:winter", "chance": 0.01, "year": 2},
 }
+
+# C16a P4 (c16a_08-12): Bug net + Critter log. All ages, no animal is harmed: a critter is caught, logged
+# and let go (never an item in the bag, never sold, never an ingredient). "kind" = the WorldGen wildlife kind
+# the net catches; "net" = net tier needed (0 Twig, 1 Silk, 2 Star); "lvl" = Foraging; "time" day|night|"";
+# "spook" 0-1 (higher slips away more, worse while it flees). Legends: no wildlife kind, they turn up on a
+# swing at the right season/weather/hour window (Critters.legend_roll).
+NETS = {
+    "bug_net": {"name": "Twig Net", "name_gang": "Wire Net", "tier": 0, "lvl": 0, "value": 230,
+                "desc": "Swing at a bug or a little critter close by to log it in the Book. It's let go right after."},
+    "silk_net": {"name": "Silk Net", "name_gang": "Mesh Net", "tier": 1, "lvl": 15, "value": 1000,
+                 "desc": "Reaches two steps. Catches the shy ones the Twig Net misses. Foraging 15."},
+    "star_net": {"name": "Star Net", "name_gang": "Neon Net", "tier": 2, "lvl": 35, "value": 3300,
+                 "desc": "Three steps, never spooks. Catches night bugs and the once-a-season legends. Foraging 35."},
+}
+CRITTERS = [
+    {"id": "cr_ladybug", "kind": "ladybug", "name": "Ladybug", "seasons": ["spring", "summer"], "time": "day", "net": 0, "lvl": 0, "spook": 0.1},
+    {"id": "cr_lemon_wing", "kind": "butterfly_yellow", "name": "Lemon Wing", "name_gang": "Taxi Wing", "seasons": ["spring"], "time": "day", "net": 0, "lvl": 0, "spook": 0.3},
+    {"id": "cr_orange_flutter", "kind": "butterfly_orange", "name": "Orange Flutter", "seasons": ["spring", "summer", "fall"], "time": "day", "net": 0, "lvl": 0, "spook": 0.3},
+    {"id": "cr_sky_wing", "kind": "butterfly_blue", "name": "Sky Wing", "name_gang": "Neon Wing", "seasons": ["spring", "summer"], "time": "day", "net": 0, "lvl": 2, "spook": 0.35},
+    {"id": "cr_bumble_bee", "kind": "bee", "name": "Bumble Bee", "seasons": ["spring", "summer"], "time": "day", "net": 0, "lvl": 3, "spook": 0.3},
+    {"id": "cr_meadow_hopper", "kind": "grasshopper", "name": "Meadow Hopper", "name_gang": "Alley Cricket", "seasons": ["summer", "fall"], "time": "day", "net": 0, "lvl": 0, "spook": 0.25},
+    {"id": "cr_garden_snail", "kind": "snail", "name": "Garden Snail", "seasons": ["spring", "summer", "fall"], "time": "", "net": 0, "lvl": 0, "spook": 0.0},
+    {"id": "cr_violet_duchess", "kind": "butterfly_purple", "name": "Violet Duchess", "seasons": ["summer"], "time": "day", "net": 1, "lvl": 8, "spook": 0.45},
+    {"id": "cr_pond_dragonfly", "kind": "dragonfly", "name": "Pond Dragonfly", "seasons": ["summer"], "time": "day", "net": 1, "lvl": 10, "spook": 0.5},
+    {"id": "cr_green_frog", "kind": "frog", "name": "Green Frog", "seasons": ["spring", "summer"], "time": "", "net": 1, "lvl": 6, "spook": 0.35},
+    {"id": "cr_shore_crab", "kind": "crab", "name": "Shore Crab", "name_gang": "Dock Crab", "seasons": [], "time": "", "net": 1, "lvl": 12, "spook": 0.3},
+    {"id": "cr_firefly", "kind": "firefly", "name": "Firefly", "seasons": ["spring", "summer", "fall"], "time": "night", "net": 2, "lvl": 20, "spook": 0.2},
+    {"id": "cr_sky_jelly", "kind": "jelly", "name": "Sky Jelly", "seasons": [], "time": "", "net": 2, "lvl": 30, "spook": 0.4, "arc": "penguins"},
+    # Legends (one per season, Foraging 40, Star Net): logged once, a museum star.
+    {"id": "cr_petal_emperor", "kind": "", "name": "Petal Emperor", "seasons": ["spring"], "time": "", "net": 2, "lvl": 40,
+     "legend": {"weather": ["rain"], "hours": [6, 10], "chance": 0.04}},
+    {"id": "cr_sunwing", "kind": "", "name": "Sunwing", "seasons": ["summer"], "time": "", "net": 2, "lvl": 40,
+     "legend": {"weather": ["clear", "sun", ""], "hours": [11, 14], "chance": 0.04}},
+    {"id": "cr_ember_moth", "kind": "", "name": "Ember Moth", "seasons": ["fall"], "time": "", "net": 2, "lvl": 40,
+     "legend": {"weather": ["fog", "leaves", "rain"], "hours": [17, 21], "chance": 0.04}},
+    {"id": "cr_snow_sylph", "kind": "", "name": "Snow Sylph", "seasons": ["winter"], "time": "", "net": 2, "lvl": 40,
+     "legend": {"weather": ["snow", "blizzard"], "hours": [6, 18], "chance": 0.04}},
+]
+# C16a P4 (c16a_05-03): special baits at Finn's (Fishing.SPECIAL_BAITS has the rules; "lvl" = Fishing level to buy).
+SPECIAL_BAITS = {
+    "glow_bait": {"name": "Glow Bait", "value": 10, "lvl": 6, "desc": "Glows on the hook: one more kind of fish in reach, and day casts pull like dusk."},
+    "deep_bait": {"name": "Deep Bait", "value": 17, "lvl": 10, "desc": "Sinks deep: bigger, pricier fish come up to the hook."},
+    "magnet_bait": {"name": "Magnet Bait", "value": 20, "lvl": 12, "desc": "Treasure sticks to the line twice as often."},
+    "wild_bait": {"name": "Wild Bait", "value": 27, "lvl": 15, "desc": "Fish can't resist it: a better shot at two fish on one line."},
+}
+CRITTER_WHERE = {"day": "Out by day", "night": "Out at night", "": "Out any time"}
+LIVE_WING = {"id": "critters", "title": "Live Exhibit"}
+
+
+def critter_where(c):
+    if "legend" in c:
+        L = c["legend"]
+        return "Legend: %s, %d-%d o'clock, %s weather. Star Net, Foraging %d." % (
+            c["seasons"][0].capitalize(), L["hours"][0], L["hours"][1], "/".join(w for w in L["weather"] if w) or "clear", c["lvl"])
+    se = ", ".join(x.capitalize() for x in c["seasons"]) or "All year"
+    net = ["Twig Net", "Silk Net", "Star Net"][c["net"]]
+    return "%s; %s. %s%s." % (se, CRITTER_WHERE[c["time"]].lower(), net, (", Foraging %d" % c["lvl"]) if c["lvl"] else "")
+
+
+def critter_items(items):
+    for bid, b in SPECIAL_BAITS.items():
+        items[bid] = {"name": b["name"], "type": "misc", "value": b["value"], "rarity": "uncommon", "tier": 1,
+                      "desc": b["desc"], "icon": "c16ap4_" + bid, "bait_lvl": b["lvl"]}
+    for nid, n in NETS.items():
+        items[nid] = {"name": n["name"], "name_gang": n["name_gang"], "type": "tool", "value": n["value"], "rarity": "uncommon",
+                      "tier": 1 + n["tier"], "desc": n["desc"], "icon": "c16ap4_" + nid}
+    for c in CRITTERS:
+        items[c["id"]] = {"name": c["name"], "type": "critter", "value": 0, "rarity": "legendary" if "legend" in c else "common",
+                          "tier": 1, "desc": "Logged in the Book and let go. " + critter_where(c), "icon": "c16ap4_" + c["id"][3:],
+                          "no_sell": True}
+        if c.get("arc"):
+            items[c["id"]]["arc"] = c["arc"]
 
 SHIP_TYPES = ["crop", "fruit", "flower", "herb", "forage", "fish", "ore", "gem", "bar", "treasure"]
 SHIP_FAMILY = {"crop": "Crops", "fruit": "Fruit", "flower": "Flowers", "herb": "Herbs", "forage": "Forage",
@@ -89,6 +163,7 @@ CATS = [
     {"id": "crafting", "title": "Crafting log", "kind": "make", "badge": "medal_craftsman"},
     {"id": "forage", "title": "Forage log", "kind": "seen", "badge": "medal_explorer"},
     {"id": "ranch", "title": "Ranch log", "kind": "count", "badge": "medal_green_thumb"},
+    {"id": "critters", "title": "Critter log", "kind": "seen", "badge": "medal_explorer"},  # C16a P4 bug net
 ]
 
 # Animal goods (C11a P3). Raw goods fill the Ranch log (Collections.record_ranch when collected) and ship as
@@ -108,9 +183,12 @@ MILESTONES = [
     {"id": "mus_5", "cat": "museum", "need": 5, "from": "theo", "give": {"money": 300, "item": "bait", "n": 3},
      "text": "Five pieces in the cases already! Here's a little thank-you, and some bait: fish make fine exhibits. - Theo",
      "text_gangsters": "Five pieces on the shelves. People are already asking where we got them. A little something for you, and bait: fish count too. - Theo"},
-    {"id": "mus_10", "cat": "museum", "need": 10, "from": "theo", "give": {"item": "luminous_starfruit_seed", "n": 1},
-     "text": "Ten exhibits! A seed someone left with an old atlas. Nobody knows what it grows. I'd love to. - Theo",
-     "text_gangsters": "Ten pieces in the Curio Room. Found this seed tucked in an old ledger. Grow it and tell me what it is. - Theo"},
+    {"id": "mus_10", "cat": "museum", "need": 10, "from": "theo", "give": {"money": 500, "item": "bait", "n": 10},
+     "text": "Ten exhibits! The donation box had a good week. Your share, and bait for more tank fish. - Theo",
+     "text_gangsters": "Ten pieces in the Curio Room. The jar by the door filled up. Your cut, and bait. - Theo"},
+    {"id": "mus_15", "cat": "museum", "need": 15, "from": "theo", "give": {"money": 500},
+     "text": "Fifteen! I've started writing little cards for every case. - Theo",
+     "text_gangsters": "Fifteen pieces. I'm writing proper labels now. - Theo"},
     {"id": "mus_20", "cat": "museum", "need": 20, "from": "theo", "give": {"money": 1000},
      "text": "Twenty! School trips have started asking. Consider this your curator's pay. - Theo",
      "text_gangsters": "Twenty pieces. Folks pay to look now, so you get a cut. Fair's fair. - Theo"},
@@ -129,6 +207,15 @@ MILESTONES = [
     {"id": "wing_fish", "cat": "museum", "need": "wing:fish", "from": "finn", "give": {"money": 1500, "decor": "fish_trophy"},
      "text": "Every fish in the tanks. Even the koi! Mounted one for your wall, a pretend one. - Finn",
      "text_gangsters": "Every fish in the tanks. I had a wooden one carved for your wall. - Finn"},
+    {"id": "mus_40", "cat": "museum", "need": 40, "from": "theo", "give": {"item": "luminous_starfruit_seed", "n": 1},
+     "text": "Forty exhibits! A seed someone left with an old atlas. Nobody knows what it grows. I'd love to. - Theo",
+     "text_gangsters": "Forty pieces. Found this seed tucked in an old ledger. Grow it and tell me what it is. - Theo"},
+    {"id": "mus_50", "cat": "museum", "need": 50, "from": "theo", "give": {"money": 2500},
+     "text": "Fifty! The town council wants to call it a real museum now. This is from them. - Theo",
+     "text_gangsters": "Fifty pieces. People come from across the city now. Your cut. - Theo"},
+    {"id": "mus_65", "cat": "museum", "need": 65, "from": "theo", "give": {"money": 4000},
+     "text": "Sixty-five exhibits. I keep a chair by the tanks now, just to sit and look. - Theo",
+     "text_gangsters": "Sixty-five pieces. I sit in here after closing sometimes. Here's your share. - Theo"},
     {"id": "mus_all", "cat": "museum", "need": "all", "from": "theo", "give": {"decor": "dc_founders_orrery", "money": 5000, "item": "curators_loupe", "n": 1},
      "text": "The museum is complete. I didn't think I'd live to write that. Please take my old loupe: it always finds the lucky things. - Theo",
      "text_gangsters": "The Curio Room is complete. Take my old loupe. It has a habit of spotting the good stuff. - Theo"},
@@ -144,6 +231,18 @@ MILESTONES = [
     {"id": "fish_10", "cat": "fish", "need": 10, "from": "finn", "give": {"item": "bait", "n": 20},
      "text": "Ten kinds of fish caught! Bait's on me. - Finn",
      "text_gangsters": "Ten kinds of fish. Bait's on me. - Finn"},
+    {"id": "fish_5", "cat": "fish", "need": 5, "from": "finn", "give": {"item": "bait", "n": 10},
+     "text": "Five kinds already. Here's bait, the good stuff. - Finn",
+     "text_gangsters": "Five kinds in your log. Bait's on me. - Finn"},
+    {"id": "fish_15", "cat": "fish", "need": 15, "from": "finn", "give": {"money": 1000, "item": "glow_bait", "n": 10},
+     "text": "Fifteen kinds! Try these glow baits after dark. Or before. They don't care. - Finn",
+     "text_gangsters": "Fifteen kinds. Glow bait, ten of them. Works any hour. - Finn"},
+    {"id": "fish_25", "cat": "fish", "need": 25, "from": "finn", "give": {"money": 1500, "item": "deep_bait", "n": 10, "decor": "fish_trophy"},
+     "text": "Twenty-five kinds. Deep bait for the big ones, and a trophy for the wall. - Finn",
+     "text_gangsters": "Twenty-five kinds. Deep bait, and a trophy for your wall. - Finn"},
+    {"id": "fish_30", "cat": "fish", "need": 30, "from": "finn", "give": {"money": 3000, "item": "wild_bait", "n": 10},
+     "text": "Thirty kinds. You're an angler now, a real one. - Finn",
+     "text_gangsters": "Thirty kinds. You're a real angler. Don't let it go to your head. - Finn"},
     {"id": "fish_all", "cat": "fish", "need": "all", "from": "finn", "give": {"decor": "dc_golden_rod_mount", "money": 3000},
      "text": "Every fish the rod can find. You're the best angler this lake has seen. - Finn",
      "text_gangsters": "Every fish a rod can find. Best angler on the waterfront. - Finn"},
@@ -182,6 +281,16 @@ MILESTONES = [
     {"id": "forage_20", "cat": "forage", "need": 20, "from": "hazel", "give": {"money": 400},
      "text": "Twenty wild things found. The valley shares with those who look. - Hazel",
      "text_gangsters": "Twenty wild finds. The city's got more green in it than people think. - Hazel"},
+    # C16a P4: Critter log ladder (Hazel hosts; all caught, logged and let go).
+    {"id": "crit_5", "cat": "critters", "need": 5, "from": "hazel", "give": {"money": 300, "decor": "dc_y_firefly_jar"},
+     "text": "Five little critters logged and let go! Here's an empty jar for the porch - lights only, no bugs inside. - Hazel",
+     "text_gangsters": "Five critters logged and let go. Here's a jar lamp for your step - just a light, nothing in it. - Hazel"},
+    {"id": "crit_10", "cat": "critters", "need": 10, "from": "hazel", "give": {"money": 1200},
+     "text": "Ten critters in your log. You walk soft now; the meadow noticed. - Hazel",
+     "text_gangsters": "Ten critters logged. You move quiet these days. Here's a little something. - Hazel"},
+    {"id": "crit_all", "cat": "critters", "need": "all", "from": "hazel", "give": {"money": 3000},
+     "text": "Every critter, even the four legends. I've never seen a log like it. - Hazel",
+     "text_gangsters": "Every critter in the city, legends too. Nobody's done that. Nobody. - Hazel"},
 ]
 
 # C10a P3: Decor catalogue milestones: kinds of decor ever owned (DecorCatalogue.progress). Letters
@@ -241,7 +350,7 @@ QUEST_LINES_GANG = {
 
 # Curator's Loupe: +2 luck charm (luck flows through GameState.gear_stat into drop rolls).
 LOUPE = {"name": "Curator's Loupe", "type": "equip", "value": 0, "tier": 3, "rarity": "legendary", "slot": "charm",
-         "stats": {"luck": 2}, "desc": "Theo's old loupe. It always finds the lucky things."}
+         "stats": {"luck": 4}, "desc": "Theo's old loupe. It always finds the lucky things."}  # C16a P4: luck 2 -> 4
 
 
 # ---------------------------------------------------------------- museum room
@@ -375,6 +484,9 @@ def _where_hint(item_id, it, forage, pools):
         # mirrors Fishing.T["when"] (fishing.gd): day-only fish are never hinted "at night"
         when = {"goldfish": "day", "sun_trout": "day"}.get(item_id, "night")
         return s + (", %s with bait, fishing %d+" % ("by day" if when == "day" else "at night", lvl) if v > 75 else "")
+    if places and t in ("ore", "gem", "material", "bar"):
+        # C16a P4 (c16a_14-11): mine goods say the mines first, the forage place second
+        return "The mines; also Forage: " + ", ".join(x.replace("_", " ").title() for x in places[:2])
     if places:
         return "Forage: " + ", ".join(x.replace("_", " ").title() for x in places[:2])
     if t in ("ore", "gem", "material", "bar"):
@@ -396,7 +508,10 @@ def fish_pools():
             for fid in re.findall(r"\"([a-z_]+)\"", m.group(1)):
                 out.setdefault(fid, [])
                 scene = f[:-3]
-                if scene not in out[fid] and scene not in ("game_map", "game_state", "collections"):
+                # C16a P4 (c16a_14-01): only real maps (scenes/<id>.tscn) are places, never script names
+                if not os.path.exists(os.path.join(ROOT, "scenes", scene + ".tscn")):
+                    continue
+                if scene not in out[fid]:
                     out[fid].append(scene)
     return out
 
@@ -419,6 +534,9 @@ def main():
     wings = []
     for w in WINGS:
         ents = [{"item": i, "arc": arc_of(items[i]), "where": where_hint(i, items[i], forage, pools)} for i in w["items"]]
+        for e in ents:
+            if e["item"] + "@gangsters" in WHERE:
+                e["where_gangsters"] = WHERE[e["item"] + "@gangsters"]
         wings.append({"id": w["id"], "title": w["title"], "entries": ents})
 
     ranch_json = load("ranch.json") if os.path.exists(os.path.join(ROOT, "data", "ranch.json")) else {}
@@ -463,14 +581,27 @@ def main():
             e = {"recipe": rid, "station": s, "item": str(r.get("give", rid)), "name": r.get("name", rid),
                  "arc": str(r.get("arc", "") or station_arc(s))}
             (cook if s in COOK_STATIONS else craft).append(e)
+    # C16a P4 (c16a_08-13): the Forage log counts "seen", so items a season shelf sells are left out (buying is not foraging).
+    sg = load("season_goods.json") if os.path.exists(os.path.join(D, "season_goods.json")) else {}
+    shop_sold = set()
+    for sk in ("shops", "shops_y2"):
+        for _shop, by_se in (sg.get(sk) or {}).items():
+            for lst in (by_se or {}).values():
+                if isinstance(lst, list):
+                    shop_sold.update(lst)
     forage_log = [{"item": i, "arc": arc_of(it), "where": where_hint(i, it, forage, pools)}
-                  for i, it in items.items() if it.get("type") in ("forage", "herb") and int(it.get("value", 0)) > 0 and sourced(i)]
+                  for i, it in items.items() if it.get("type") in ("forage", "herb") and int(it.get("value", 0)) > 0 and sourced(i)
+                  and i not in shop_sold]
 
     items["curators_loupe"] = LOUPE
+    critter_items(items)
+    critter_log = [{"item": c["id"], "arc": c.get("arc", ""), "where": critter_where(c)} for c in CRITTERS]
     out = {"_": "Generated by tools/gen_collections.py", "cats": CATS, "wings": wings,
-           "logs": {"shipping": ship, "fish": fish_log, "cooking": cook, "crafting": craft, "forage": forage_log, "ranch": ranch_log},
+           "logs": {"shipping": ship, "fish": fish_log, "cooking": cook, "crafting": craft, "forage": forage_log, "ranch": ranch_log,
+                    "critters": critter_log},
            "stations": sorted({e["station"] for e in craft}), "milestones": MILESTONES, "decor_milestones": DECOR_MILESTONES, "letters": LETTERS,
-           "room_names": ROOM_NAMES, "legends": LEGENDS}
+           "room_names": ROOM_NAMES, "legends": LEGENDS,
+           "critters": CRITTERS, "nets": NETS, "live_wing": LIVE_WING}
     check(out, items, src)
     save("collections.json", out)
     save("items.json", items)

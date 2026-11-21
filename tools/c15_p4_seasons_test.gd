@@ -80,7 +80,7 @@ func _fish() -> void:
 	var storm_reach := Fishing.reach_n(2, false, false)
 	_at("summer", "clear")
 	check(storm_reach == Fishing.reach_n(2, false, false) + 1, "a storm stirs one more fish within reach")
-	GameState.run["skills"]["fishing"] = {"level": 10, "xp": 0, "nodes": {}}
+	GameState.run["skills"]["fishing"] = {"level": 30, "xp": 0, "nodes": {}}  # C16a P4: legends at levels 14-26
 	var leg := func(scene: String) -> Dictionary:
 		var got := {}
 		for i in 1500:
@@ -89,7 +89,10 @@ func _fish() -> void:
 	_at("spring")
 	check((leg.call("forest") as Dictionary).has("prism_trout"), "spring: the Prism Trout legend can bite in the forest")
 	_at("fall")
-	check(not (leg.call("forest") as Dictionary).has("prism_trout") and (leg.call("lake") as Dictionary).has("soul_salmon"), "fall: no Prism Trout, the Lantern Salmon at the lake")
+	check(not (leg.call("forest") as Dictionary).has("prism_trout") and not (leg.call("lake") as Dictionary).has("soul_salmon"), "fall year 1: no Prism Trout, the Lantern Salmon waits (C16a P4: year 2)")
+	GameState.run["day"] = int(GameState.run["day"]) + 112
+	check((leg.call("lake") as Dictionary).has("soul_salmon"), "fall year 2: the Lantern Salmon at the lake")
+	_at("winter")
 	_at("winter")
 	check(not (leg.call("forest") as Dictionary).has("frost_pike"), "winter year 1: the Frost King Pike waits")
 	GameState.run["day"] = 87 + 112

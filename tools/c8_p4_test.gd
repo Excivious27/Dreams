@@ -41,8 +41,8 @@ func _run() -> void:
 	# --- Area ceiling: signature fish reachable mid-game ---
 	var falls := Fishing.pool_for(["ice_pike", "ice_pike", "trout", "salmon"], 4)
 	var gilt := Fishing.pool_for(["carp", "ember_koi", "goldfish"], 4)
-	check(_share(falls, 5, 4, "ice_pike") > 0.03, "Glacier Pike bites at Fishing 5 in Frost Falls")
-	check(_share(gilt, 8, 4, "ember_koi") > 0.02, "Ember Koi bites at Fishing 8 in Gilt Gardens")
+	check(_share(falls, 6, 4, "ice_pike") > 0.03, "Glacier Pike bites at Fishing 6 in Frost Falls")  # C16a P4: cap_per_level 15 -> 12
+	check(_share(gilt, 10, 4, "ember_koi") > 0.02, "Ember Koi bites at Fishing 10 in Gilt Gardens")
 	check(_share(gilt, 2, 4, "ember_koi") == 0.0, "but not at Fishing 2")
 	# --- Rare Catch now picks from the top (night: mooncarp only bites after dark) ---
 	GameState.run["time"] = 23 * 60
@@ -56,7 +56,7 @@ func _run() -> void:
 	# --- Window by fish ---
 	check(Fishing.window_for("minnow") > Fishing.window_for("sky_fish"), "rare fish bite for a shorter window")
 	GameState.run["tool_tier"]["rod"] = 3
-	check(Fishing.window_for("sky_fish") > Fishing.window_for("sky_fish") - 0.001 and Fishing.ceiling(1, false, false, 0) == 25 + 15 + 30, "rod tier lifts the ceiling (+10/tier)")
+	check(Fishing.window_for("sky_fish") > Fishing.window_for("sky_fish") - 0.001 and Fishing.ceiling(1, false, false, 0) == 25 + 12 + 30, "rod tier lifts the ceiling (+10/tier)")
 	GameState.run["tool_tier"]["rod"] = 0
 	check(Fishing.xp_for("sky_fish") > Fishing.xp_for("minnow") and Fishing.xp_for("boot") < Fishing.xp_for("minnow"), "XP grows with the fish's value")
 	# --- Lighthouse scope ---
@@ -69,7 +69,7 @@ func _run() -> void:
 	for i in 6000:
 		if Fishing.pick(lake, 10, true, true, 0, 0.0, "lake") == "legendary_koi":
 			koi += 1
-	check(koi > 0, "Legendary Koi bites at the lit lake at night, baited, Fishing 10 (%d / 6000)" % koi)
+	check(koi == 0 and Collections.data()["legends"].has("legendary_koi"), "Legendary Koi has one rule set: Collections.legend_roll, never Fishing.pick (C16a P4) (%d)" % koi)
 	check(Fishing.pick(lake, 9, true, true, 0, 0.0, "farm") != "legendary_koi", "never elsewhere")
 	# --- Bait only where it matters ---
 	check(not Fishing.bait_helps(Fishing.pool_for(["minnow", "sunfish"], 0), 10, false, 0), "no bait spent on a fished-out pond")
