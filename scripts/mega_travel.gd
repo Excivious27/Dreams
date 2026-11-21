@@ -5,7 +5,7 @@ extends RefCounted
 ## way in from the home world (a sled, a caravan, a fairy ring, a balloon, a night
 ## train, a black limo) with a keeper who opens it with a short hook quest once the
 ## story is far enough along. Every hub has the same vehicle waiting to take you
-## home, or on to any other mega hub you have opened.
+## home, or on to any other mega hub whose own line you have opened (C14 TravelNet).
 
 static var _data: Dictionary = {}
 const CLEARABLE := ["weed", "weeds", "grass", "rock", "stone", "stick", "twig", "forage", "log", "stump", "bush", "fruit_drop"]
@@ -52,6 +52,7 @@ static func on_enter(m: GameMap) -> void:
 	if data().is_empty() or not GameState.run.has("flags"):
 		return
 	var sid := m.scene_id()
+	TravelNet.on_enter(m)  # C14: station props + desks, arrival beside the station
 	if region_of(sid) != "":
 		GameState.run["flags"]["mseen_" + region_of(sid)] = true  # S1 P2: Wide World / Gilt Edge
 	for id: String in data():
@@ -162,6 +163,9 @@ static func _mail(id: String, r: Dictionary) -> void:
 
 
 static func gate(m: GameMap, thing: Dictionary) -> void:
+	if thing.has("station"):  # C14: a TravelNet station desk
+		await TravelNet.desk(m, str(thing["station"]))
+		return
 	if bool(thing.get("home", false)):
 		await _hub_gate(m, str(thing.get("mega", "")))
 		return
@@ -226,11 +230,25 @@ static func gate(m: GameMap, thing: Dictionary) -> void:
 
 static func _travel_menu(m: GameMap, id: String) -> void:
 	var r := reg(id)
+	var lid := "mega_" + id
+	var tn := not TravelNet.link(lid).is_empty()
+	if tn:
+		TravelNet.unlock(lid, "keeper")  # C14: the keeper's ride is a T3 TravelNet line (fare until free, ride scene)
+	var fare := " (%s)" % TravelNet.fare_words(lid) if tn else ""
 	var dlg := Dialogue.instance(m.get_tree())
-	dlg.say([{"who": str(r.get("keeper", "")), "text": str(r.get("lines", {}).get("travel", "Ready when you are.")), "choice": ["Go to %s" % str(r.get("hub_name", r.get("name", ""))), "Not now"], "key": ""}])
+	dlg.say([{"who": str(r.get("keeper", "")), "text": str(r.get("lines", {}).get("travel", "Ready when you are.")), "choice": ["Go to %s%s" % [str(r.get("hub_name", r.get("name", ""))), fare], "Not now"], "key": ""}])
 	await dlg.finished
-	if dlg.last_choice == 0:
+	if dlg.last_choice != 0:
+		return
+	if not tn:
 		go_hub(m, id)
+		return
+	var why := TravelNet.why_not(lid, id + "_home")
+	if why != "":
+		Music.instance(m.get_tree()).sfx("locked", "nope")
+		m.hud.toast(why, Color(1, 0.85, 0.6))
+		return
+	await TravelNet.ride(lid, m, id + "_home")
 
 
 ## The ride's sound, both ways (C4 c4_12 #5): data "sfx_go"/"sfx_back" win, else these.
@@ -268,6 +286,12 @@ static func go_hub(m: GameMap, id: String) -> void:
 ## The vehicle in a hub: home, or on to another open mega hub.
 static func _hub_gate(m: GameMap, id: String) -> void:
 	var r := reg(id)
+	if not TravelNet.station(id + "_hub").is_empty():
+		# C14 (c14_05-02): every hop from a hub is its own TravelNet line (home = T3,
+		# other hubs = T4 per-link unlocks, the airship/charter plane), never a free menu.
+		TravelNet.unlock("mega_" + id, "keeper")
+		await TravelNet.desk(m, id + "_hub")
+		return
 	var e: Dictionary = r.get("entry", {})
 	var opts: Array = ["Home (%s)" % str(e.get("home_name", str(e.get("scene", "")).capitalize()))]
 	var dests: Array = [""]

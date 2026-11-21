@@ -35,7 +35,7 @@ var map: GameMap = null
 var spots: Array = []  # [cell, kind] still to be found (sniff/sparkle)
 var sealed := {}  # cell -> mouth cell: inside a pocket that's still closed (tests skip these)
 var _t := 0.0
-var _sniffed := false
+var _sniffed := {}  # C14 c14_13-08: each spot gets its own sniff (was once per visit)
 
 
 ## Mega area or explicit data: how many pockets / ways to place here.
@@ -421,17 +421,19 @@ func _mouth_art(c: Vector2i, kind: String, theme: String) -> void:
 
 func _way_art(c: Vector2i, kind: String, theme: String, found: bool) -> void:
 	var nm := "hidden_stairs" if kind == "stairs" else "hidden_cave_mouth_" + theme
-	var a := 1.0 if found else 0.55
+	# C14 c14_13-07: an unfound way is drawn solid but shaded and half-hidden by the
+	# ground (it reads as an old overgrown opening), never as a see-through glitch.
+	var a := Color.WHITE if found else Color(0.62, 0.66, 0.6, 1.0)
 	if Art.has("props", nm):
 		var s := map.prop("props", nm, c, 0, 0.0, false)
 		if s:
-			s.modulate.a = a
+			s.modulate = a
 			map.to_under(s)
 		return
 	var d := _Drawn.new()
 	d.kind = "way_" + kind
 	d.theme = theme
-	d.modulate.a = a
+	d.modulate = a
 	d.position = map.cell_center(c)
 	map.to_under(d)
 	if not map.props.has(c):
@@ -490,9 +492,9 @@ func _process(delta: float) -> void:
 	for s: Array in spots:
 		var c: Vector2i = s[0]
 		var dist := pc.distance_to(c)
-		if dist <= 3.0 and not _sniffed:
+		if dist <= 3.0 and not _sniffed.has(c):
 			if map.pet != null and is_instance_valid(map.pet) and map.pet.visible and str(Pet.state().get("mode", "follow")) in ["follow", "attack"] and map.pet.position.distance_to(map.player.position) < 5.0 * GameMap.TILE:  # c11b_07-12: only a pup at your side sniffs
-				_sniffed = true
+				_sniffed[c] = true
 				map.hud.toast("%s sniffs at something nearby..." % Pet.name_of(), Color(0.9, 0.95, 1.0))
 				Pet.say(map.get_tree(), "call")
 		if (twilight or dist <= 4.0) and randf() < 0.35:
@@ -560,7 +562,7 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 				if str(m.things[k].get("key", "")) == key:
 					m.things[k]["hint"] = "A: take the hidden way"
 					if m.props.has(k):
-						(m.props[k] as CanvasItem).modulate.a = 1.0
+						(m.props[k] as CanvasItem).modulate = Color.WHITE
 					if node:
 						node.found_spot(k)
 			if first:

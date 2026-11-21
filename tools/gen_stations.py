@@ -59,7 +59,7 @@ G = [  # id, name, type, value, tier, extra
  ('scooter', 'Kick Scooter', 'vehicle', 600, 2, {'speed': 1.45, 'sprite': 'veh_scooter', 'size': 16, 'desc': 'Hold it and press USE to ride. Faster than walking; no tools while riding.'}),
  ('rowboat', 'Rowboat', 'vehicle', 900, 2, {'speed': 1.0, 'water': 1.5, 'sprite': 'veh_rowboat', 'size': 30, 'desc': 'Hold it and press USE at the water: row instead of swimming, fast and dry.'}),
  ('motor_scooter', 'Motor Scooter', 'vehicle', 2600, 3, {'speed': 1.9, 'sprite': 'veh_motor_scooter', 'size': 20, 'desc': 'Twice as fast as your feet.'}),
- ('balloon', 'Hot-Air Balloon', 'vehicle', 9000, 4, {'fly': True, 'sprite': 'veh_balloon', 'desc': 'Hold it and press USE outdoors: drift to any place you have already visited.'}),
+ ('balloon', 'Hot-Air Balloon', 'vehicle', 9000, 4, {'fly': True, 'sprite': 'veh_balloon', 'desc': 'Hold it and press USE beside a Balloon Mast (or Charter Pad) you built: fly to another one you built.'}),
  ('crystal_sled', 'Crystal Sled', 'vehicle', 2400, 3, {'speed': 1.7, 'snow': 2.3, 'sprite': 'veh_crystal_sled', 'size': 22, 'arc': 'penguins', 'desc': 'Fast anywhere; faster in winter and on the mountain.'}),
  ('getaway_car', 'Getaway Car', 'vehicle', 5200, 3, {'speed': 2.3, 'sprite': 'veh_getaway_car', 'size': 40, 'arc': 'gangsters', 'desc': 'Black, quiet, quick. Nobody saw you leave.'}),
  # rocket parts
