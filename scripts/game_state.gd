@@ -3097,7 +3097,10 @@ static func weather_for(day: int) -> String:
 	if w.has(key):
 		return str(w[key])
 	var rng := RandomNumberGenerator.new()
-	rng.seed = hash(str(run.get("names", {}).get("town", "")) + str(run.get("wx_seed", "")) + ":" + key)
+	# C15 fix: week 1 keeps the town-name weather (the paced first week, C8 P1); each save's
+	# own wx_seed takes over from day 8 (energy pacing is reviewed in C16).
+	var wxs := str(run.get("wx_seed", "")) if day > 7 else ""
+	rng.seed = hash(str(run.get("names", {}).get("town", "")) + wxs + ":" + key)
 	var se := season_of(day)
 	var table: Array = (WEATHER_ODDS if is_penguins() else WEATHER_ODDS_GANG).get(se, WEATHER_ODDS["spring"])
 	var roll := rng.randi_range(0, 99)
