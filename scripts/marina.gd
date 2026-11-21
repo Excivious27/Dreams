@@ -278,7 +278,17 @@ static func charter_price(c: Dictionary) -> int:
 	return 0 if tier() >= 4 else int(c.get("price", 0))
 
 
-## Roz's charter: pay, three hours at sea, the catch comes home with you.
+## Pays a charter and marks today's trip (the sail out takes an hour).
+static func start_charter(c: Dictionary) -> bool:
+	if charter_why(c) != "" or int(GameState.run["crystals"]) < charter_price(c):
+		return false
+	GameState.run["crystals"] = int(GameState.run["crystals"]) - charter_price(c)
+	st()["charter_day"] = int(GameState.run["day"])
+	GameState.run["time"] = mini(int(GameState.run["time"]) + 60, 25 * 60)
+	return true
+
+
+## Roz's charter without its sea map (fallback): pay, three hours at sea, the catch comes home with you.
 ## Returns the fish caught (deterministic per day).
 static func run_charter(c: Dictionary) -> Array:
 	if charter_why(c) != "" or int(GameState.run["crystals"]) < charter_price(c):
@@ -317,6 +327,11 @@ static func charter(m: GameMap) -> void:
 		return
 	if int(GameState.run["crystals"]) < charter_price(c):
 		m.hud.toast("Roz: 'It's %s a head.'" % Money.amount(charter_price(c)))
+		return
+	var scene := "res://scenes/%s.tscn" % str(c.get("scene", ""))
+	if str(c.get("scene", "")) != "" and ResourceLoader.exists(scene):
+		start_charter(c)
+		m.go_to(str(c["scene"]), Vector2(20 * GameMap.TILE + 8, 22 * GameMap.TILE + 8), "up")
 		return
 	var got := run_charter(c)
 	var names: Array = []

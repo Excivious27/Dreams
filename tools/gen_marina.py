@@ -91,9 +91,11 @@ QUESTS = [
 
 # Fishing charters: the catch rolls from these pools aboard Roz's boat.
 CHARTERS = [
-    {"id": "shoals", "name": "The Shoals", "tier": 2, "price": 250, "hours": 3, "night": False,
+    {"id": "shoals", "name": "The Shoals", "scene": "the_shoals", "tier": 2, "price": 250, "hours": 3, "night": False,
+     "intro": "Roz throws a line round a post: 'The Shoals. Shallow, warm, full of fish. Cast anywhere.'",
      "fish": ["sunfish", "bass", "puffer", "starfin", "tuna"], "catches": 3, "season": {}},
-    {"id": "deep", "name": "Blue Deep", "tier": 3, "price": 900, "hours": 3, "night": True,
+    {"id": "deep", "name": "Blue Deep", "scene": "blue_deep", "tier": 3, "price": 900, "hours": 3, "night": True,
+     "intro": "Roz kills the engine. 'Blue Deep. Mind the fog. The big ones come up at night.'",
      "fish": ["tuna", "eel", "ghost_fish", "starfin"], "catches": 4, "season": {}},
 ]
 
@@ -157,8 +159,41 @@ def check_items():
         sys.exit("gen_marina: unknown item ids %s" % sorted(set(bad)))
 
 
+# Charter areas as Region maps (merged into regions.json the way gen_colonies
+# merges colony_*): a sandy shoal / rocky islet in open sea, the charter boat
+# moored at the spawn, its own fish, and the way home to the marina's main pier
+# (beach.gd PIER_X 76, QUAY_Y 20 -> spawn cell [77, 22]).
+HOME = [77, 22]
+
+
+def charter_region(c):
+    deep = c["id"] == "deep"
+    return {"cols": 40, "rows": 30, "music": "beach", "backdrop": "sea", "ground": "sand", "path": "sand",
+            "spawn": [20, 20], "pad": 6, "border": {"n": "water", "s": "water", "w": "water", "e": "water"},
+            "exits": [{"rect": [18, 29, 4, 1], "scene": "beach", "spawn": HOME, "facing": "down", "label": "▼ back to the marina"}],
+            "paths": [[19, 18, 2, 11]], "islands": [{"c": [20, 15], "r": 9 if not deep else 7, "seed": 1401 + (7 if deep else 0)}],
+            "island_shore": "sand", "patch_set": "sand", "ground_threshold": -0.05, "fruit": 0, "forage": 4,
+            "gen": {"clumps": 0, "scatter": 6, "critters": ["seagull", "crab"], "critter_count": 5},
+            "things": [],
+            "enemies": [], "npcs": [], "fish": list(c["fish"]), "intro": [c["intro"]], "charter": c["id"],
+            "weather": "fog" if deep else "", "season": ""}
+
+
+def merge_regions():
+    path = os.path.join(ROOT, "data", "regions.json")
+    R = json.load(open(path))
+    for c in CHARTERS:
+        rid = c["scene"]
+        reg = charter_region(c)
+        reg = {k: v for k, v in reg.items() if v != ""}
+        R[rid] = reg
+        open(os.path.join(ROOT, "scenes", "%s.tscn" % rid), "w").write('[gd_scene load_steps=2 format=3]\n\n[ext_resource type="Script" path="res://scripts/region.gd" id="1"]\n\n[node name="%s" type="Node2D"]\nscript = ExtResource("1")\nregion_id = "%s"\n' % (rid, rid))
+    json.dump(R, open(path, "w"), indent=1, ensure_ascii=False)
+
+
 def main():
     check_items()
+    merge_regions()
     out = {"tiers": TIERS, "npcs": NPCS, "spots": SPOTS, "schedule": SCHEDULE, "shops": SHOPS,
            "quests": QUESTS, "charters": CHARTERS, "pools": POOLS, "routes": ROUTES, "landings": LANDINGS,
            "festival": FESTIVAL, "lines": LINES}

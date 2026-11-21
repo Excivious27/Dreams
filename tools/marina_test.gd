@@ -111,6 +111,8 @@ func _arc(arc: String) -> void:
 	check(int(GameState.run["crystals"]) == 1000 - int(shoals["price"]), "%s: charter paid" % arc)
 	check(int(GameState.run["time"]) == t0 + 180, "%s: three hours at sea" % arc)
 	check(Marina.run_charter(shoals).is_empty(), "%s: one charter a day" % arc)
+	for c: Dictionary in Marina.data()["charters"]:
+		check(ResourceLoader.exists("res://scenes/%s.tscn" % str(c["scene"])), "%s: charter area %s has its scene" % [arc, c["scene"]])
 	check(not "salmon" in Marina.shore_pool() and not "goldfish" in Marina.shore_pool(), "%s: no freshwater fish in the sea" % arc)
 	# Dock jobs: per arc, hand-in takes the goods and pays once.
 	var js := Marina.jobs()

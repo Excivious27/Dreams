@@ -344,10 +344,12 @@
   {
    "id": "shoals",
    "name": "The Shoals",
+   "scene": "the_shoals",
    "tier": 2,
    "price": 250,
    "hours": 3,
    "night": false,
+   "intro": "Roz throws a line round a post: 'The Shoals. Shallow, warm, full of fish. Cast anywhere.'",
    "fish": [
     "sunfish",
     "bass",
@@ -361,10 +363,12 @@
   {
    "id": "deep",
    "name": "Blue Deep",
+   "scene": "blue_deep",
    "tier": 3,
    "price": 900,
    "hours": 3,
    "night": true,
+   "intro": "Roz kills the engine. 'Blue Deep. Mind the fog. The big ones come up at night.'",
    "fish": [
     "tuna",
     "eel",
