@@ -452,7 +452,7 @@ func _fest_stall(fest: String) -> void:
 		return
 	player.frozen = true
 	var treats: Array = (st[4] as Array).filter(func(t: Variant) -> bool: return GameState.items.has(str((t as Array)[0])))
-	await Shops.stall(self, str(st[2]), "%s treats, and a few things for the house while they last." % GameState.festival_name(fest), treats, 0.0, "festival_" + str(st[3]))
+	await Shops.stall(self, FestivalWords.fest_host(str(st[2])), "%s treats, and a few things for the house while they last." % GameState.festival_name(fest), treats, 0.0, "festival_" + str(st[3]))
 	player.frozen = false
 
 
@@ -474,22 +474,27 @@ func _festival_event(fest: String) -> void:
 	var key := "fest_%s_%d" % [fest, int(GameState.run["day"])]
 	player.frozen = true
 	if GameState.run["flags"].has(key):
-		await say([{"who": "Mayor Alder", "text": "You've had your turn. Enjoy the %s!" % GameState.festival_name(fest).to_lower()}])
+		var again := {"egg": "You've had your hunt. Go and eat your candy before the kids find it.", "lantern": "Your lantern's on the water. Watch the river for a while.",
+			"harvest": "The judges have your entry. Have a look round the Harvest Fair!", "star": "One wish a year. Enjoy the Star Festival!"}
+		await say([{"who": "Mayor Alder", "text": str(again.get(fest, "You've had your turn. Enjoy the %s!" % GameState.festival_name(fest)))}])
 		player.frozen = false
 		return
 	match fest:
 		"egg":
 			var d := Dialogue.instance(get_tree())
-			d.say([{"who": "Mayor Alder", "text": "The egg hunt! Twelve eggs hidden round the plaza. Find them before the kids do.", "choice": ["Go!", "Not now"], "key": ""}])
+			d.say([{"who": "Mayor Alder", "text": FestivalWords.egg_call(), "choice": ["Go!", "Not now"], "key": ""}])
 			await d.finished
 			if d.last_choice == 0:
 				var found := 0
 				var rng := RandomNumberGenerator.new()
 				rng.seed = int(GameState.run["day"])
-				for i in 12:
+				var tries := 0
+				while found < FestivalWords.EGG_COUNT and tries < 400:  # C12 P3: always the twelve Alder promises
+					tries += 1
 					var c := Vector2i(rng.randi_range(30, 50), rng.randi_range(37, 59))
 					if blocked.has(c) or things.has(c) or not _plaza.has(c):
 						continue
+					var i := found
 					found += 1
 					things[c] = {"type": "egg", "hint": "A: an egg!"}
 					if Art.has("props", "fest_ss_%02d" % (12 + i % 6)):
@@ -512,7 +517,11 @@ func _festival_event(fest: String) -> void:
 ## Lantern float: pick a wish, then steer your lantern past two snags on the river.
 func _lantern_float(key: String) -> void:
 	var d := Dialogue.instance(get_tree())
-	d.say([{"who": "Lumi", "text": "Write a wish, light a lantern, let it go on the river. I won't look. What are you wishing for?", "choice": ["To stay strong (health)", "To keep going (energy)", "To see more magic (mana)", "Not now"], "key": ""}])
+	var host := FestivalWords.fest_host("Lumi")
+	if GameState.is_penguins():
+		d.say([{"who": host, "text": "Write a wish, light a lantern, let it go on the river. I won't look. What are you wishing for?", "choice": ["To stay strong (health)", "To keep going (energy)", "To see more magic (mana)", "Not now"], "key": ""}])
+	else:
+		d.say([{"who": host, "text": "Write it on the paper, light it, let the river take it. Nobody reads them. What's yours?", "choice": ["To stay standing (health)", "To keep moving (energy)", "An edge (mana)", "Not now"], "key": ""}])
 	await d.finished
 	if d.last_choice < 0 or d.last_choice > 2:
 		return
@@ -532,8 +541,11 @@ func _lantern_float(key: String) -> void:
 		else:
 			hud.toast("Bump! It wobbles on.", Color(1, 0.8, 0.6))
 	var lines := ["Your lantern spins once and drifts on, a little lower.", "Your lantern slips past and sails on with the others.", "Your lantern glides through both and leads the whole river of lights out under the bridge. People clap."]
-	await say([{"text": lines[clear] + " The sky fills."}])
-	Music.instance(get_tree()).sfx("fireworks", "levelup")
+	await say([{"text": lines[clear] + FestivalWords.lantern_tail()}])
+	if GameState.is_night():
+		Music.instance(get_tree()).sfx("fireworks", "levelup")
+	else:
+		Music.instance(get_tree()).sfx("quest_done", "levelup")
 	var gain := 3 + clear
 	GameState.grow_vital(wish, gain)
 	hud.toast("Max %s +%d" % [{"hp": "health", "energy": "energy", "mana": "mana"}[wish], gain], Color(0.8, 0.9, 1.0))
@@ -575,7 +587,9 @@ func _crop_contest(key: String) -> void:
 	var better := int(int(a[2]) > score) + int(int(b[2]) > score)
 	var place := 1 + better
 	var art := ItemWords.with_article(GameState.item_name(best))
-	await say([{"text": "The table is crowded: %s's %s, %s's %s, and your %s, polished till it shines." % [a[0], GameState.item_name(str(a[1])), b[0], GameState.item_name(str(b[1])), GameState.item_name(best)]},
+	var mine := GameState.item_name(best).to_lower()
+	var own := "your own %s, a size bigger" % mine if mine in [GameState.item_name(str(a[1])).to_lower(), GameState.item_name(str(b[1])).to_lower()] else "your %s, polished till it shines" % mine
+	await say([{"text": "The table is crowded: %s's %s, %s's %s, and %s." % [a[0], GameState.item_name(str(a[1])).to_lower(), b[0], GameState.item_name(str(b[1])).to_lower(), own]},
 		{"who": "Mayor Alder", "text": "%s! %s" % [art.substr(0, 1).to_upper() + art.substr(1), ["First prize! The blue ribbon and %s." % Money.amount(300), "Second prize! The red ribbon and %s." % Money.amount(150), "Third prize! The yellow ribbon and %s." % Money.amount(50)][place - 1]]}])
 	GameState.add_money([300, 150, 50][place - 1], "festival")
 	GameState.run["flags"][key + "_place"] = place  # C10b P1: first place rolls the festival keepsake with luck
@@ -630,7 +644,7 @@ func _animal_show(fest: String) -> void:
 	var sh: Array = SHOW.get(fest, [])
 	if cs.is_empty() or sh.is_empty():
 		return
-	var host := str(sh[1])
+	var host := FestivalWords.fest_host(str(sh[1]))  # C12 P3: Posy away -> Hazel
 	player.frozen = true
 	var c: Dictionary = cs[0]
 	if cs.size() > 1:
@@ -719,7 +733,10 @@ func _market_stall(who: String) -> void:
 		return
 	var nm := str(GameState.npcs.get(who, {}).get("name", who))
 	player.frozen = true
-	if not market_open(who, int(GameState.run["time"])):
+	if GameState.festival_today() != "":
+		var fn := GameState.festival_name(GameState.festival_today())
+		await say([{"text": ("%s's stall is packed away for the %s. Find %s on the plaza." % [nm, fn, "her" if who == "hazel" else "him"]) if GameState.is_penguins() else ("Stall's shut for the %s. %s's on the plaza." % [fn, nm])}])
+	elif not market_open(who, int(GameState.run["time"])):
 		await say([{"text": "%s's stall is shut. %s keeps it from %d to %d in the morning." % [nm, nm, int(st[1]), int(st[2])]}])
 	else:
 		var items: Array = (st[5] as Array).filter(func(t: Variant) -> bool: return GameState.items.has(str((t as Array)[0])))
@@ -739,12 +756,12 @@ func _market_stall(who: String) -> void:
 ## Star-wish: a small gift box, a wish for a lasting little boon, and a star sent
 ## to one villager (a big friendship boost); everyone you know still gets +10.
 func _star_wish(key: String) -> void:
-	await say([{"who": "Bram" if GameState.run["flags"].has("posy_gone") else "Posy", "text": "Star Festival! Everyone gives one gift. Here's yours."}, {"text": "A small box. Inside: something somebody thought you'd like."}])
+	await say([{"who": "Bram" if GameState.run["flags"].has("posy_gone") else "Posy", "text": "Star Festival! Everyone gives one gift. Here's yours." if GameState.is_penguins() else "Gift swap. One each, no regifting. Here's yours."}, {"text": "A small box. Inside: something somebody thought you'd like."}])
 	var gift: String = ["heart_fruit", "stamina_root", "mana_berry", "cake", "wine", "gold_bar"][int(GameState.run["day"]) % 6]
 	give(gift)
 	GameState.run["flags"][key] = true
 	var d := Dialogue.instance(get_tree())
-	d.say([{"who": "Mayor Alder", "text": "Now look up and make a star-wish. Just one. The sky's listening tonight.", "choice": ["For good health", "For tireless days", "For a little more magic", "No wish this year"], "key": ""}])
+	d.say([{"who": "Mayor Alder", "text": FestivalWords.star_call(), "choice": ["For good health", "For tireless days", "For a little more magic", "No wish this year"] if GameState.is_penguins() else ["To stay standing", "Longer days", "An edge", "No wish this year"], "key": ""}])
 	await d.finished
 	if d.last_choice >= 0 and d.last_choice <= 2:
 		var v: String = ["hp", "energy", "mana"][d.last_choice]
@@ -1154,7 +1171,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			GameState.run["flags"]["eggs_left"] = left
 			give("candy", 1)
 			if left <= 0:
-				hud.toast("All the eggs! Alder gives you ◆200.", Color(1, 0.9, 0.4))
+				hud.toast(FestivalWords.egg_prize_text(), Color(1, 0.9, 0.4))
 				GameState.add_money(200, "festival")
 				xp("foraging", 30)
 			else:
@@ -1281,18 +1298,22 @@ func _lines(id: String, friend: int) -> Array:
 				if hearts >= 6:
 					return [{"who": "Maple", "text": "You know, %s, I saw that light land in your field. I didn't tell anyone. Some things you keep for the people who earn them." % who}]
 				if season == "fall":
-					return [{"who": "Maple", "text": "Pumpkin seeds are in. Plant them by the 10th or they'll never fill out before the frost."}]
+					return [{"who": "Maple", "text": "Pumpkin seeds are in. Nine days to fill out, so get them in before the 20th or the frost wins."}]
 				return [{"who": "Maple", "text": "Morning! Turnips grow fast, strawberries pay better. And bring %s by sometime, I've got a bone with their name on it." % pet}]
 			if hearts >= 6:
 				return [{"who": "Maple", "text": "I had a brother who ran from something once. He never said what. I never asked. He's a baker in the capital now. Just... saying."}]
-			return [{"who": "Maple", "text": "New face, old plot. Seeds are in the back. Pay when you can. I mean that."}]
+			return [{"who": "Maple", "text": "New face, old plot. Seeds are on the left. Pay when you can. I mean that."}]
 		"gideon":
 			if GameState.tool_tier("axe") >= 2 or GameState.tool_tier("pickaxe") >= 2:
 				return [{"who": "Gideon", "text": "Iron holds. Steel holds better. Bring me bars and I'll show you what a real edge is."}]
 			if GameState.has_tool("iron_sword") or (not peng and GameState.has_tool("crowbar")):
 				return [{"who": "Gideon", "text": "Keep the edge dry. Iron remembers rust the way people remember insults."}]
+			if peng and meadow_done:
+				return [{"who": "Gideon", "text": "Wooden sword cleared a meadow. Fine. It won't clear a mountain. Copper bars, and we'll talk."}]
 			if peng:
 				return [{"who": "Gideon", "text": "Wooden sword. Hm. It'll do for whatever's bleating in that meadow. For now. Bring me copper bars and we'll talk."}]
+			if meadow_done:
+				return [{"who": "Gideon", "text": "That bat's been somewhere. Copper bars and cash, and I'll band it so it rings."}]
 			return [{"who": "Gideon", "text": "Street bat, huh. I don't ask what a farmer needs a harder swing for. Copper bars and cash, and I'll band that bat so it rings."}]
 		"wren":
 			if meadow_done:
@@ -1311,13 +1332,13 @@ func _lines(id: String, friend: int) -> Array:
 				return [{"who": "Finn", "text": "Level three already? Try the lake at dusk. The starfin only bites when the light goes blue."}]
 			return [{"who": "Finn", "text": "Cast with USE, wait for the splash, tap USE again. Patience catches more than tackle. My hut's up at the lake if you want bait."}]
 		"lumi":
-			return [{"who": "Lumi", "text": "The sky over your farm has the strangest colours lately. I've started painting it. Don't tell Alder, he thinks it's weather." if peng else "I paint what I see. Lately I see a lot of people looking over their shoulders."}]
+			return [{"who": "Lumi", "text": "The sky over your farm has the strangest colours lately. I've started painting it. Theo says it's weather. Theo is wrong." if peng else "I paint what I see. Lately I see a lot of people looking over their shoulders."}]
 		"theo":
 			return [{"who": "Theo", "text": "There's a book in the library about crystals that fall from the sky. Nobody's checked it out in forty years. Until this week." if peng else "Every town has a ledger of who owes what to whom. I keep ours. I don't keep names."}]
 		"hazel":
 			if hearts >= 6:
 				return [{"who": "Hazel", "text": "I'll swing by your fields when I'm up early. Don't thank me, just keep the strawberries coming."}]
-			return [{"who": "Hazel", "text": "Water before nine, harvest after six. Turnips forgive, strawberries don't. Come borrow my hoe if yours breaks."}]
+			return [{"who": "Hazel", "text": "Turnips forgive, strawberries don't. Come borrow my hoe if yours breaks."}]
 		"bram":
 			return [{"who": "Bram", "text": "Best soup in the valley, and it's free if you listen to my stories. Long stories. Come in out of the cold."}]
 		"posy":
