@@ -125,5 +125,23 @@ func _run() -> void:
 				snow_r += float(b["r"])
 	_check(snow_r <= 8.0, "highlands keeps only small snow remnants (radius sum %.1f)" % snow_r)
 
+	for sc in ["gilt_casino_row", "orchard_hills", "riverlands", "highlands"]:
+		if not ResourceLoader.exists("res://scenes/%s.tscn" % sc):
+			continue
+		m = await _load(sc)
+		for i in 3:
+			await process_frame
+		var bad := []
+		for c: Vector2i in WorldGen.arrival_cells(m):
+			var n: Variant = m.props.get(c)
+			if n is Sprite2D and is_instance_valid(n) and not (n as Node).is_queued_for_deletion() and (n as Sprite2D).texture != null:
+				var f := (n as Sprite2D).texture.resource_path.get_file()
+				for w in WorldGen.ARRIVAL_DECOR:
+					if f.begins_with(w) and not f.contains("tree"):
+						bad.append("%s@%s" % [f, c])
+			if str(m.things.get(c, {}).get("type", "")) == "forage":
+				bad.append("forage@%s" % c)
+		_check(bad.is_empty(), "%s: no flower/forage on the arrival cells %s" % [sc, bad])
+
 	print("c14p1_home_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)

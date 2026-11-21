@@ -1198,6 +1198,7 @@ static func river_cells(rv: Dictionary) -> Dictionary:
 ## cattails on the banks (not in winter).
 static func home_dress(m: GameMap) -> void:
 	crop_rows(m)
+	clear_arrivals.call_deferred(m)
 	var decks: Dictionary = m.get_meta("river_decks", {})
 	var river: Dictionary = m.get_meta("river_cells", {})
 	if river.is_empty():
@@ -1292,3 +1293,53 @@ static func crop_rows(m: GameMap) -> void:
 				var sp := m.prop("crops", nm, c, 0, 0.0, false)
 				if sp:
 					sp.position.x += float((x * 7 + y * 13) % 5) - 2.0
+
+
+
+## C14 P1 (c14_01-33): no flower bush, fern or forage on (or next to) the cell you
+## arrive on: the default spawn and the first cells inside every exit. Only loose
+## decor goes (bush/flower/fern/wildflower sprites with no thing, and forage things).
+const ARRIVAL_DECOR := ["bush", "flower", "fern", "wildflower", "sunflower"]
+
+static func arrival_cells(m: GameMap) -> Dictionary:
+	var out := {}
+	var core: Array[Vector2i] = []
+	if m.has_method("default_spawn"):
+		var sp: Vector2 = m.call("default_spawn")
+		core.append(Vector2i(floori(sp.x / GameMap.TILE), floori(sp.y / GameMap.TILE)))
+	for e in m.exits:
+		var er: Rect2i = e["rect"]
+		var inw := Vector2i(1 if er.position.x <= 0 else (-1 if er.end.x >= m.cols else 0), 1 if er.position.y <= 0 else (-1 if er.end.y >= m.rows else 0))
+		for c: Vector2i in m.cells_of([er]):
+			for k in range(0, 4):
+				core.append(c + inw * k)
+	for c: Vector2i in core:
+		for dy in range(-1, 2):
+			for dx in range(-1, 2):
+				out[c + Vector2i(dx, dy)] = true
+	return out
+
+
+static func clear_arrivals(m: GameMap) -> void:
+	if not is_instance_valid(m):
+		return
+	for c: Vector2i in arrival_cells(m):
+		var t: Dictionary = m.things.get(c, {})
+		var ty := str(t.get("type", ""))
+		if ty != "" and ty != "forage":
+			continue
+		var n: Variant = m.props.get(c)
+		if not (n is Sprite2D) or not is_instance_valid(n):
+			continue
+		var tex := (n as Sprite2D).texture
+		var file := tex.resource_path.get_file() if tex != null else ""
+		var decor := false
+		for w: String in ARRIVAL_DECOR:
+			if file.begins_with(w) or file.contains("_" + w):
+				decor = true
+		if ty == "forage" or (decor and not file.contains("tree")):
+			(n as Node).queue_free()
+			m.props.erase(c)
+			if ty == "forage":
+				m.things.erase(c)
+				m.blocked.erase(c)

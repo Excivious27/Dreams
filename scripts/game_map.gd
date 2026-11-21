@@ -4165,7 +4165,15 @@ func _draw_band_cliff(cells: Dictionary) -> bool:
 	# Top dressing: boulders, shrubs and ferns, deterministic per cell.
 	var se := GameState.look_se()
 	var pool: Array = ["rock_m", "bush", "ferns", "rock_s", "rock_l"]
-	if se == "winter":
+	# C14 P1 (c14_14-04): shrubs and ferns only on green ground; caves, deserts,
+	# cities and vaults get bare stone on top of their cliffs.
+	var rd: Variant = get("R")
+	var gr := str((rd as Dictionary).get("ground", "grass")) if rd is Dictionary else "grass"
+	var cave := bool((rd as Dictionary).get("cave", false)) if rd is Dictionary else false
+	var snowy := gr.begins_with("snow")
+	if cave or not (snowy or gr.contains("grass") or gr.contains("moss") or gr.contains("lawn") or gr.contains("weedy") or gr == "meadow"):
+		pool = ["rock_m", "rock_s", "rock_l", "rock_s"]
+	elif se == "winter" or snowy:
 		pool = ["rock_snow_l", "bush_snow", "rock_s", "rock_m"]
 	for c: Vector2i in cells:
 		if not cells.has(c + Vector2i(0, 1)) or _band_depth(c) < 2:
