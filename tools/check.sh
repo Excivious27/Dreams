@@ -1427,3 +1427,10 @@ echo "$c16ap5out" | grep -E "FAIL|SCRIPT ERROR|c16a_p5_test" || true
 if ! echo "$c16ap5out" | grep -q "c16a_p5_test: 0 failures"; then
   echo "C16a P5 ecosystems test failed"; exit 1
 fi
+
+echo "== C16a P1: progression timeline (mega region calendar/skill floors, non-combat roads, year-2 travel) =="
+c16p1out="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/progression_test.gd 2>&1)"
+echo "$c16p1out" | grep -E "FAIL|SCRIPT ERROR|progression_test" || true
+if echo "$c16p1out" | grep -q "SCRIPT ERROR" || ! echo "$c16p1out" | grep -q "progression_test: PASS"; then
+  echo "C16a P1 progression test failed"; exit 1
+fi

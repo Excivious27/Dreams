@@ -15444,7 +15444,7 @@
       330
      ],
      [
-      "wisp_thread",
+      "light_mote",
       160
      ],
      [
@@ -16490,9 +16490,8 @@
     "seed": 301,
     "fish": [
      "ghost_fish",
-     "ghost_fish",
      "eel",
-     "mooncarp"
+     "eel"
     ],
     "shore": "grass"
    },
@@ -16505,9 +16504,8 @@
     "seed": 419,
     "fish": [
      "ghost_fish",
-     "ghost_fish",
      "eel",
-     "mooncarp"
+     "eel"
     ],
     "shore": "grass"
    }
@@ -24082,8 +24080,8 @@
       1700
      ],
      [
-      "storm_fluff",
-      480
+      "finargle_fuzz",
+      90
      ],
      [
       "greater_potion",
@@ -26263,8 +26261,8 @@
      28
     ],
     "item": "dark_rose",
-    "n": 2,
-    "every": 2,
+    "n": 1,
+    "every": 7,
     "hint": "A: velvet roses",
     "solid": false
    },

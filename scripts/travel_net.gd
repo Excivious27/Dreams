@@ -187,6 +187,8 @@ static func cond_ok(c: Dictionary, l: Dictionary = {}, skip_project := false) ->
 			if str(c.get("id", "")) == "marina":
 				return skip_project or Marina.tier() >= int(c.get("n", 1))
 			return skip_project or to_build(l).is_empty()
+		"year":  # C16a P1 hook: year-2/3 travel (T4 hub links)
+			return Calendar.year() >= int(c.get("n", 1))
 		"rides":
 			return int(st()["rides"].get(str(l.get("id", "")), 0)) >= int(c.get("n", 5))
 	return false
@@ -308,6 +310,8 @@ static func unlock_words(c: Dictionary, l: Dictionary) -> String:
 			return "Opens when the keeper's ride is open." if str(c.get("id", "")).begins_with("mega_") else "Not open yet."
 		"tier":
 			return "Opens further along in your story."
+		"year":
+			return "Opens in year %d." % int(c.get("n", 2))
 		"project":
 			return "Build both ends first."
 	return "Not open yet."

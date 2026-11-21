@@ -2934,7 +2934,7 @@ static func respawned(key: String, respawn_days: int) -> bool:
 ## meadow is cleared, more once you're deep in the story.
 static func enemy_count(base: int) -> int:
 	var scale := 0.5 + 0.25 * progress_tier()
-	return maxi(1 if base > 0 else 0, int(round(base * minf(1.5, scale))))
+	return maxi(1 if base > 0 else 0, int(round(base * minf(1.5, scale) * Difficulty.mul("foe_count"))))  # C16a P1: fewer roamers on the easy modes
 
 
 static func progress_tier() -> int:
@@ -2953,6 +2953,8 @@ static func progress_tier() -> int:
 static func _cond_ok(when: Dictionary) -> bool:
 	if when.has("day") and int(run["day"]) < int(when["day"]):
 		return false
+	if when.has("year") and Calendar.year() < int(when["year"]):
+		return false  # C16a P1: big rewards wait for year 2 / 3 (day 113 / 225)
 	if when.has("quest") and not quest_done(str(when["quest"])):
 		return false
 	if when.has("skill") and skill_level(str(when["skill"][0])) < int(when["skill"][1]):

@@ -109,7 +109,7 @@ ln("t1_town_beach", "town_cliff_stairs", "beach_cliff_stairs", 1, "stairs", {"ty
 st("forest_log_bridge", "both", "forest", [2, 30], "ladder", name="Log Bridge", prop="c14p4_log_bridge", build=money(0, wood=20))
 st("lake_log_bridge", "both", "lake", [46, 20], "ladder", name="Log Bridge", prop="c14p4_log_bridge")
 ln("t1_forest_lake", "forest_log_bridge", "lake_log_bridge", 1, "ladder", {"type": "project"}, minutes=5)
-st("mountain_zip", "penguins", "mountain", [30, 4], "zip", build=money(2000, rope=4, iron_bar=10))
+st("mountain_zip", "penguins", "mountain", [30, 4], "zip", build=money(600, rope=6, plank=20, copper_bar=5))  # C16a P1: a true T1 (was 2000 + 4 rope + 10 iron bars)
 st("farm_zip", "penguins", "farm", [50, 3], "zip")
 ln("t1_mountain_farm", "mountain_zip", "farm_zip", 1, "zip", {"type": "all", "of": [{"type": "project"}, {"type": "tier", "n": 1}]}, minutes=3, both=False)
 # Gangster T1: the Hideout's back door, fire escapes.
@@ -152,7 +152,9 @@ for c in COLONIES:
 ALL_COLONIES = {"type": "all", "of": [{"type": "flag", "id": "colony_%s_done" % c} for c in COLONIES]}
 for i, c in enumerate(COLONIES):
     d = COLONIES[(i + 1) % len(COLONIES)]
-    ln("t3_current_%s_%s" % (c, d), "colony_%s_jetty" % c, "colony_%s_jetty" % d, 3, "current", ALL_COLONIES, minutes=20)
+    # C16a P1: each current needs only its two ends (was all four beacons), a small fare until 10 rides.
+    ends = {"type": "all", "of": [{"type": "flag", "id": "colony_%s_done" % c}, {"type": "flag", "id": "colony_%s_done" % d}]}
+    ln("t3_current_%s_%s" % (c, d), "colony_%s_jetty" % c, "colony_%s_jetty" % d, 3, "current", ends, money(30), {"type": "rides", "n": 10}, minutes=20)
 # Town: the Harbour Row ferry & coach office (P2's c14p2_ticket_office, quay cell 50,110).
 st("town_ferry_office", "penguins", "town", [50, 110], "ferry", name="Ferry Office")
 ln("t2_town_marina", "town_ferry_office", "beach_marina", 2, "ferry", {"type": "explore", "id": "beach"}, money(20), RIDES5, minutes=15)
@@ -161,9 +163,14 @@ st("bus_hideout", "gangsters", "hideout", [10, 4], "bus")
 st("bus_docks", "gangsters", "docks", [4, 12], "bus")
 ln("t2_bus_hideout_docks", "bus_hideout", "bus_docks", 2, "bus", {"type": "quest", "id": "docks"}, money(10), RIDES5, minutes=20)
 st("taxi_town", "gangsters", "town", [50, 110], "taxi")  # the Harbour Row coach office's taxi rank (P2)
+# C16a P1: the farm and hideout taxis wait for the gang quest (the farm rank is built: payphone and rank,
+# 600 + 15 plank + 2 gear), like the penguin farm<->town line; docks/neon/uptown stay explore (campaign-held).
+TAXI_BUILD = {"farm": money(600, plank=15, gear=2)}
+TAXI_GATE = {"farm": {"type": "all", "of": [{"type": "quest", "id": "gang"}, {"type": "project"}]},
+             "hideout": {"type": "all", "of": [{"type": "explore", "id": "hideout"}, {"type": "quest", "id": "gang"}]}}
 for sc, cell in (("farm", [44, 40]), ("docks", [10, 20]), ("neon", [6, 12]), ("uptown", [6, 16]), ("hideout", [16, 8])):
-    st("taxi_" + sc, "gangsters", sc, cell, "taxi")
-    ln("t2_taxi_town_" + sc, "taxi_town", "taxi_" + sc, 2, "taxi", {"type": "explore", "id": sc}, money(40),
+    st("taxi_" + sc, "gangsters", sc, cell, "taxi", build=TAXI_BUILD.get(sc))
+    ln("t2_taxi_town_" + sc, "taxi_town", "taxi_" + sc, 2, "taxi", TAXI_GATE.get(sc, {"type": "explore", "id": sc}), money(40),
        {"type": "crew_perk", "id": "rides", "n": 2}, minutes=15)
 st("docks_water_taxi", "gangsters", "docks", [30, 36], "boat", name="Harbor Shuttle")
 ln("t2_harbor_shuttle", "beach_tidewater", "docks_water_taxi", 2, "boat", {"type": "quest", "id": "docks"}, money(40), RIDES5, minutes=25)
@@ -179,7 +186,9 @@ for rid, r in MEGA.items():
     st(rid + "_hub", arc, r["hub"], r.get("hub_spawn", [10, 10]), "mega", keeper=r.get("keeper", ""), name=r.get("hub_name", rid),
        spawn=r.get("hub_spawn"), placed=False)
     POS.setdefault(r["hub"], [0.5, 0.02])
-    ln("mega_" + rid, rid + "_home", rid + "_hub", 3, "mega", {"type": "flag", "id": "mega_%s_open" % rid}, money(150), RIDES5,
+    # C16a P1: the keeper's ride frees after 15 rides AND the hub job (was 5 rides).
+    ln("mega_" + rid, rid + "_home", rid + "_hub", 3, "mega", {"type": "flag", "id": "mega_%s_open" % rid}, money(150),
+       {"type": "all", "of": [{"type": "rides", "n": 15}, {"type": "quest", "id": "mega_%s_job" % rid}]},
        minutes={"frostpeak": 40, "sunscorch": 60, "giltcity": 20}.get(rid, 40))
     HUBS.append((rid, arc))
 # ---- T4 hub-to-hub lines, the airship dock and the charter plane ------------------------
@@ -189,17 +198,20 @@ for i, (a, arc_a) in enumerate(HUBS):
         if arc_a != "both" and arc_b != "both" and arc_a != arc_b:
             continue
         ln("t4_%s_%s" % (a, b), a + "_hub", b + "_hub", 4, "mega",
-           {"type": "all", "of": [{"type": "flag", "id": "mega_%s_open" % a}, {"type": "flag", "id": "mega_%s_open" % b}, {"type": "tier", "n": 3}]},
-           money(150), RIDES5, minutes=60)
+           # C16a P1: year 2, and both regions' hub work done (was tier 3 + both open); fare 150 -> 300, free after 20 rides
+           {"type": "all", "of": [{"type": "flag", "id": "mega_%s_open" % a}, {"type": "flag", "id": "mega_%s_open" % b}, {"type": "tier", "n": 3},
+                                  {"type": "quest", "id": "mega_%s_job" % a}, {"type": "quest", "id": "mega_%s_job" % b}, {"type": "year", "n": 2}]},
+           money(300), {"type": "rides", "n": 20}, minutes=60)
 st("mountain_airship", "penguins", "mountain", [44, 10], "cloud", name="Airship Dock", build=money(8000, plank=60, sail=20, crystal_refined=10))
-st("mountain_airstrip", "gangsters", "mountain", [44, 10], "plane", name="Charter Airstrip", build=money(8000, plank=40, iron_bar=20, gear=10))
+st("mountain_airstrip", "gangsters", "mountain", [44, 10], "plane", name="Charter Airstrip", build=money(10500, plank=40, iron_bar=20, gear=10))  # C16a P1: 8000 -> 10500 (same ~15000 as the airship)
 for rid, arc in HUBS:
     for sid, a2 in (("mountain_airship", "penguins"), ("mountain_airstrip", "gangsters")):
         if arc not in ("both", a2):
             continue
         ln("t4_%s_%s" % (sid, rid), sid, rid + "_hub", 4, "cloud" if a2 == "penguins" else "plane",
-           {"type": "all", "of": [{"type": "project"}, {"type": "tier", "n": 3}, {"type": "flag", "id": "mega_%s_open" % rid}]},
-           money(200), RIDES5, minutes=50)
+           # C16a P1: year 2 (was tier 3 only); fare 200 -> 400, free after 20 rides
+           {"type": "all", "of": [{"type": "project"}, {"type": "tier", "n": 3}, {"type": "year", "n": 2}, {"type": "flag", "id": "mega_%s_open" % rid}]},
+           money(400), {"type": "rides", "n": 20}, minutes=50)
 # Subway: Uptown <-> Iron Mill District ('Reopen the Red Line').
 st("uptown_subway", "gangsters", "uptown", [24, 22], "subway", name="Red Line", build=money(6000, iron_bar=40, gear=10))
 st("iron_mill_subway", "gangsters", "iron_mill_district", [25, 30], "subway", name="Red Line")
@@ -209,8 +221,9 @@ ln("t3_red_line", "uptown_subway", "iron_mill_subway", 3, "subway",
 # ---- Balloon masts / charter pads (the balloon item flies only between built masts) -----
 MASTS = [("farm", [36, 6]), ("town", [30, 30]), ("mountain", [20, 30]), ("meadow", [18, 22])]
 for sc, cell in MASTS:
-    st("mast_" + sc, "penguins", sc, cell, "mast", build=money(1500, plank=20, rope=8, cloth=6))
-    st("pad_" + sc, "gangsters", sc, [cell[0] + 2, cell[1]], "plane", name="Charter Pad", build=money(1500, plank=20, iron_bar=8, gear=4))
+    # C16a P1: both arcs pay ~2600 per T3 station (was masts ~1890, pads ~3500)
+    st("mast_" + sc, "penguins", sc, cell, "mast", build=money(1800, plank=25, rope=10, cloth=8, sail=1))
+    st("pad_" + sc, "gangsters", sc, [cell[0] + 2, cell[1]], "plane", name="Charter Pad", build=money(1800, plank=25, iron_bar=4, gear=2))
 for i, (a, _) in enumerate(MASTS):
     for b, _ in MASTS[i + 1:]:
         ln("t3_mast_%s_%s" % (a, b), "mast_" + a, "mast_" + b, 3, "mast", {"type": "all", "of": [{"type": "project"}, {"type": "tier", "n": 2}]}, money(60),
@@ -224,10 +237,10 @@ for sc, cell in WAY:
     st("way_" + sc, "penguins", sc, cell, "hop")
 for i, (a, _) in enumerate(WAY):
     for b, _ in WAY[i + 1:]:
-        ln("t5_way_%s_%s" % (a, b), "way_" + a, "way_" + b, 5, "hop", {"type": "quest", "id": "teleporter"}, minutes=0)
+        ln("t5_way_%s_%s" % (a, b), "way_" + a, "way_" + b, 5, "hop", {"type": "all", "of": [{"type": "quest", "id": "teleporter"}, {"type": "year", "n": 2}]}, minutes=0)  # C16a P1: + year 2
 st("dispatch_hideout", "gangsters", "hideout", [20, 6], "taxi", name="Dispatch Board", prop="c14p4_dispatch")
 for sc in ("farm", "docks", "neon", "uptown"):
-    ln("t5_dispatch_" + sc, "dispatch_hideout", "taxi_" + sc, 5, "taxi", {"type": "quest", "id": "uptown"}, minutes=0)
+    ln("t5_dispatch_" + sc, "dispatch_hideout", "taxi_" + sc, 5, "taxi", {"type": "all", "of": [{"type": "quest", "id": "uptown"}, {"type": "year", "n": 2}]}, minutes=0)  # C16a P1: + year 2
 
 
 def check():

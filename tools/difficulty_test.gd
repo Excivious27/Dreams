@@ -140,6 +140,22 @@ func _run() -> void:
 				check(false, "keeper encounter with no units")
 	check(tot[0] < tot[2] and tot[3] > tot[2], "mine keeper packs: smaller on Very easy, bigger on Hard %s" % str(tot))
 	Difficulty.set_level(2)
+	# C16a P1: roaming foes per map move with the mode (combat only); Default unchanged.
+	for q: String in ["clear_meadow", "spark", "sky_stair", "teleporter"]:
+		GameState.add_quest(q, q)
+		for qq in GameState.run["quests"]:
+			if str(qq["id"]) == q:
+				qq["done"] = true
+	var ec := []
+	for dn in 4:
+		Difficulty.set_level(dn)
+		ec.append(GameState.enemy_count(4))
+	Difficulty.set_level(2)
+	check(ec == [4, 5, 6, 7], "enemy_count(4) at tier 4 is 4/5/6/7 by mode %s" % str(ec))
+	check(GameState.enemy_count(1) >= 1 and GameState.enemy_count(0) == 0, "a map with foes keeps at least one; none stays none")
+	check(Difficulty.add("keeper_n", 0) == -1, "Very easy keeper packs -1 (C16a P1, was -2)")
+	for dl in GameState.DAY_LENGTHS:
+		check(Difficulty.day_words(int(dl)).contains("hours a year"), "day length %d has its words" % int(dl))
 	# Campaign card words.
 	check(Difficulty.DANGER_WORDS == ["light", "fair", "tough", "fierce"], "campaign danger words light/fair/tough/fierce")
 	# Legacy migration: the old global Easy switch -> Easy for a slot without opts.

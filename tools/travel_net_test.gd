@@ -67,9 +67,12 @@ func _run() -> void:
 	check(int(GameState.run["crystals"]) == before - 150, "fare paid (%d)" % (before - int(GameState.run["crystals"])))
 	check(int(GameState.run["time"]) > t0, "the ride takes game time")
 	check(str(TravelNet.st().get("arrive", "")) == "frostpeak_hub" and TravelNet.st()["seen"].has("mega_frostpeak"), "arrival + seen recorded")
-	for i in 4:
+	for i in 14:
 		await TravelNet.ride("mega_frostpeak", null, "frostpeak_hub")
-	check(TravelNet.is_free("mega_frostpeak"), "free after five paid rides")
+	check(not TravelNet.is_free("mega_frostpeak"), "15 rides alone don't free it (C16a P1: the hub job too)")
+	GameState.add_quest("mega_frostpeak_job", "job")
+	GameState.complete_quest("mega_frostpeak_job")
+	check(TravelNet.is_free("mega_frostpeak"), "free after 15 paid rides and the hub job")
 	check(not TravelNet.can_ride("mega_sunscorch"), "another keeper's line stays shut")
 	check(not TravelNet.can_ride("t4_frostpeak_sunscorch") and not TravelNet.can_ride("t4_gloamwood_frostpeak"), "hub-to-hub lines are each their own unlock")
 	# Unlock conditions.
