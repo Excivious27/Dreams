@@ -11,6 +11,9 @@
   "Fishing": "Fishing",
   "Arcade": "At the arcade",
   "Bowling": "Bowling at the Rec Center",
+  "Rec": "At the Rec Center",
+  "Indoors": "Visiting in town",
+  "Underground": "Down in the underground",
   "Casino": "Playing cards at the casino",
   "Hideout": "At the hideout",
   "Coop": "Playing together (%size% players)"
@@ -18,15 +21,15 @@
  "scene_map": {
   "farm": "Farm",
   "house": "Home",
-  "interior": "Home",
+  "interior": "Indoors",
   "town": "Town",
   "uptown": "Town",
   "neon": "Town",
   "docks": "Town",
   "mine": "Mines",
-  "underground": "Mines",
+  "underground": "Underground",
   "hideout": "Hideout",
-  "rec_center": "Bowling",
+  "rec_center": "Rec",
   "arcade": "Arcade",
   "casino": "Casino"
  },

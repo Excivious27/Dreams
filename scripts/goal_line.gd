@@ -119,7 +119,7 @@ static func text(qid: String) -> String:
 				var left := 5 - int(r.get("meadow_kills", 0))
 				if left > 0:
 					return ("Beat %d more Grumps here: something bigger is behind them." if pen else "Drop %d more lookouts here: whoever sent them will show.") % left
-				return "Beat the Big Grump!" if pen else "Beat the President's Man!"
+				return "Beat the Big Grump!" if pen else "Beat the President's man!"
 			if letter_first():
 				return "A letter waits in your mailbox, by the house. Read it."
 			return "Find out what's howling in the east meadow (the farm's east gate)." if pen else "Someone is asking about you. Check the east meadow (the farm's east gate)."
@@ -161,11 +161,11 @@ static func late_text(qid: String) -> String:
 		"knight":
 			return "Face the Crystal Knight on the sky islands." if here == "sky" else "Climb the great tree in the forest to the sky islands. Face the Crystal Knight."
 		"docks":
-			return "Find the dock boss on the docks and take them." if here == "docks" else "Take the city bus from Hideout town (east side) to the docks. Beat the dock boss."
+			return "Find the dock boss on the docks and beat them." if here == "docks" else "Take the city bus from Hideout town (east side) to the docks. Beat the dock boss."
 		"neon":
-			return "Find Flame under the dragon sign. Put the fire out." if here == "neon" else "East from the docks to the neon district. Put out Flame."
+			return "Find Flame under the dragon sign and beat that crew." if here == "neon" else "East from the docks to the neon district. Beat Flame under the dragon sign."
 		"pit":
-			return "Win the fight pit." if here == "underground" else "The unmarked stairs off the neon street lead down to the fight pit. Win it."
+			return "Win your bouts in the fight pit." if here == "underground" else "The unmarked stairs off the neon street lead down to the fight pit. Win your bouts."
 		"uptown":
 			return "Beat the Enforcer outside the President's tower." if here == "uptown" else "East from neon to Uptown. Beat the President's Enforcer (Combat 5 helps)."
 		"tower":
