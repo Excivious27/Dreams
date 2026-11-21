@@ -1,0 +1,331 @@
+
+#### step 1: import (shard 1/6)
+== import ==
+[  90% ] [90m[1mreimport[22m | ach_g_squeaky.png[39m[0m
+[  90% ] [90m[1mreimport[22m | ach_g_squeaky_locked.png[39m[0m
+[  91% ] [90m[1mreimport[22m | ach_g_streets.png[39m[0m
+[  91% ] [90m[1mreimport[22m | ach_g_streets_locked.png[39m[0m
+[  92% ] [90m[1mreimport[22m | ach_g_the_hive.png[39m[0m
+[  92% ] [90m[1mreimport[22m | ach_g_the_hive_locked.png[39m[0m
+[  93% ] [90m[1mreimport[22m | ach_g_top_floor.png[39m[0m
+[  93% ] [90m[1mreimport[22m | ach_g_top_floor_locked.png[39m[0m
+[  94% ] [90m[1mreimport[22m | ach_g_wired.png[39m[0m
+[  94% ] [90m[1mreimport[22m | ach_g_wired_locked.png[39m[0m
+[  95% ] [90m[1mreimport[22m | ach_hall_of_wonders.png[39m[0m
+[  95% ] [90m[1mreimport[22m | ach_hall_of_wonders_locked.png[39m[0m
+[  96% ] [90m[1mreimport[22m | ach_harvest_500.png[39m[0m
+[  96% ] [90m[1mreimport[22m | ach_harvest_500_locked.png[39m[0m
+[  97% ] [90m[1mreimport[22m | ach_heart_of_the_mountain.png[39m[0m
+[  97% ] [90m[1mreimport[22m | ach_heart_of_the_mountain_locked.png[39m[0m
+[  98% ] [90m[1mreimport[22m | ach_jumper_champion.png[39m[0m
+[  98% ] [90m[1mreimport[22m | ach_jumper_champion_locked.png[39m[0m
+[  99% ] [90m[1mreimport[22m | ach_legend_of_the_lake.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (210 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 88.7s
+
+#### step 2: smoke test (shard 1/6)
+== smoke test ==
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+SMOKE OK res://scenes/beach.tscn
+SMOKE OK res://scenes/bf_ash_wastes.tscn
+SMOKE OK res://scenes/bf_bog_crossing.tscn
+SMOKE OK res://scenes/bf_cloud_stair.tscn
+SMOKE OK res://scenes/bf_dockside.tscn
+SMOKE OK res://scenes/bf_frostfield.tscn
+SMOKE OK res://scenes/bf_highland_pass.tscn
+SMOKE OK res://scenes/bf_jungle_grove.tscn
+SMOKE OK res://scenes/bf_kelp_beds.tscn
+SMOKE OK res://scenes/bf_neon_block.tscn
+SMOKE OK res://scenes/bf_orchard_line.tscn
+SMOKE OK res://scenes/bf_quarry_cut.tscn
+SMOKE OK res://scenes/bf_rail_yards.tscn
+SMOKE OK res://scenes/bf_reef_shallows.tscn
+SMOKE OK res://scenes/bf_river_ford.tscn
+SMOKE OK res://scenes/bf_ruin_court.tscn
+SMOKE OK res://scenes/bf_sewer_works.tscn
+SMOKE OK res://scenes/bf_shattered_vale.tscn
+SMOKE OK res://scenes/bf_station_deck.tscn
+SMOKE OK res://scenes/bf_uptown_plaza.tscn
+SMOKE OK res://scenes/blue_deep.tscn
+SMOKE OK res://scenes/colony_coral.tscn
+SMOKE OK res://scenes/colony_ember.tscn
+SMOKE OK res://scenes/colony_ice.tscn
+SMOKE OK res://scenes/colony_kelp.tscn
+SMOKE OK res://scenes/community_farm.tscn
+SMOKE OK res://scenes/countryside.tscn
+SMOKE OK res://scenes/crystal_meadow.tscn
+SMOKE OK res://scenes/desert_dune_sea.tscn
+SMOKE OK res://scenes/desert_glass_canyon.tscn
+SMOKE OK res://scenes/desert_mirage_post.tscn
+SMOKE OK res://scenes/desert_sunken_temple.tscn
+SMOKE OK res://scenes/docks.tscn
+SMOKE OK res://scenes/farm.tscn
+SMOKE OK res://scenes/forest.tscn
+SMOKE OK res://scenes/frost_caverns.tscn
+SMOKE OK res://scenes/frost_falls.tscn
+SMOKE OK res://scenes/frost_glacier.tscn
+SMOKE OK res://scenes/frost_hearthhold.tscn
+SMOKE OK res://scenes/frost_summit.tscn
+SMOKE OK res://scenes/gilt_casino_row.tscn
+SMOKE OK res://scenes/gilt_gardens.tscn
+SMOKE OK res://scenes/gilt_grand_plaza.tscn
+SMOKE OK res://scenes/gilt_vaults.tscn
+SMOKE OK res://scenes/gloam_crystal_thicket.tscn
+SMOKE OK res://scenes/gloam_lanternfall.tscn
+SMOKE OK res://scenes/gloam_moonpool.tscn
+SMOKE OK res://scenes/gloam_violet_glade.tscn
+SMOKE OK res://scenes/hideout.tscn
+SMOKE OK res://scenes/highlands.tscn
+SMOKE OK res://scenes/hollow_deeps.tscn
+SMOKE OK res://scenes/hollow_heart.tscn
+SMOKE OK res://scenes/house.tscn
+SMOKE OK res://scenes/interior.tscn
+SMOKE OK res://scenes/iron_freight_yards.tscn
+SMOKE OK res://scenes/iron_junction.tscn
+SMOKE OK res://scenes/iron_mill_district.tscn
+SMOKE OK res://scenes/iron_tunnels.tscn
+SMOKE OK res://scenes/jungle.tscn
+SMOKE OK res://scenes/lake.tscn
+SMOKE OK res://scenes/marsh.tscn
+SMOKE OK res://scenes/meadow.tscn
+SMOKE OK res://scenes/mine.tscn
+SMOKE OK res://scenes/moon.tscn
+SMOKE OK res://scenes/mountain.tscn
+SMOKE OK res://scenes/neon.tscn
+SMOKE OK res://scenes/orchard_hills.tscn
+SMOKE OK res://scenes/quarry.tscn
+SMOKE OK res://scenes/riverlands.tscn
+SMOKE OK res://scenes/ruins.tscn
+SMOKE OK res://scenes/sky.tscn
+SMOKE OK res://scenes/sky_reaches.tscn
+SMOKE OK res://scenes/station.tscn
+SMOKE OK res://scenes/test_map.tscn
+SMOKE OK res://scenes/the_shoals.tscn
+SMOKE OK res://scenes/title.tscn
+SMOKE OK res://scenes/town.tscn
+SMOKE OK res://scenes/underground.tscn
+SMOKE OK res://scenes/uptown.tscn
+SMOKE OK res://scenes/wastes.tscn
+SMOKE OK res://scenes/wind_breezehaven.tscn
+SMOKE OK res://scenes/wind_starfall_garden.tscn
+SMOKE OK res://scenes/wind_storm_shelf.tscn
+SMOKE OK res://scenes/wind_sunrise_shelf.tscn
+SMOKE DONE, failures: 0
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)
+Smoke test passed
+#### step 2 smoke test: PASS in 57.0s
+
+#### step 8: no invisible walls (rocket pad, moon) (shard 1/6)
+== no invisible walls (rocket pad, moon) ==
+[penguins] mountain: 0 invisible wall cells [] ; 0 open cells unreachable
+[penguins] moon: 0 invisible wall cells [] ; 0 open cells unreachable
+[gangsters] mountain: 0 invisible wall cells [] ; 0 open cells unreachable
+[gangsters] moon: 0 invisible wall cells [] ; 0 open cells unreachable
+invisible_walls: 0 failures
+#### step 8 no invisible walls (rocket pad, moon): PASS in 4.9s
+
+#### step 14: first hours on the maps: goal line, arrow, mailbox, tour (both arcs) (shard 1/6)
+== first hours on the maps: goal line, arrow, mailbox, tour (both arcs) ==
+first_hours_test: 0 failures
+#### step 14 first hours on the maps: goal line, arrow, mailbox, tour (both arcs): PASS in 44.8s
+
+#### step 20: desktop_layout_test (shard 1/6)
+DESKTOP LAYOUT: PASS (0 fails)
+#### step 20 desktop_layout_test: PASS in 8.2s
+
+#### step 26: night lighting: windows, festival fires, underground, mines (c5_10) (shard 1/6)
+== night lighting: windows, festival fires, underground, mines (c5_10) ==
+night_light_test: 0 failures
+#### step 26 night lighting: windows, festival fires, underground, mines (c5_10): PASS in 5.7s
+
+#### step 32: C11b P1: the heart (ability) tap is dropped while busy, frozen or in d (shard 1/6)
+== C11b P1: the heart (ability) tap is dropped while busy, frozen or in dialogue ==
+ability_tap_test: 0 fails
+#### step 32 C11b P1: the heart (ability) tap is dropped while busy, frozen or in d: PASS in 5.1s
+
+#### step 38: ticket_econ_test (shard 1/6)
+ticket_econ_test: 0 failures
+#### step 38 ticket_econ_test: PASS in 4.2s
+
+#### step 44: gang_play_test (shard 1/6)
+gang_play_test: 0 failures
+difficulty_test: 108 checks, 0 failures
+day_length_test: 28 checks, 0 failures
+#### step 44 gang_play_test: PASS in 27.5s
+
+#### step 50: house_exterior_test (shard 1/6)
+house exterior test: PASS (0 fails)
+#### step 50 house_exterior_test: PASS in 8.2s
+
+#### step 56: shop_econ_test (shard 1/6)
+shop_econ_test: 0 failures
+#### step 56 shop_econ_test: PASS in 4.6s
+
+#### step 62: gang_flavour_test (shard 1/6)
+gang_flavour_test: 0 failures
+#### step 62 gang_flavour_test: PASS in 4.1s
+
+#### step 68: art prompts: at most 3 images each (shard 1/6)
+== art prompts: at most 3 images each ==
+prompt_size_check: 0 failures
+#### step 68 art prompts: at most 3 images each: PASS in 0.0s
+
+#### step 74: all ages: no animal dies, is harvested or sold for meat (beasts drop n (shard 1/6)
+== all ages: no animal dies, is harvested or sold for meat (beasts drop no parts) ==
+animal_rule_test: 0 failures
+#### step 74 all ages: no animal dies, is harvested or sold for meat (beasts drop n: PASS in 0.1s
+
+#### step 80: C10a decor art: every catalogue piece and rotation exists (shard 1/6)
+== C10a decor art: every catalogue piece and rotation exists ==
+check ok: 462 catalogue pieces
+#### step 80 C10a decor art: every catalogue piece and rotation exists: PASS in 0.2s
+
+#### step 86: music: every map has a song; web streaming works offline (shard 1/6)
+== music: every map has a song; web streaming works offline ==
+music_map_test: 7514 songs checked, 0 failures
+#### step 86 music: every map has a song; web streaming works offline: PASS in 43.7s
+
+#### step 92: workshop: stations at run time (shard 1/6)
+== workshop: stations at run time ==
+station_test: 0 failures
+#### step 92 workshop: stations at run time: PASS in 5.8s
+
+#### step 98: mine keepers: tool damage, crates, keeper variety/pace, way-down arrow (shard 1/6)
+== mine keepers: tool damage, crates, keeper variety/pace, way-down arrow route ==
+MINE KEEPER DONE, failures: 0
+#### step 98 mine keepers: tool damage, crates, keeper variety/pace, way-down arrow: PASS in 10.3s
+
+#### step 104: campaign_story_test (shard 1/6)
+campaign_story_test: 0 fails
+#### step 104 campaign_story_test: PASS in 4.3s
+
+#### step 110: campaign_gate_test (shard 1/6)
+campaign_gate_test: 0 fails
+#### step 110 campaign_gate_test: PASS in 10.8s
+
+#### step 116: campaign_c3_test (shard 1/6)
+campaign_c3_test: 0 fails
+#### step 116 campaign_c3_test: PASS in 4.2s
+
+#### step 122: story: every chapter plays to the end (shard 1/6)
+== story: every chapter plays to the end ==
+STORY DONE, failures: 0
+#### step 122 story: every chapter plays to the end: PASS in 17.4s
+
+#### step 128: mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 (shard 1/6)
+== mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 P4) ==
+mega_ui_test: PASS (0 fails)
+#### step 128 mega UI: map pins, travel letters, mega quests, boss themes, caves (C4: PASS in 6.5s
+
+#### step 134: hidden areas stay put day to day (C5) (shard 1/6)
+== hidden areas stay put day to day (C5) ==
+hidden_stable_test: OK (0 fails)
+#### step 134 hidden areas stay put day to day (C5): PASS in 6.9s
+
+#### step 140: softlocks: every menu/screen leaves on B, dialogues always finish (shard 1/6)
+== softlocks: every menu/screen leaves on B, dialogues always finish ==
+softlock_test: 0 failures
+#### step 140 softlocks: every menu/screen leaves on B, dialogues always finish: PASS in 8.7s
+
+#### step 146: C7 P5: colony stories and crew (shard 1/6)
+== C7 P5: colony stories and crew ==
+c7_colony_crew_test: PASS (0 fails)
+#### step 146 C7 P5: colony stories and crew: PASS in 6.9s
+
+#### step 152: C12 P5: mail, side stories and quest text match game state (shard 1/6)
+== C12 P5: mail, side stories and quest text match game state ==
+c12_mail_quests_test: OK
+#### step 152 C12 P5: mail, side stories and quest text match game state: PASS in 4.6s
+
+#### step 158: C11a P3: Ranching tree, ranch tiers, processing, ranch log, animal cou (shard 1/6)
+== C11a P3: Ranching tree, ranch tiers, processing, ranch log, animal counter ==
+ranch_p3_test: OK (0 fails)
+#### step 158 C11a P3: Ranching tree, ranch tiers, processing, ranch log, animal cou: PASS in 4.1s
+
+#### step 164: S1 P3: no new touch words outside PadInput.words (shard 1/6)
+== S1 P3: no new touch words outside PadInput.words ==
+prompt_words_check: 0 new (allow list 57)
+#### step 164 S1 P3: no new touch words outside PadInput.words: PASS in 0.3s
+
+#### step 170: C9 P4: haptics (shard 1/6)
+== C9 P4: haptics ==
+HAPTICS DONE, failures: 0
+#### step 170 C9 P4: haptics: PASS in 3.9s
+
+#### step 176: C10a P5: wardrobe (shard 1/6)
+== C10a P5: wardrobe ==
+wardrobe_test: OK (0 failures)
+#### step 176 C10a P5: wardrobe: PASS in 6.8s
+
+#### step 182: steam co-op: web build never parses Steam code (backend object, load b (shard 1/6)
+== steam co-op: web build never parses Steam code (backend object, load by path) ==
+net_web_safety_check: ok
+#### step 182 steam co-op: web build never parses Steam code (backend object, load b: PASS in 0.2s
+
+#### step 188: C12 P7: 'when' condition schema (unknown keys, bad values, typo flags) (shard 1/6)
+== C12 P7: 'when' condition schema (unknown keys, bad values, typo flags) ==
+cond_schema_test OK: 305 when-conditions, 37 keys allowed
+#### step 188 C12 P7: 'when' condition schema (unknown keys, bad values, typo flags): PASS in 0.3s
+
+#### step 194: C13 P1: song resolver, weekday/story stage, sfx log, gang swap, jingle (shard 1/6)
+== C13 P1: song resolver, weekday/story stage, sfx log, gang swap, jingle arbitration ==
+music_resolve_test: 0 failures
+#### step 194 C13 P1: song resolver, weekday/story stage, sfx log, gang swap, jingle: PASS in 3.9s
+
+#### step 200: C14 P4: fast-travel network (TravelNet tiers, build/ride, fares, holds (shard 1/6)
+== C14 P4: fast-travel network (TravelNet tiers, build/ride, fares, holds, save blocks, ride scene skip) ==
+travel_net_test: 49 checks, 0 failures
+#### step 200 C14 P4: fast-travel network (TravelNet tiers, build/ride, fares, holds: PASS in 5.2s
+
+#### step 206: prop_dress_test (shard 1/6)
+prop_dress_test: 0 failures
+#### step 206 prop_dress_test: PASS in 5.5s
+
+#### step 212: water_feature_test (C14b P2: smooth seamless fountain) (shard 1/6)
+== water_feature_test (C14b P2: smooth seamless fountain) ==
+water_feature_test: PASS (0 fails)
+#### step 212 water_feature_test (C14b P2: smooth seamless fountain): PASS in 5.9s
+
+#### step 218: C14b P4: magic and tech areas (ground sparkles, sky veils, motes, stri (shard 1/6)
+== C14b P4: magic and tech areas (ground sparkles, sky veils, motes, strips play out of step, colony glow, moon dusk) ==
+c14b_p4_magic_test: 0 failures
+#### step 218 C14b P4: magic and tech areas (ground sparkles, sky veils, motes, stri: PASS in 9.1s
+
+#### step 224: C15 P6: festival year (festivals.json, arc names, year gates, rules) (shard 1/6)
+== C15 P6: festival year (festivals.json, arc names, year gates, rules) ==
+festival_calendar_test: OK
+#### step 224 C15 P6: festival year (festivals.json, arc names, year gates, rules): PASS in 4.3s
+
+#### step 230: C15 P5: seasonal look twins, interior seasonal dressing, sprinkle, fes (shard 1/6)
+== C15 P5: seasonal look twins, interior seasonal dressing, sprinkle, festival/region music ==
+c15_p5_test: 0 failures
+#### step 230 C15 P5: seasonal look twins, interior seasonal dressing, sprinkle, fes: PASS in 8.5s
+
+#### step 236: C16a P6 skill trees + recruits/allies/team/pup progression (shard 1/6)
+== C16a P6 skill trees + recruits/allies/team/pup progression ==
+c16a_p6_test: 0 failures
+#### step 236 C16a P6 skill trees + recruits/allies/team/pup progression: PASS in 3.9s
+
+#### step 242: C16a P4: fishing (one koi rule set, legend year gates, reel quality, s (shard 1/6)
+== C16a P4: fishing (one koi rule set, legend year gates, reel quality, sizes, effect cap) ==
+c16a_p4_fish_test: 0 failures
+#### step 242 C16a P4: fishing (one koi rule set, legend year gates, reel quality, s: PASS in 4.7s
+
+#### step 248: C16b P4: battle reward ladder (stars, rematch pay, chests, first clear (shard 1/6)
+== C16b P4: battle reward ladder (stars, rematch pay, chests, first clear, mastery, track) ==
+battle_rewards_test: 0 fails
+#### step 248 C16b P4: battle reward ladder (stars, rematch pay, chests, first clear: PASS in 4.2s
+
+#### shard 1/6 done in 464s: PASS

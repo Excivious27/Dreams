@@ -1,0 +1,7 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 17 start arc=gangsters hero=marisol style=fighter progress=5 difficulty=3 day_len=40
+BOT ENERGY day=2 style=fighter len=40 left=123 max=165 fed=0 rest=0 spent={"sword":0.8}
+BOT ENERGY day=3 style=fighter len=40 left=163 max=165 fed=0 rest=0 spent={"sword":3.04}
+BOT ENERGY day=4 style=fighter len=40 left=118 max=165 fed=0 rest=0 spent={"sword":5.04}
+BOT 17 done: 0 fails, 0 warns, 630 steps, 8 kills, 0 ownerless pauses, scenes ["jungle", "mine", "ruins", "docks", "quarry"], day 5, ◆5920

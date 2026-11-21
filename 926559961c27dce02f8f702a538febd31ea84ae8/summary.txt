@@ -1,0 +1,40 @@
+CONDUCT CI FAIL  926559961c  (ci/c16bi-8baad2e3, run 44936615762)
+
+check shards (6/6):
+  shard 1: PASS  464s
+  shard 2: PASS  377s
+  shard 3: PASS  449s
+  shard 4: PASS  399s
+  shard 5: FAIL  358s  failed: C13 P4: story, scene and minigame audio cues (live beats, endings, moo
+  shard 6: PASS  368s
+bots (20/20, finished 20):
+  bot1  1 penguins kairi wander 0 0 15       OK   errors=0 fails=0 warns=0 pauses=0 96s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["marsh", "lake", "wind_s
+  bot2  2 penguins penguin_f story 1 2 20    OK   errors=0 fails=0 warns=0 pauses=0 90s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["mountain", "mine", "far
+  bot3  3 penguins penguin_m fighter 2 3 40  OK   errors=0 fails=0 warns=0 pauses=0 147s  0 fails, 0 warns, 630 steps, 7 kills, 0 ownerless pauses, scenes ["ruins", "sky_reaches", 
+  bot4  4 penguins merry farmer 0 2 30       OK   errors=0 fails=0 warns=0 pauses=0 60s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "desert_dune_sea
+  bot5  5 penguins coco menus 1 1 15         OK   errors=0 fails=0 warns=0 pauses=0 90s  0 fails, 0 warns, 345 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "moon", "house
+  bot6  6 penguins mer story 3 2 20          OK   errors=0 fails=0 warns=0 pauses=0 102s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "mine", "crystal
+  bot7  7 penguins coldy fighter 4 3 40      OK   errors=0 fails=0 warns=0 pauses=0 178s  0 fails, 0 warns, 630 steps, 7 kills, 0 ownerless pauses, scenes ["ruins", "quarry", "wast
+  bot8  8 penguins big_jim wander 5 2 30     OK   errors=0 fails=0 warns=0 pauses=0 98s  0 fails, 0 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "countrysid
+  bot9  9 penguins custom farmer 2 1 20      OK   errors=0 fails=0 warns=0 pauses=0 62s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["house", "gloam_crystal_
+  bot10 10 penguins pax story 5 2 15         OK   errors=0 fails=0 warns=0 pauses=0 98s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["crystal_meadow", "moon"
+  bot11 11 gangsters dad wander 0 0 15       OK   errors=0 fails=0 warns=0 pauses=0 92s  0 fails, 0 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes ["moon", "iron_freight_ya
+  bot12 12 gangsters mom story 1 2 30        OK   errors=0 fails=0 warns=0 pauses=0 94s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "moon", "country
+  bot13 13 gangsters june fighter 2 3 40     OK   errors=0 fails=0 warns=0 pauses=0 144s  0 fails, 0 warns, 630 steps, 4 kills, 0 ownerless pauses, scenes ["desert_sunken_temple", 
+  bot14 14 gangsters rafe farmer 0 1 20      OK   errors=0 fails=0 warns=0 pauses=0 61s  0 fails, 0 warns, 419 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm", "house",
+  bot15 15 gangsters nia menus 3 2 15        OK   errors=0 fails=0 warns=0 pauses=0 88s  0 fails, 0 warns, 261 steps, 0 kills, 0 ownerless pauses, scenes ["uptown", "moon", "mount
+  bot16 16 gangsters ollie story 4 2 30      OK   errors=0 fails=0 warns=0 pauses=0 93s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm", "mountai
+  bot17 17 gangsters marisol fighter 5 3 40  OK   errors=0 fails=0 warns=0 pauses=0 190s  0 fails, 0 warns, 630 steps, 8 kills, 0 ownerless pauses, scenes ["jungle", "mine", "ruins
+  bot18 18 gangsters bo wander 3 2 20        OK   errors=0 fails=0 warns=0 pauses=0 92s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "sky", "lak
+  bot19 19 gangsters custom story 2 1 30     OK   errors=0 fails=0 warns=0 pauses=0 100s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["sky", "mountain", "mead
+  bot20 20 gangsters pax menus 5 2 15        OK   errors=0 fails=0 warns=0 pauses=0 100s  0 fails, 0 warns, 344 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "beach", "neon
+playtest: PASS  40s  21 screenshots (results playtest/shots/)
+RELAY: ok, 5ms (live code a29f453d8be9, this server/)
+NET E2E: ok, 18s
+
+longest job: 464s
+slowest check steps: import 138.9s; import 128.0s; import 88.7s; import 88.4s; import 87.1s; import 74.4s; smoke test 57.0s; exits and spawns 47.9s
+distinct errors/fails/warns:
+    1  FAIL chapter c16b_regions_p opens with a title card
+    1  FAIL chapter c16b_regions_g opens with a title card
+    1  SCRIPT ERROR: Invalid access to property or key 'process_frame' on a base object of type 'null instance'.

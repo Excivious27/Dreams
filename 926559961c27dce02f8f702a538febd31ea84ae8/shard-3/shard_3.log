@@ -1,0 +1,271 @@
+
+#### step 1: import (shard 3/6)
+== import ==
+[  90% ] [90m[1mreimport[22m | ach_g_squeaky.png[39m[0m
+[  90% ] [90m[1mreimport[22m | ach_g_squeaky_locked.png[39m[0m
+[  91% ] [90m[1mreimport[22m | ach_g_streets.png[39m[0m
+[  91% ] [90m[1mreimport[22m | ach_g_streets_locked.png[39m[0m
+[  92% ] [90m[1mreimport[22m | ach_g_the_hive.png[39m[0m
+[  92% ] [90m[1mreimport[22m | ach_g_the_hive_locked.png[39m[0m
+[  93% ] [90m[1mreimport[22m | ach_g_top_floor.png[39m[0m
+[  93% ] [90m[1mreimport[22m | ach_g_top_floor_locked.png[39m[0m
+[  94% ] [90m[1mreimport[22m | ach_g_wired.png[39m[0m
+[  94% ] [90m[1mreimport[22m | ach_g_wired_locked.png[39m[0m
+[  95% ] [90m[1mreimport[22m | ach_hall_of_wonders.png[39m[0m
+[  95% ] [90m[1mreimport[22m | ach_hall_of_wonders_locked.png[39m[0m
+[  96% ] [90m[1mreimport[22m | ach_harvest_500.png[39m[0m
+[  96% ] [90m[1mreimport[22m | ach_harvest_500_locked.png[39m[0m
+[  97% ] [90m[1mreimport[22m | ach_heart_of_the_mountain.png[39m[0m
+[  97% ] [90m[1mreimport[22m | ach_heart_of_the_mountain_locked.png[39m[0m
+[  98% ] [90m[1mreimport[22m | ach_jumper_champion.png[39m[0m
+[  98% ] [90m[1mreimport[22m | ach_jumper_champion_locked.png[39m[0m
+[  99% ] [90m[1mreimport[22m | ach_legend_of_the_lake.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (210 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 128.0s
+
+#### step 4: building doors (shard 3/6)
+== building doors ==
+door_check: 0 failures (138 buildings answer)
+#### step 4 building doors: PASS in 20.9s
+
+#### step 10: first week pacing, faint/clinic/sleep (shard 3/6)
+== first week pacing, faint/clinic/sleep ==
+first_week_test: 0 failures
+#### step 10 first week pacing, faint/clinic/sleep: PASS in 5.6s
+
+#### step 16: S1 P1: web build stays Steam-free (presets, .gdignore, user:// lock, s (shard 3/6)
+== S1 P1: web build stays Steam-free (presets, .gdignore, user:// lock, singleton lint, web baseline) ==
+web_export_guard static: ok (0 problems)
+#### step 16 S1 P1: web build stays Steam-free (presets, .gdignore, user:// lock, s: PASS in 0.6s
+
+#### step 22: touch_ui_test (shard 3/6)
+touch_ui_test: 0 failures
+#### step 22 touch_ui_test: PASS in 41.0s
+
+#### step 28: Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a (shard 3/6)
+== Tom C6 phone playtest: pace, watering can, held name, pup menu, drag and drop, organise ==
+   tier 0: rock 3, log 4, tree 7, farm tree 9
+   tier 1: rock 2, log 3, tree 5, farm tree 7
+   tier 2: rock 2, log 2, tree 4, farm tree 5
+   tier 3: rock 1, log 2, tree 3, farm tree 4
+   tier 4: rock 1, log 1, tree 2, farm tree 3
+tom_playtest_c6_test: OK (0 fails)
+#### step 28 Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a: PASS in 6.8s
+
+#### step 34: decor catalogue: box, uniques, rolls, rotation, prices, migration (C10 (shard 3/6)
+== decor catalogue: box, uniques, rolls, rotation, prices, migration (C10a) ==
+decor_test: 6675 checks, 0 failures
+#### step 34 decor catalogue: box, uniques, rolls, rotation, prices, migration (C10: PASS in 7.9s
+
+#### step 40: rec_reno_test (shard 3/6)
+rec_reno_test: 0 failures
+#### step 40 rec_reno_test: PASS in 3.8s
+
+#### step 46: farm_week_test (shard 3/6)
+farm_week_test: OK (0 fails)
+#### step 46 farm_week_test: PASS in 7.2s
+
+#### step 52: anim_test (shard 3/6)
+anim_test: 0 failures
+#### step 52 anim_test: PASS in 4.2s
+
+#### step 58: ranch_p2_test (shard 3/6)
+ranch_p2_test: 0 failures
+#### step 58 ranch_p2_test: PASS in 3.9s
+
+#### step 64: early_gating_test (shard 3/6)
+early_gating_test: PASS (0 fails)
+#### step 64 early_gating_test: PASS in 6.3s
+
+#### step 70: music loop seams (join click + level jump) (shard 3/6)
+== music loop seams (join click + level jump) ==
+music_loop_check: 0 bad of 229
+#### step 70 music loop seams (join click + level jump): PASS in 23.1s
+
+#### step 76: Steam: docs/STEAM.md current, Steamworks brief and ledger consistent ( (shard 3/6)
+== Steam: docs/STEAM.md current, Steamworks brief and ledger consistent (S1 P5) ==
+steam_handoff: OK (6 fragments, brief current)
+#### step 76 Steam: docs/STEAM.md current, Steamworks brief and ledger consistent (: PASS in 0.0s
+
+#### step 82: C11a ranch art: species strips, building looks, icons, stations (shard 3/6)
+== C11a ranch art: species strips, building looks, icons, stations ==
+slice_c11a check: ok
+#### step 82 C11a ranch art: species strips, building looks, icons, stations: PASS in 0.8s
+
+#### step 88: danger_music_test (shard 3/6)
+danger_music_test: 0 failures
+#### step 88 danger_music_test: PASS in 35.2s
+
+#### step 94: allies: enemies fight back, pup commands (shard 3/6)
+== allies: enemies fight back, pup commands ==
+ally_test: 0 failures
+#### step 94 allies: enemies fight back, pup commands: PASS in 5.3s
+
+#### step 100: every script compiles (shard 3/6)
+== every script compiles ==
+compile_all: 0 bad
+#### step 100 every script compiles: PASS in 5.2s
+
+#### step 106: quest_tracker_test (shard 3/6)
+quest_tracker_test: 0 fails
+#### step 106 quest_tracker_test: PASS in 5.7s
+
+#### step 112: battle_drill_flow_test (shard 3/6)
+battle_drill_flow_test (penguins): 0 fails
+#### step 112 battle_drill_flow_test: PASS in 13.6s
+
+#### step 118: skill_glow_test (shard 3/6)
+skill_glow_test: 0 fails
+#### step 118 skill_glow_test: PASS in 5.4s
+
+#### step 124: gangster first hours: intro, day 2, meadow, Hideout, first crew (shard 3/6)
+== gangster first hours: intro, day 2, meadow, Hideout, first crew ==
+gang_start_test: 0 failures
+#### step 124 gangster first hours: intro, day 2, meadow, Hideout, first crew: PASS in 15.5s
+
+#### step 130: hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) (shard 3/6)
+== hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) ==
+hidden_area_test: PASS (0 fails)
+#### step 130 hidden areas: a pocket and a secret way in every mega area (CONDUCT 4): PASS in 13.5s
+
+#### step 136: jumper_test (shard 3/6)
+jumper_test: 0 failures
+#### step 136 jumper_test: PASS in 4.1s
+
+#### step 142: C12 story conditions: hero-as-character lines, choice payoffs, watcher (shard 3/6)
+== C12 story conditions: hero-as-character lines, choice payoffs, watcher, elders, %bitter, backstop order ==
+c12_story_cond_test: 0 fails
+#### step 142 C12 story conditions: hero-as-character lines, choice payoffs, watcher: PASS in 4.8s
+
+#### step 148: C12 P2: gangster story text matches state (shard 3/6)
+== C12 P2: gangster story text matches state ==
+c12_gang_story_test: 0 fails
+#### step 148 C12 P2: gangster story text matches state: PASS in 4.0s
+
+#### step 154: C11b P6: battle line-up and team jobs (shard 3/6)
+== C11b P6: battle line-up and team jobs ==
+battle_team_test: OK
+#### step 154 C11b P6: battle line-up and team jobs: PASS in 3.8s
+
+#### step 160: C11a integration: one care path, ranching keys, incubator, farm hands, (shard 3/6)
+== C11a integration: one care path, ranching keys, incubator, farm hands, P6 art ==
+c11a_integ_test: 41 checks, 0 failures
+#### step 160 C11a integration: one care path, ranching keys, incubator, farm hands,: PASS in 4.3s
+
+#### step 166: S1 P3: Steam Deck text floor (every screen at 1280x800) (shard 3/6)
+== S1 P3: Steam Deck text floor (every screen at 1280x800) ==
+ISSUE tap|p_menu_items|@Button@188'Pup'|17x30
+ISSUE tap|p_menu_hero|@Button@188'Pup'|17x30
+ISSUE tap|p_menu_skills|@Button@188'Pup'|18x30
+ISSUE tap|p_menu_pup|@Button@188'Pup'|17x30
+ISSUE tap|p_menu_party|@Button@188'Pup'|17x30
+ISSUE tap|p_menu_social|@Button@188'Pup'|17x30
+ISSUE tap|p_menu_map|@Button@188'Pup'|17x30
+ISSUE tap|p_menu_quests|@Button@188'Pup'|17x30
+ISSUE tap|p_menu_book|@Button@188'Pup'|17x30
+ISSUE tap|p_menu_options|@Button@188'Pup'|17x30
+ISSUE tap|p_menu_keys|@Button@188'Pup'|17x30
+ISSUE tap|p_menu_fieldlog|@Button@188'Pup'|17x30
+ISSUE tap|p_menu_workshop|@Button@188'Pup'|17x30
+ISSUE tap|p_menu_foes|@Button@188'Pup'|17x30
+ISSUE tap|p_menu_messages|@Button@188'Pup'|17x30
+ISSUE tap|p_menu_mail|@Button@188'Pup'|17x30
+ISSUE tap|g_menu_items|@Button@3410'Pup'|17x30
+ISSUE tap|g_menu_hero|@Button@3410'Pup'|17x30
+ISSUE tap|g_menu_skills|@Button@3410'Pup'|18x30
+ISSUE tap|g_menu_pup|@Button@3410'Pup'|17x30
+ISSUE tap|g_menu_party|@Button@3410'Pup'|17x30
+ISSUE tap|g_menu_social|@Button@3410'Pup'|17x30
+ISSUE tap|g_menu_map|@Button@3410'Pup'|17x30
+ISSUE tap|g_menu_quests|@Button@3410'Pup'|17x30
+ISSUE tap|g_menu_book|@Button@3410'Pup'|17x30
+ISSUE tap|g_menu_options|@Button@3410'Pup'|17x30
+ISSUE tap|g_menu_keys|@Button@3410'Pup'|17x30
+ISSUE tap|g_menu_fieldlog|@Button@3410'Pup'|17x30
+ISSUE tap|g_menu_workshop|@Button@3410'Pup'|17x30
+ISSUE tap|g_menu_foes|@Button@3410'Pup'|17x30
+ISSUE tap|g_menu_messages|@Button@3410'Pup'|17x30
+ISSUE tap|g_menu_mail|@Button@3410'Pup'|17x30
+deck_text_test: smallest Control text cap 9.5 px at 1280x800
+deck_text_test: 0 issue(s)
+#### step 166 S1 P3: Steam Deck text floor (every screen at 1280x800): PASS in 13.3s
+
+#### step 172: S1 P2: achievements, stats, rich presence (shard 3/6)
+== S1 P2: achievements, stats, rich presence ==
+#### step 172 S1 P2: achievements, stats, rich presence: PASS in 0.0s
+
+#### step 178: relay: server/server.js protocol (tools/relay_test.js; a push of serve (shard 3/6)
+== relay: server/server.js protocol (tools/relay_test.js; a push of server/ to main deploys the live relay) ==
+RELAY TEST OK
+#### step 178 relay: server/server.js protocol (tools/relay_test.js; a push of serve: PASS in 5.6s
+
+#### step 184: deck window: 1280x800 with no window manager fills the screen (xvfb) (shard 3/6)
+== deck window: 1280x800 with no window manager fills the screen (xvfb) ==
+deck_window_test: 0 failures
+#### step 184 deck window: 1280x800 with no window manager fills the screen (xvfb): PASS in 8.6s
+
+#### step 190: C12 P7: text house style (UK spelling, Grumps, Wren Jr., no real brand (shard 3/6)
+== C12 P7: text house style (UK spelling, Grumps, Wren Jr., no real brands, counts) ==
+text_style_check: 76 hits, 0 over baseline
+#### step 190 C12 P7: text house style (UK spelling, Grumps, Wren Jr., no real brand: PASS in 1.1s
+
+#### step 196: C13 P3: sfx level guard (no brick-walled stings, jingle gain <= +12, i (shard 3/6)
+== C13 P3: sfx level guard (no brick-walled stings, jingle gain <= +12, impacts start < 60 ms, sfx_meta complete) ==
+sfx_level_check: 601 files, 0 problems, 16 notes
+#### step 196 C13 P3: sfx level guard (no brick-walled stings, jingle gain <= +12, i: PASS in 2.8s
+
+#### step 202: C14 P3: beach marina (tiers, routes, passages, charters, both arcs) (shard 3/6)
+== C14 P3: beach marina (tiers, routes, passages, charters, both arcs) ==
+marina_test: 0 failures
+#### step 202 C14 P3: beach marina (tiers, routes, passages, charters, both arcs): PASS in 8.5s
+
+#### step 208: town props (C14 P2) (shard 3/6)
+== town props (C14 P2) ==
+town_props_test: 0 failures
+#### step 208 town props (C14 P2): PASS in 11.4s
+
+#### step 214: mine_life_test (C14b P2: mine drips, lamp motes, fire lamps) (shard 3/6)
+== mine_life_test (C14b P2: mine drips, lamp motes, fire lamps) ==
+mine_life_test: PASS (0 fails)
+#### step 214 mine_life_test (C14b P2: mine drips, lamp motes, fire lamps): PASS in 4.9s
+
+#### step 220: creature idle life (C14b P6) (shard 3/6)
+== creature idle life (C14b P6) ==
+creature_life_test: PASS (0 fails)
+#### step 220 creature idle life (C14b P6): PASS in 6.5s
+
+#### step 226: C15 P2: seasonal goods (forage, winter crops, shop rotation, stall see (shard 3/6)
+== C15 P2: seasonal goods (forage, winter crops, shop rotation, stall seeds, festival treats, decor, dishes) ==
+#### step 226 C15 P2: seasonal goods (forage, winter crops, shop rotation, stall see: PASS in 0.2s
+
+#### step 232: C16a P3: energy (energy_check bands, Tom's day-1 mine route on real la (shard 3/6)
+== C16a P3: energy (energy_check bands, Tom's day-1 mine route on real layouts, energy fixes) ==
+energy_check: ROUTE (gang arc day 1, meadow + floor 1 + half floor 2): 35.0 of 120 (29%, max 40%) [pickaxe swing 0.45, 1.13 a rock, sword 0.12, dodge 0.50]
+energy_check: BAR curve d1 120, d3 124, d7 138, d28 181, y1 278, y2 365, y3 395; every-source ceiling 560 (band <= 560)
+energy_check: ok (30 persona-days x 4 day lengths)
+#### step 232 C16a P3: energy (energy_check bands, Tom's day-1 mine route on real la: PASS in 0.1s
+
+#### step 238: C16a P5: gear ladders, pick swings, station gates and year tiers, deep (shard 3/6)
+== C16a P5: gear ladders, pick swings, station gates and year tiers, deep mine years, winter any-crops, helper watering, decor set arcs ==
+c16a_p5_test: 0 failures
+#### step 238 C16a P5: gear ladders, pick swings, station gates and year tiers, deep: PASS in 4.5s
+
+#### step 244: C16b P5: campaign content (long way rows, gang captains and rosters, t (shard 3/6)
+== C16b P5: campaign content (long way rows, gang captains and rosters, tier-1 ramp, cache vs battle pay) ==
+c16b_p5_test: 0 fails
+#### step 244 C16b P5: campaign content (long way rows, gang captains and rosters, t: PASS in 0.0s
+
+#### step 250: slice_c16bp4 (shard 3/6)
+#### step 250 slice_c16bp4: PASS in 0.4s
+
+#### shard 3/6 done in 449s: PASS

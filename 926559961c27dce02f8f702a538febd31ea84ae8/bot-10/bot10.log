@@ -1,0 +1,9 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 10 start arc=penguins hero=pax style=story progress=5 difficulty=2 day_len=15
+BOT ENERGY day=1 style=story len=15 left=123 max=165 fed=5 rest=0 spent={"pickaxe":0.32,"sword":1.84}
+BOT ENERGY day=2 style=story len=15 left=165 max=165 fed=2 rest=0 spent={"sword":2.08}
+BOT ENERGY day=3 style=story len=15 left=163 max=165 fed=0 rest=0 spent={"sword":1.92}
+BOT 10 done: 0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["crystal_meadow", "moon", "meadow", "town", "mine", "colony_kelp"], day 4, ◆9788
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)

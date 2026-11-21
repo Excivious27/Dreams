@@ -1,0 +1,308 @@
+
+#### step 1: import (shard 4/6)
+== import ==
+[  89% ] [90m[1mreimport[22m | ach_g_gilt.png[39m[0m
+[  89% ] [90m[1mreimport[22m | ach_g_gilt_locked.png[39m[0m
+[  90% ] [90m[1mreimport[22m | ach_g_going_home.png[39m[0m
+[  90% ] [90m[1mreimport[22m | ach_g_going_home_locked.png[39m[0m
+[  91% ] [90m[1mreimport[22m | ach_g_good_neighbour.png[39m[0m
+[  91% ] [90m[1mreimport[22m | ach_g_good_neighbour_locked.png[39m[0m
+[  92% ] [90m[1mreimport[22m | ach_g_loyal.png[39m[0m
+[  92% ] [90m[1mreimport[22m | ach_g_loyal_locked.png[39m[0m
+[  93% ] [90m[1mreimport[22m | ach_g_none_left.png[39m[0m
+[  94% ] [90m[1mreimport[22m | ach_g_none_left_locked.png[39m[0m
+[  94% ] [90m[1mreimport[22m | ach_g_squeaky.png[39m[0m
+[  95% ] [90m[1mreimport[22m | ach_g_squeaky_locked.png[39m[0m
+[  95% ] [90m[1mreimport[22m | ach_g_streets.png[39m[0m
+[  96% ] [90m[1mreimport[22m | ach_g_streets_locked.png[39m[0m
+[  96% ] [90m[1mreimport[22m | ach_g_the_hive.png[39m[0m
+[  97% ] [90m[1mreimport[22m | ach_g_the_hive_locked.png[39m[0m
+[  97% ] [90m[1mreimport[22m | ach_g_top_floor.png[39m[0m
+[  98% ] [90m[1mreimport[22m | ach_g_top_floor_locked.png[39m[0m
+[  98% ] [90m[1mreimport[22m | ach_g_wired.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (183 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 138.9s
+
+#### step 5: exits and spawns (shard 4/6)
+== exits and spawns ==
+exit_check: 0 failures
+#### step 5 exits and spawns: PASS in 47.9s
+
+#### step 11: C8 core curves: levels, caps, swings, food, prices, sleep (shard 4/6)
+== C8 core curves: levels, caps, swings, food, prices, sleep ==
+  pacing (level reached with steady XP/day): xp/day | d28 | d112 | d224 | d336
+  swings by tool tier (level 1): tree [7, 5, 4, 3, 2, 2, 1, 1], stone [3, 2, 2, 1, 1, 1, 1, 1], ore [5, 4, 3, 3, 2, 2, 1, 1]
+c8_curve_test: 0 failures
+#### step 11 C8 core curves: levels, caps, swings, food, prices, sleep: PASS in 4.5s
+
+#### step 17: step 17 (shard 4/6)
+godotsteam: 4.24-gde ok
+#### step 17 step 17: PASS in 0.0s
+
+#### step 23: performance guards (batched cliffs, texture cache) (shard 4/6)
+== performance guards (batched cliffs, texture cache) ==
+perf_test: 0 failures
+#### step 23 performance guards (batched cliffs, texture cache): PASS in 3.8s
+
+#### step 29: storage_test (shard 4/6)
+storage_test: 0 failures
+#### step 29 storage_test: PASS in 4.0s
+
+#### step 35: decorate mode: place/move/store/undo, rooms, walls, floors (C10a P2) (shard 4/6)
+== decorate mode: place/move/store/undo, rooms, walls, floors (C10a P2) ==
+decor_mode_test: OK (0 fails)
+#### step 35 decorate mode: place/move/store/undo, rooms, walls, floors (C10a P2): PASS in 6.7s
+
+#### step 41: rec_audio_test (shard 4/6)
+rec_audio_test: 0 failures
+#### step 41 rec_audio_test: PASS in 4.0s
+
+#### step 47: farm_look_test (shard 4/6)
+farm_look_test: PASS (0 fails)
+#### step 47 farm_look_test: PASS in 6.3s
+
+#### step 53: npc_anim_test (shard 4/6)
+npc_anim_test: OK (0 fails)
+#### step 53 npc_anim_test: PASS in 4.1s
+
+#### step 59: ranch_gift_test (shard 4/6)
+ranch_gift_test: 45 checks, 0 failures
+#### step 59 ranch_gift_test: PASS in 4.6s
+
+#### step 65: town_first_test (shard 4/6)
+town_first_test: 0 failures
+#### step 65 town_first_test: PASS in 6.4s
+
+#### step 71: music: loop points are applied (data/music_loops.json) (shard 4/6)
+== music: loop points are applied (data/music_loops.json) ==
+music_loops_test: 117 entries, 0 failures
+#### step 71 music: loop points are applied (data/music_loops.json): PASS in 4.4s
+
+#### step 77: Steam: ratings / AI disclosure answers still true (S1 P5) (shard 4/6)
+== Steam: ratings / AI disclosure answers still true (S1 P5) ==
+ratings_facts_check: 0 failures
+#### step 77 Steam: ratings / AI disclosure answers still true (S1 P5): PASS in 0.6s
+
+#### step 83: C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, ico (shard 4/6)
+== C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, icons, violet guard ==
+slice_c11b check: ok
+#### step 83 C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, ico: PASS in 0.7s
+
+#### step 89: mix_test (shard 4/6)
+mix_test: 0 failures
+#### step 89 mix_test: PASS in 6.0s
+
+#### step 95: gifts: the Marked and boss powers (shard 4/6)
+== gifts: the Marked and boss powers ==
+gift_test: 0 failures
+#### step 95 gifts: the Marked and boss powers: PASS in 8.3s
+
+#### step 101: campaign: battles, projects, colonies, big mines (shard 4/6)
+== campaign: battles, projects, colonies, big mines ==
+campaign_test: 0 failures
+#### step 101 campaign: battles, projects, colonies, big mines: PASS in 9.4s
+
+#### step 107: street_bat_test (shard 4/6)
+street_bat_test: 0 fails
+#### step 107 street_bat_test: PASS in 4.2s
+
+#### step 113: battle_drill_flow_test (shard 4/6)
+battle_drill_flow_test (gangsters): 0 fails
+#### step 113 battle_drill_flow_test: PASS in 14.3s
+
+#### step 119: move_speed_test (shard 4/6)
+move_speed_test: 0 fails
+#### step 119 move_speed_test: PASS in 6.1s
+
+#### step 125: villager heart arcs (2-10 hearts, 6-heart quests, daily lines) (shard 4/6)
+== villager heart arcs (2-10 hearts, 6-heart quests, daily lines) ==
+HEARTS DONE, failures: 0
+#### step 125 villager heart arcs (2-10 hearts, 6-heart quests, daily lines): PASS in 10.8s
+
+#### step 131: crisp art shader on buildings/props (C2 P7) (shard 4/6)
+== crisp art shader on buildings/props (C2 P7) ==
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+crisp_art_test: OK
+#### step 131 crisp art shader on buildings/props (C2 P7): PASS in 5.3s
+
+#### step 137: arcade_test (shard 4/6)
+         [2] _run (res://tools/arcade_test.gd:260)
+arcade_test: 0 failures
+#### step 137 arcade_test: PASS in 4.7s
+
+#### step 143: toasts: never over a boss card, a region card, the pup strip or the en (shard 4/6)
+== toasts: never over a boss card, a region card, the pup strip or the energy bar ==
+toast_layout_test: 0 failures
+#### step 143 toasts: never over a boss card, a region card, the pup strip or the en: PASS in 9.4s
+
+#### step 149: C7 P4: heart scene content (shard 4/6)
+== C7 P4: heart scene content ==
+hearts_content_test: OK
+#### step 149 C7 P4: heart scene content: PASS in 5.1s
+
+#### step 155: C11b P6: ranch building arc words and footprints (shard 4/6)
+== C11b P6: ranch building arc words and footprints ==
+builds_words_test: OK
+#### step 155 C11b P6: ranch building arc words and footprints: PASS in 4.2s
+
+#### step 161: C8 P4: fishing rules, mining curve, reward tables (shard 4/6)
+== C8 P4: fishing rules, mining curve, reward tables ==
+c8_p4_test: PASS (0 fails)
+#### step 161 C8 P4: fishing rules, mining curve, reward tables: PASS in 15.3s
+
+#### step 167: C9 P2: game menu with keys/pad (shard 4/6)
+== C9 P2: game menu with keys/pad ==
+menu_pad_test: 0 failures
+#### step 167 C9 P2: game menu with keys/pad: PASS in 6.0s
+
+#### step 173: C13 P6: hearing accessibility (mono, reduce loud, captions, voice/UI/s (shard 4/6)
+== C13 P6: hearing accessibility (mono, reduce loud, captions, voice/UI/step buses) ==
+achievements_test: 0 failures
+#### step 173 C13 P6: hearing accessibility (mono, reduce loud, captions, voice/UI/s: PASS in 4.5s
+
+#### step 179: relay: Play together uses the live relay by default, custom server + R (shard 4/6)
+== relay: Play together uses the live relay by default, custom server + Reset to default ==
+net_url_test: 13 checks, 0 failures
+#### step 179 relay: Play together uses the live relay by default, custom server + R: PASS in 5.9s
+
+#### step 185: S1 P6: Steam store text drafts (tokens, limits, banned words, claims g (shard 4/6)
+== S1 P6: Steam store text drafts (tokens, limits, banned words, claims gate) ==
+store_text_check: warn short-description.md [short]: 252 chars (> 250 leaves little room for translations)
+store_text_check: warn claims.md c4: 'Raise and rehome animals' is rough; review before the page goes live
+store_text_check: warn claims.md c11: 'Online co-op (GATED: use short ALT B until done)' is rough; review before the page goes live
+store_text_check: 5 fields, 0 failures
+#### step 185 S1 P6: Steam store text drafts (tokens, limits, banned words, claims g: PASS in 0.1s
+
+#### step 191: C12 P7: dialogue conditions match game state (talk pools per snapshot, (shard 4/6)
+== C12 P7: dialogue conditions match game state (talk pools per snapshot, both arcs) ==
+dialogue_state_test: OK (0 failures)
+#### step 191 C12 P7: dialogue conditions match game state (talk pools per snapshot,: PASS in 5.5s
+
+#### step 197: access_audio_test (shard 4/6)
+access_audio_test: 0 failures
+#### step 197 access_audio_test: PASS in 4.2s
+
+#### step 203: C14 P1: home regions (riverlands river + bridge, orchard rows, day cor (shard 4/6)
+== C14 P1: home regions (riverlands river + bridge, orchard rows, day corn by season, highlands spring, winter bands) ==
+c14p1_home_test: 0 failures
+#### step 203 C14 P1: home regions (riverlands river + bridge, orchard rows, day cor: PASS in 6.8s
+
+#### step 209: anim core (C14b P1) (shard 4/6)
+== anim core (C14b P1) ==
+anim_core_test: 0 failures (105 sway sprites, 1 strip groups, 10 materials)
+#### step 209 anim core (C14b P1): PASS in 5.0s
+
+#### step 215: strip registration (C14b P2: fire strips keep their base still) (shard 4/6)
+== strip registration (C14b P2: fire strips keep their base still) ==
+props/bonfire base width spread 1 px, centre spread 1.0 px ok
+furniture/bubbling_pot base width spread 2 px, centre spread 1.0 px ok
+#### step 215 strip registration (C14b P2: fire strips keep their base still): PASS in 0.1s
+
+#### step 221: C15 P1: calendar (festivals/holidays/events/markets/birthdays, both ar (shard 4/6)
+== C15 P1: calendar (festivals/holidays/events/markets/birthdays, both arcs, years 1-3) ==
+calendar_test: 0 failures
+#### step 221 C15 P1: calendar (festivals/holidays/events/markets/birthdays, both ar: PASS in 4.7s
+
+#### step 227: season_goods_test (shard 4/6)
+season_goods_test: OK (0 fails)
+#### step 227 season_goods_test: PASS in 4.5s
+
+#### step 233: energy_check (shard 4/6)
+#### step 233 energy_check: PASS in 0.1s
+
+#### step 239: C16a P1: progression timeline (mega region calendar/skill floors, non- (shard 4/6)
+== C16a P1: progression timeline (mega region calendar/skill floors, non-combat roads, year-2 travel) ==
+progression_test: PASS (0 failures)
+#### step 239 C16a P1: progression timeline (mega region calendar/skill floors, non-: PASS in 4.4s
+
+#### step 245: C16b P1: battle commands, army building, allies (hold holds the team,  (shard 4/6)
+== C16b P1: battle commands, army building, allies (hold holds the team, MEND/BARRAGE, upkeep, ranks) ==
+battle_army_test: OK
+#### step 245 C16b P1: battle commands, army building, allies (hold holds the team, : PASS in 7.1s
+
+#### shard 4/6 done in 399s: PASS

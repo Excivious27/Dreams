@@ -1,0 +1,7 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 13 start arc=gangsters hero=june style=fighter progress=2 difficulty=3 day_len=40
+BOT ENERGY day=1 style=fighter len=40 left=117 max=120 fed=0 rest=0 spent={"sword":3.84}
+BOT ENERGY day=3 style=fighter len=40 left=90 max=121 fed=0 rest=0 spent={"sword":0.6}
+BOT ENERGY day=4 style=fighter len=40 left=119 max=121 fed=0 rest=0 spent={"sword":3.36}
+BOT 13 done: 0 fails, 0 warns, 630 steps, 4 kills, 0 ownerless pauses, scenes ["desert_sunken_temple", "mine", "quarry", "iron_tunnels", "ruins", "desert_dune_sea"], day 5, ◆2198
