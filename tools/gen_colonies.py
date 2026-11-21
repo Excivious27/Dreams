@@ -333,6 +333,8 @@ for rid, c in COL.items():
               {"type": "star_crystal", "cell": pts["crystal"], "hint": "A: the star crystal", "solid": True}]
     for i, b in enumerate(pts["beacons"]):
         things.append({"type": "beacon", "key": "b%d" % i, "cell": b, "hint": "A: tide beacon", "solid": True})
+    # C14 contract: the colony jetty (TravelNet station colony_<id>_jetty, P4 lists it in gen_travel.py)
+    things.append({"type": "colony_jetty", "station": rid + "_jetty", "cell": [44, 61], "hint": "A: the jetty", "solid": True})
     # Secrets: a buried cache on the islet, a lore stone, a shore pile: each island its own (c7_10).
     things += [dict(t) for t in c["secrets"]]
     R[rid] = {"cols": cols, "rows": rows, "music": "beach", "backdrop": "sea", "ground": "grass", "path": "sand", "spawn": [40, 60], "pad": 6,

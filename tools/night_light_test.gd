@@ -53,6 +53,6 @@ func _run() -> void:
 		_ok(u.glow_dark() > 0.2, "underground lamps glow at noon")
 	# mines: steady lamp glow, no tint
 	var m := await _go("mine")
-	_ok(m != null and m.glow_dark() > 0.2 and m.sky_tint(12 * 60) == Color(1, 1, 1), "mine lamps glow at noon without a tint")
+	_ok(m != null and m.glow_dark() > 0.2 and m.sky_tint(12 * 60).v < 0.85 and m.sky_tint(12 * 60).is_equal_approx(m.sky_tint(0)), "mine lamps glow at noon under a steady cave shade (c14_16-13)")
 	print("night_light_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)

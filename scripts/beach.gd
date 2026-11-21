@@ -1,14 +1,31 @@
 extends GameMap
-## The south beach: sand, the sea along the bottom, a pier, shells and coconuts
-## to forage, and a wrecked boat. Exit: town (north).
+## The south beach (C14 P3: grown east and south): zones west->east are the
+## shipwreck point (x0-24), the family beach and the town lane (x24-46), the cove
+## with a rowboat-only sandbar (x46-64), the MARINA (x64-92, Marina tiers T0-T4)
+## and the lighthouse point (x92+). Exits: town (north), marsh (west), quarry (east).
+## Gangster arc: a boardwalk, a vendor stall, concrete piers and the Tidewater Launch.
 
+const COLS := 100
+const ROWS := 46
 const TOWN_EXIT := Rect2i(30, 0, 4, 1)
 const MARSH_EXIT := Rect2i(0, 12, 1, 4)
-const QUARRY_EXIT := Rect2i(63, 12, 1, 4)
+const QUARRY_EXIT := Rect2i(COLS - 1, 12, 1, 4)
 const SEA_Y := 24
+const MARINA_X := 64
+const QUAY_Y := 20      # the marina quay's sea line
+const PIER_X := 76      # main pier, 3 wide (T1+)
+const CAMP := Vector2i(86, 9)
+const SANDBAR := Rect2i(52, 34, 6, 3)
+## The sea's own shore fish (no freshwater salmon/goldfish; gen_collections scans this list).
+const SEA_FISH := ["sunfish", "bass", "eel", "puffer", "starfin"]
 var _sea := {}
 var _sand := {}
 var _pier_sea := {}  # sea cells under the piers: the water runs on beneath the planks
+var _tip := Vector2i.ZERO
+var _quay := {}  # the marina quay (boardwalk / concrete), drawn over the sand
+## HiddenArea reads m.R["hidden"]: one sea-cave pocket in the west rocks (c14_04-23).
+## Its "paths" keep the pocket off the family beach and the marina footprint.
+var R := {"hidden": {"pockets": 1, "ways": 1}, "paths": [[24, 8, 22, 16], [64, 8, 36, 16], [7, 16, 12, 9]]}
 
 
 func scene_id() -> String:
@@ -20,12 +37,12 @@ func default_spawn() -> Vector2:
 
 
 func build() -> void:
-	cols = 64
-	rows = 36
+	cols = COLS
+	rows = ROWS
 	pad = 7
 	border = {"n": "trees", "s": "water", "w": "trees", "e": "trees"}  # (the east rock band was buried under the sand: an invisible wall)
-	music_track = "beach"
-	add_exit(TOWN_EXIT, "town", Vector2(40 * TILE, 92 * TILE), "up", "▲ town")
+	music_track = "beach" if GameState.is_penguins() else ("beach_gang" if Music.has_track("beach_gang") else "beach")
+	add_exit(TOWN_EXIT, "town", Vector2(40 * TILE, 120 * TILE), "up", "▲ town")  # C14 P2: town grew south
 	add_exit(MARSH_EXIT, "marsh", Vector2(49 * TILE, 22 * TILE + 8), "left", "◀ marsh")
 	add_exit(QUARRY_EXIT, "quarry", Vector2(2 * TILE, 22 * TILE + 8), "right", "quarry ▶")
 	# The tide line wanders: sea cells start at SEA_Y ± noise, with a cove on the east.
@@ -35,41 +52,36 @@ func build() -> void:
 			var top := 8 + clampi(int(round((WorldGen.fbm(float(x), 1.0, 507, 5.0) + 0.5) * 2.0)), 0, 2)
 			if y < top and (x < 28 or x > 35):
 				continue  # grass
-			var n := WorldGen.fbm(float(x), 3.0, 505, 9.0) * 3.0
-			var cove := 0.0
-			if x > 46:
-				cove = (x - 46) * 0.35
-			var edge := SEA_Y + n - cove
-			if y >= edge:
+			var edge := _edge(x)
+			if y >= edge and not SANDBAR.has_point(Vector2i(x, y)):
 				_sea[Vector2i(x, y)] = true
 				set_thing(x, y, {"type": "sea", "hint": "A: fish" if GameState.has_tool("rod") else ""})
 			else:
 				_sand[Vector2i(x, y)] = true
-	# Two piers out into the sea.
-	for px in [Vector2i(31, 0), Vector2i(12, 0)]:
-		var y0 := SEA_Y - 3
-		while not _sea.has(Vector2i(px.x, y0)) and y0 < rows - 1:
-			y0 += 1
-		for y in range(y0 - 1, y0 + 6):
-			for x in range(px.x, px.x + 2):
-				var c := Vector2i(x, y)
-				things.erase(c)
-				blocked.erase(c)
-				hard.erase(c)
-				if _sea.has(c):
-					_pier_sea[c] = true
-				_sea.erase(c)
-				things[c] = {"type": "dock"}
-	# The ferry to the merkitty colonies waits at the end of the west pier.
+	# Piers out into the sea: the west (ferry) pier, the family pier and the marina's
+	# main pier (a 2-wide broken stub until Marina tier 1 makes it 3 wide and long).
+	var mt := Marina.tier()
+	for px: Array in [[12, 2, 6], [31, 2, 6], [PIER_X, 3 if mt >= 1 else 2, 14 if mt >= 1 else 3]]:
+		_pier(int(px[0]), int(px[1]), int(px[2]))
+	if mt >= 2:  # finger docks off the main pier
+		for fy: int in [QUAY_Y + 5, QUAY_Y + 10]:
+			for x in range(PIER_X + 3, PIER_X + 10):
+				_dock_cell(Vector2i(x, fy))
+	# The west pier's tip: the colony ferry (penguins) or the Tidewater Launch (gangsters).
 	var tip := Vector2i(12, SEA_Y + 4)
 	for y in range(SEA_Y - 3, rows):
 		if things.get(Vector2i(12, y), {}).get("type", "") == "dock":
 			tip = Vector2i(12, y)
-	things[tip] = {"type": "ferry", "hint": "A: the ferry to the colonies"}
+	_tip = tip
+	if GameState.is_penguins():
+		things[tip] = {"type": "ferry", "hint": "A: Skipper Barnacle's ferry", "station": "beach_colony_ferry"}
+	else:
+		things[tip] = {"type": "marina", "kind": "passage", "station": "beach_tidewater", "hint": "A: Tidewater Launch", "pier": true}
+	_marina_things(mt)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 81 + int(GameState.run["day"]) / 7
 	for i in 12:
-		var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(9, SEA_Y + 2))
+		var c := Vector2i(rng.randi_range(2, MARINA_X - 2), rng.randi_range(9, SEA_Y + 2))
 		if not _sand.has(c):
 			continue
 		if things.has(c):
@@ -80,6 +92,10 @@ func build() -> void:
 		var item: String = ["seashell", "seashell", "coconut", "fiber", "crab"][rng.randi_range(0, 4)]
 		things[c] = {"type": "forage", "key": key, "item": item, "hint": "A: pick up %s" % GameState.item_name(item)}
 	set_thing(5, 16, {"type": "wreck", "hint": "A: search the wreck"})
+	for x in range(MARINA_X, 92):
+		for y in range(QUAY_Y - 3, QUAY_Y + 1):
+			if _sand.has(Vector2i(x, y)):
+				_quay[Vector2i(x, y)] = true
 	# The sea, the water under the piers and the water past the map edge are one body.
 	if Art.has("seamless", "sea"):
 		border_water_extra = _sea.duplicate()
@@ -87,44 +103,133 @@ func build() -> void:
 		border_water_shore = "sand"
 
 
+## The tide line by column: the open beach, the cove (deepest at x 54), the
+## marina's straight quay, and the lighthouse point jutting south.
+func _edge(x: int) -> float:
+	var n := WorldGen.fbm(float(x), 3.0, 505, 9.0) * 3.0
+	if x < 44:
+		return SEA_Y + n
+	if x < MARINA_X:
+		return SEA_Y + n - 5.0 * sin(PI * float(x - 44) / float(MARINA_X - 44))
+	if x < 92:
+		return QUAY_Y + n * 0.3
+	return QUAY_Y + 2 + (x - 92) * 1.2 + n * 0.5
+
+
+func _dock_cell(c: Vector2i) -> void:
+	if not in_content(c):
+		return
+	things.erase(c)
+	blocked.erase(c)
+	hard.erase(c)
+	if _sea.has(c):
+		_pier_sea[c] = true
+	_sea.erase(c)
+	things[c] = {"type": "dock"}
+
+
+## A pier `w` wide starting one row above the first sea cell, `len` rows into the sea.
+func _pier(x0: int, w: int, len: int) -> void:
+	var y0 := 6
+	while not _sea.has(Vector2i(x0, y0)) and y0 < rows - 1:
+		y0 += 1
+	for y in range(y0 - 1, mini(y0 + len, rows - 1)):
+		for x in range(x0, x0 + w):
+			_dock_cell(Vector2i(x, y))
+
+
+## The marina's interactable things for tier `mt` (Marina.interact handles them).
+func _marina_things(mt: int) -> void:
+	var pen := GameState.is_penguins()
+	# The harbour office board (always: T0 is where Hollis offers the first job).
+	set_thing(MARINA_X + 6, QUAY_Y - 3, {"type": "marina", "kind": "board", "hint": "A: " + Marina.line("board")})
+	set_thing(CAMP.x + 2, CAMP.y + 1, {"type": "marina", "kind": "camp", "hint": "A: the camp"})
+	if mt >= 1:
+		set_thing(PIER_X + 1, QUAY_Y - 1, {"type": "marina", "kind": "passage", "station": "beach_marina", "hint": "A: passage desk"})
+	if mt >= 2:
+		set_thing(MARINA_X + 17, QUAY_Y - 3, {"type": "marina", "kind": "market", "hint": "A: fish market"})
+		set_thing(MARINA_X + 24, QUAY_Y - 3, {"type": "marina", "kind": "boathouse", "hint": "A: boatwright"})
+	if mt >= 3 and Marina.npc_here("saffi", 12):
+		set_thing(PIER_X + 8, QUAY_Y + 9, {"type": "marina", "kind": "trader", "hint": "A: the Gull's Wing" if pen else "A: the freighter"})
+	# The rowboat-only sandbar: a buried chest (exploration secret, c14_04-15).
+	if not GameState.run["flags"].has("sandbar_chest"):
+		set_thing(SANDBAR.position.x + 3, SANDBAR.position.y + 1, {"type": "sandbar_chest", "hint": "A: dig"})
+
+
 func after_ready() -> void:
 	WorldGen.add_backdrop(self, "sea")
 	_palm_band()
 	WorldGen.dress_band(self, 812)
-	if Art.has("props", "campsite"):
-		var cs := AnimatedSprite2D.new()
-		cs.sprite_frames = Art.frames("props", {"idle": "campsite"}, {"idle": 6.0})
-		cs.animation = "idle"
-		cs.scale = Vector2(0.5, 0.5)
-		cs.position = cell_center(Vector2i(cols - 12, 10)) + Vector2(16, 0)
-		cs.offset = Vector2(0, -32)
-		add_child(cs)
-		cs.play("idle")
-		# The fire and tent are solid: no walking through the camp (c5_03 #8).
-		for x in range(cols - 12, cols - 10):
-			blocked[Vector2i(x, 10)] = true
-		set_thing(cols - 10, 11, {"type": "note", "text": "Someone's camp. The fire's still warm. Footprints lead down to the water, and a little way off, a rowing boat's keel-mark in the sand.", "hint": "A: the camp"}, false)
+	# Roz's camp: anim_prop, so the fire glows at night (c14_04-05).
+	if anim_prop("props", "campsite", CAMP, 1, 6.0, false):
+		for x in range(CAMP.x, CAMP.x + 2):
+			blocked[Vector2i(x, CAMP.y)] = true
+	if Marina.tier() < 1:
+		set_thing(CAMP.x + 2, CAMP.y + 2, {"type": "note", "text": "Someone's camp. The fire's still warm. Footprints lead down to the water, and a little way off, a rowing boat's keel-mark in the sand.", "hint": "A: the camp"}, false)
 	var dock := DockLayer.new()
 	dock.map = self
+	dock.tiles_name = "dock" if GameState.is_penguins() or not Art.has("tiles", "concrete_pier") else "concrete_pier"
 	dock.position = offset()
 	add_child.call_deferred(dock)
 	var avoid := {}
 	for y in range(8, rows):
 		for x in cols:
 			avoid[Vector2i(x, y)] = true
-	for c in cells_of([Rect2i(28, 0, 8, 9), MARSH_EXIT.grow(3), QUARRY_EXIT.grow(3)]):
+	for c in cells_of([Rect2i(28, 0, 8, 9), MARSH_EXIT.grow(3), QUARRY_EXIT.grow(3), Rect2i(MARINA_X, 0, cols - MARINA_X, 9)]):
 		avoid[c] = true
 	WorldGen.tree_clumps(self, Rect2i(2, 2, cols - 4, 6), 83, 8, avoid)
 	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, 6), 84, 10, avoid)
 	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, 20), 85, 16, ["seagull", "seagull", "crab", "crab", "sparrow", "butterfly_yellow", "crab"])
 	_place_props()
+	_dress_marina()
 	prop("props", "lantern_lit", Vector2i(30, SEA_Y - 5))
 	prop("props", "lantern_lit", Vector2i(33, SEA_Y - 5))
+	_clear_docks()
+	# Station signs for the TravelNet stations here (the desks are this map's own things).
+	for sid: String in ["beach_marina", "beach_colony_ferry" if GameState.is_penguins() else "beach_tidewater"]:
+		TravelNet.station_prop(self, sid)
+	HiddenArea.place(self, "beach", 1)
+	_festival_note()
 	if not GameState.run["flags"].has("beach_seen"):
 		GameState.run["flags"]["beach_seen"] = true
 		player.frozen = true
 		await say([{"text": "Salt wind. Gulls. The sea goes on until it becomes the sky. Half a boat lies in the sand like something the water spat out."}])
 		player.frozen = false
+
+
+## Marina festival days (c14_04-13): the Fishing Derby, the Regatta / Harbour
+## Lights night market, announced on arrival once the marina's tier allows.
+func _festival_note() -> void:
+	var arc := "penguins" if GameState.is_penguins() else "gangsters"
+	var fest: Dictionary = Marina.data().get("festival", {})
+	for k: String in fest:
+		var f: Dictionary = fest[k]
+		if not f.has("day") or str(f.get("arc", "both")) not in ["both", arc] or Marina.tier() < int(f.get("tier", 1)):
+			continue
+		if GameState.season() == str(f.get("season", "")) and GameState.day_of_season() == int(f["day"]):
+			hud.toast(str(f["line"]), Color(1, 0.9, 0.6))
+
+
+## Nothing grows on the planks: drop any plant/decal dressing that landed on a
+## dock/ferry cell or its one-cell ring (c14_04-19).
+func _clear_docks() -> void:
+	for c: Vector2i in things.keys():
+		if not str(things[c].get("type", "")) in ["dock", "ferry"] and not (str(things[c].get("type", "")) == "marina" and str(things[c].get("kind", "")) == "passage"):
+			continue
+		for dx in range(-1, 2):
+			for dy in range(-1, 2):
+				var k := c + Vector2i(dx, dy)
+				if props.has(k) and things.get(k, {}).get("type", "") in ["", "dock", "ferry"]:
+					var n: Node = props[k]
+					if n is Sprite2D and (n as Sprite2D).texture and str((n as Sprite2D).texture.resource_path).contains("/nature/"):
+						n.queue_free()
+						props.erase(k)
+
+
+## Reload the beach after a marina upgrade so the new tier's harbour appears.
+func rebuild_marina() -> void:
+	if player:
+		go_to("beach", player.position - offset(), "down", false)
 
 
 ## The side bands over the sand. The soft sand patch draws above the baked ground,
@@ -162,6 +267,8 @@ func _palm_band() -> void:
 
 
 func interact(c: Vector2i, thing: Dictionary) -> bool:
+	if Marina.interact(self, c, thing):
+		return true
 	match str(thing.get("type", "")):
 		"note":
 			tell([{"text": str(thing.get("text", "..."))}])
@@ -171,28 +278,75 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			_fish(c)
 			return true
 		"hut":
-			tell([{"text": "A thatched hut with surfboards leaning on it. Closed. A sign says 'back when the fish are'."}])
+			if Marina.tier() >= 1:
+				Marina.interact(self, c, {"type": "marina", "kind": "bait"})
+			elif GameState.is_penguins():
+				tell([{"text": "A thatched hut with surfboards leaning on it. Closed. A sign says 'back when the pier is'."}])
+			else:
+				tell([{"text": "A shuttered boardwalk stall. A card in the window: 'Open again when the harbour is.'"}])
+			return true
+		"sandbar_chest":
+			GameState.run["flags"]["sandbar_chest"] = true
+			things.erase(c)
+			give("pearl", 1)
+			give("map_scrap", 1)
 			return true
 		"wreck":
-			if int(GameState.run["flags"].get("wreck_day", 0)) < int(GameState.run["day"]) - 3:
-				GameState.run["flags"]["wreck_day"] = int(GameState.run["day"])
-				var loot: String = ["copper", "iron", "shard", "key_rusty"][randi() % 4]
-				if loot == "key_rusty":
-					loot = "shard"
-				give(loot, 2)
-			else:
-				hud.toast("Nothing new in the wreck yet.")
+			_wreck()
 			return true
 	return false
 
 
+## The galleon: loot every few days; the third search on a new day turns up the
+## captain's log page (map_scrap) once: 'The Wreck's Log' (c14_04-16/12).
+func _wreck() -> void:
+	if int(GameState.run["flags"].get("wreck_day", 0)) >= int(GameState.run["day"]) - 3 and GameState.run["flags"].has("wreck_day"):
+		hud.toast("Nothing new in the wreck yet.")
+		return
+	GameState.run["flags"]["wreck_day"] = int(GameState.run["day"])
+	var ms := Marina.st()
+	if int(ms["wreck_last"]) != int(GameState.run["day"]):
+		ms["wreck_last"] = int(GameState.run["day"])
+		ms["wreck_searches"] = int(ms["wreck_searches"]) + 1
+		if int(ms["wreck_searches"]) == 3 and not (ms["quests"] as Dictionary).has("marina_wreck_log"):
+			ms["quests"]["marina_wreck_log"] = true
+			give("map_scrap", 1)
+			tell([{"text": "Under a split plank: an oilskin pouch with a page of the captain's log. A sandbar is marked off the cove, and an X."}])
+			return
+	give(["copper", "iron", "shard"][randi() % 3], 2)
+
+
+## Sea fish (c14_04-10): the sea's own shore pool; rowing out past the shallows
+## (no land within 3 cells) adds the deep-water fish.
 func _fish(c: Vector2i) -> void:
-	fish_at(c, ["sunfish", "bass", "salmon", "eel", "puffer", "goldfish", "starfin"])
+	var pool: Array = SEA_FISH.duplicate()
+	for f in Marina.shore_pool():
+		if not f in pool and f != "crab":
+			pool.append(f)
+	if player and player.vehicle_def().has("water"):
+		var far := true
+		for dx in range(-3, 4):
+			for dy in range(-3, 4):
+				var k := c + Vector2i(dx, dy)
+				if in_content(k) and not _sea.has(k):
+					far = false
+		if far:
+			for f in Marina.deep_pool():
+				if not f in pool:
+					pool.append(f)
+	fish_at(c, pool)
 
 
 func draw_map() -> void:
 	draw_grass(8)
-	WorldGen.draw_ground_detail(self, 86, 0.1)
+	# No flowers/forage on or beside the piers and the marina quay (c14_04-19).
+	var keep_clear := _quay.duplicate()
+	for k: Vector2i in things:
+		if str(things[k].get("type", "")) in ["dock", "ferry", "marina"]:
+			for dx in range(-1, 2):
+				for dy in range(-2, 2):
+					keep_clear[k + Vector2i(dx, dy)] = true
+	WorldGen.draw_ground_detail(self, 86, 0.1, keep_clear)
 	# Sand (with grass transition), wet strip, then sea with foam.
 	var sand := _sand.duplicate()
 	# The sand runs on under the side border bands (no straight grass strips down the edges).
@@ -218,6 +372,10 @@ func draw_map() -> void:
 				Art.draw_tile(self, "tiles", "sand_wet", Vector2(c * TILE), 4)
 	else:
 		draw_tileset_rect("shore_set", Rect2i(0, 8, cols, SEA_Y - 8), Color("e3cf8f"))
+	# The marina quay: boardwalk planks (penguins) or concrete (gangsters).
+	var qseam := "boardwalk" if GameState.is_penguins() else "pier_concrete"
+	if not _quay.is_empty() and Art.has("seamless", qseam):
+		soft_ground(_quay, qseam, Color(0.1, 0.08, 0.05, 0.3))
 	if border_water_extra.is_empty():
 		_draw_sea_cells()
 	# Only the town lane is dirt (it runs over grass): draw_corridor draws it with the
@@ -274,48 +432,64 @@ func _after_sea() -> void:
 func _place_props() -> void:
 	if not Art.has("buildings", "galleon"):
 		return
+	var pen := GameState.is_penguins()
+	var se := GameState.look_se()
 	prop("buildings", "galleon", Vector2i(4, 20), 13)
 	things.erase(Vector2i(5, 16))
 	set_thing(10, 20, {"type": "wreck", "hint": "A: search the wreck"}, false)
-	prop("buildings", "beach_hut", Vector2i(40, 12), 3, 0.0, true, 0.85)  # town-sized next to the hero
-	set_thing(41, 13, {"type": "hut", "hint": "A: beach hut"}, false)
-	for c: Vector2i in [Vector2i(3, 10), Vector2i(20, 9), Vector2i(34, 9), Vector2i(57, 10), Vector2i(8, 11), Vector2i(50, 9), Vector2i(26, 10)]:
+	if pen:
+		prop("buildings", "beach_hut", Vector2i(40, 12), 3, 0.0, true, 0.85)  # town-sized next to the hero
+		set_thing(41, 13, {"type": "hut", "hint": "A: Surf & Bait Shack" if Marina.tier() >= 1 else "A: beach hut"}, false)
+	else:
+		_boardwalk()
+	for c: Vector2i in [Vector2i(3, 10), Vector2i(20, 9), Vector2i(34, 9), Vector2i(57, 10), Vector2i(8, 11), Vector2i(50, 9), Vector2i(26, 10), Vector2i(94, 10), Vector2i(97, 16)]:
 		prop("nature", "palm", c, 1)
 	prop("props", "beached_boat", Vector2i(22, 20), 2)
 	var bk := Art.has("props", "bk_umbrella_red")
-	prop("props", "bk_umbrella_red" if bk else "umbrella_red", Vector2i(16, 16), 1, 0.0, true, 0.35 if bk else 0.5)
-	prop("props", "bk_umbrella_blue" if bk else "umbrella_blue", Vector2i(37, 17), 1, 0.0, true, 0.35 if bk else 0.5)
+	# The family beach follows the season (c14_04-20): full in summer, furled in
+	# spring/fall, packed away in winter (driftwood piles instead).
+	if se != "winter":
+		prop("props", "bk_umbrella_red" if bk else "umbrella_red", Vector2i(16, 16), 1, 0.0, true, 0.35 if bk else 0.5)
+	if se == "summer":
+		prop("props", "bk_umbrella_blue" if bk else "umbrella_blue", Vector2i(37, 17), 1, 0.0, true, 0.35 if bk else 0.5)
+		prop("props", "umbrella_yellow", Vector2i(24, 15), 1, 0.0, true, 0.5)
 	prop("props", "bk_lifeguard" if bk else "lifeguard", Vector2i(27, 18), 0, 0.0, true, 0.35 if bk else 0.5)
 	if bk:
-		prop("props", "bk_towel", Vector2i(18, 17), 0, 0.0, false, 0.3)
-		prop("props", "bk_sandcastle", Vector2i(31, 17), 0, 0.0, true, 0.3)
+		if se == "summer":
+			prop("props", "bk_towel", Vector2i(18, 17), 0, 0.0, false, 0.3)
+			prop("props", "bk_sandcastle", Vector2i(31, 17), 0, 0.0, true, 0.3)
+			prop("props", "bk_sandcastle", Vector2i(20, 19), 0, 0.0, true, 0.26)
+		elif se == "winter":
+			for c: Vector2i in [Vector2i(18, 17), Vector2i(31, 17), Vector2i(24, 15)]:
+				prop("props", "bk_driftwood_a" if c.x % 2 == 0 else "bk_driftwood_b", c, 0, 0.0, false, 0.3)
 		# Small decals scattered over the sand (no pickup; the shells you can
 		# take are the forage ones).
 		var drng := RandomNumberGenerator.new()
 		drng.seed = 4242
 		var decals := ["bk_pebbles_s", "bk_pebbles_m", "bk_footprints", "bk_driftwood_a", "bk_driftwood_b", "bk_seaweed_a", "bk_seaweed_b", "bk_pebbles_s"]
-		for i in 26:
+		for i in 40:
 			var dc := Vector2i(drng.randi_range(2, cols - 3), drng.randi_range(10, SEA_Y - 1))
-			if things.has(dc) or blocked.has(dc) or props.has(dc) or not _sand.has(dc):
+			if things.has(dc) or blocked.has(dc) or props.has(dc) or not _sand.has(dc) or _quay.has(dc):
 				continue
 			var sp := prop("props", decals[drng.randi() % decals.size()], dc, 0, 0.0, false, 0.22)
 			if sp:
 				to_under(sp)
-	_anim("props", "bonfire", Vector2i(36, 15), 0, 8.0)
-	if Art.has("props", "bonfire"):
-		blocked[Vector2i(36, 15)] = true  # you walk round a fire, not through it
-	_anim("props", "buoy", Vector2i(8, 29), 0, 2.0)
-	_anim("props", "buoy", Vector2i(44, 30), 0, 2.0)
-	_anim("props", "buoy", Vector2i(58, 26), 0, 2.0)
-	_anim("props", "tide_pool", Vector2i(48, 17), 1, 3.0)
-	_anim("props", "tide_pool", Vector2i(56, 16), 1, 3.0)
-	for c: Vector2i in [Vector2i(53, 18), Vector2i(60, 19), Vector2i(2, 15)]:
+	# The bonfire burns except in winter (festival nights aside).
+	if se != "winter" or GameState.festival_today() != "":
+		if anim_prop("props", "bonfire", Vector2i(36, 15), 0, 8.0, true):
+			blocked[Vector2i(36, 15)] = true  # you walk round a fire, not through it
+	for c: Vector2i in [Vector2i(8, 29), Vector2i(44, 30), Vector2i(58, 26), Vector2i(70, 40), Vector2i(94, 38)]:
+		anim_prop("props", "buoy", c, 0, 2.0)
+	anim_prop("props", "tide_pool", Vector2i(48, 17), 1, 3.0)
+	anim_prop("props", "tide_pool", Vector2i(56, 16), 1, 3.0)
+	anim_prop("props", "tide_pool", Vector2i(SANDBAR.position.x + 1, SANDBAR.position.y + 2), 1, 3.0)
+	for c: Vector2i in [Vector2i(53, 18), Vector2i(60, 19), Vector2i(2, 15), Vector2i(SANDBAR.end.x - 1, SANDBAR.position.y)]:
 		prop("nature", "rock_l" if Art.has("nature", "rock_l") else "rock_m", c, 1)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 87
-	for i in 10:
+	for i in 14:
 		var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(9, SEA_Y - 2))
-		if things.has(c) or blocked.has(c) or not _sand.has(c):
+		if things.has(c) or blocked.has(c) or not _sand.has(c) or _quay.has(c):
 			continue
 		if Art.has("props", "bk_dune_s"):
 			prop("props", ["bk_dune_s", "bk_dune_m", "bk_dune_l"][rng.randi_range(0, 2)], c, 1, 0.0, true, 0.3)
@@ -332,37 +506,94 @@ func _place_props() -> void:
 			if props.has(k):
 				(props[k] as Node).queue_free()
 			prop("props", nm, k, 0, 0.0, true, sc)
-	# Pier planks: replace dock tiles with the pier set.
-	for k in things.keys():
-		if str(things[k].get("type", "")) == "dock" and Art.has("tiles", "pier"):
-			var sp := Sprite2D.new()
-			sp.texture = Art.tex("tiles", "pier")
-			sp.region_enabled = true
-			sp.region_rect = Rect2(32, 0, 32, 32)
-			sp.scale = Vector2(0.5, 0.5)
-			sp.position = cell_pos(k.x, k.y) + Vector2(8, 8)
+	# (The old tiles/pier sprites under the dock cells are gone: DockLayer draws
+	# every pier, c14_04-26.)
+	_west_tip()
+
+
+## The west pier's tip: the moored colony ferry and Skipper Barnacle (penguins),
+## or the Tidewater Launch's boat and Dutch's lantern (gangsters) (c14_04-01/03).
+func _west_tip() -> void:
+	var t := _tip
+	prop("props", "moor_a", t + Vector2i(-1, -2), 0, 0.0, false, 0.15)
+	prop("props", "dock_lantern", t + Vector2i(1, -1), 0, 0.0, false, 0.15)
+	if GameState.is_penguins():
+		anim_prop("props", "ferry_moored", t + Vector2i(2, 1), 2, 2.0, false, 0.5)
+		prop("props", "gangplank", t + Vector2i(1, 0), 0, 0.0, false, 0.12)
+		anim_prop("fx", "merkitty_b", t + Vector2i(0, -1), 0, 3.0, false, 0.4)  # Skipper Barnacle
+	else:
+		prop("props", "c14p3_speedboat" if Art.has("props", "c14p3_speedboat") else "tugboat", t + Vector2i(2, 2), 2, 0.0, false, 0.35)
+		prop("props", "crates_pallet", t + Vector2i(1, -3), 0, 0.0, false, 0.25)
+
+
+## Gangster beach: a boardwalk along row 11 with the vendor's stall, a shuttered
+## arcade and neon (c14_04-04 / 04-17).
+func _boardwalk() -> void:
+	for x in range(36, 48, 2):
+		var nm := "mk_boardwalk_end" if x == 36 else ("mk_boardwalk_corner" if x == 46 else "mk_boardwalk")
+		var sp := prop("props", nm, Vector2i(x, 11), 1, 0.0, false, 0.28)
+		if sp:
 			to_under(sp)
+	prop("props", "stall2_red" if Marina.vendor_here() else "stall2_red_closed", Vector2i(40, 10), 2, 0.0, true, 0.3)
+	set_thing(41, 11, {"type": "hut", "hint": "A: boardwalk vendor"}, false)
+	prop("props", "stall2_yellow_closed", Vector2i(44, 10), 2, 0.0, true, 0.3)  # the shuttered pier arcade
+	anim_prop("props", "neon_open", Vector2i(39, 9), 0, 2.0, false, 0.4)
+	prop("props", "crates_b", Vector2i(48, 11), 0, 0.0, true, 0.3)
 
 
-func _anim(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4.0) -> void:
-	if not Art.has(group, name):
+## The marina, dressed for its tier (both arcs; gangster arc gets concrete,
+## cranes and containers). Baked-safe: everything through prop()/anim_prop().
+func _dress_marina() -> void:
+	var mt := Marina.tier()
+	var pen := GameState.is_penguins()
+	var ox := MARINA_X
+	# Harbour office (Hollis) with the board: shuttered until tier 1.
+	prop("props", "boathouse", Vector2i(ox + 3, QUAY_Y - 4), 6, 0.0, true, 0.3)
+	prop("props", "dock_lantern", Vector2i(PIER_X - 1, QUAY_Y - 2), 0, 0.0, false, 0.15)
+	if not pen:
+		prop("props", "crane", Vector2i(ox + 28, QUAY_Y - 4), 2, 0.0, true, 0.5)
+		for i in 3:
+			prop("props", ["cargo_red", "cargo_grey", "cargo_yellow"][i], Vector2i(ox + 1 + i * 3, 12), 2, 0.0, true, 0.35)
+	# The marina's people at their posts (baked at load: who is on shift now).
+	var hr := Marina.hour_now()
+	if Marina.npc_here("hollis", hr):
+		prop("props", "c14p3_hollis", Vector2i(ox + 5, QUAY_Y - 3), 0, 0.0, true, 0.3)
+	if mt < 2 or Marina.npc_here("roz", hr):
+		prop("props", "c14p3_roz", Vector2i(CAMP.x + 3, CAMP.y + 1), 0, 0.0, true, 0.3)
+	if Marina.npc_here("ines", hr):
+		prop("props", "c14p3_ines", Vector2i(ox + 18, QUAY_Y - 3), 0, 0.0, true, 0.3)
+	if mt < 1:
+		prop("props", "rowboat2_c" if Art.has("props", "rowboat2_c") else "beached_boat", Vector2i(PIER_X + 3, QUAY_Y - 1), 1, 0.0, false, 0.3)
 		return
-	var a := AnimatedSprite2D.new()
-	a.sprite_frames = Art.frames(group, {"idle": name}, {"idle": fps})
-	a.animation = "idle"
-	a.scale = Vector2(0.5, 0.5)
-	a.position = cell_pos(c.x + (extra_w + 1) / 2.0, c.y + 1)
-	a.offset = Vector2(0, -float(Art.info(group, name).get("cell_h", 48)) / 2.0)
-	add_child(a)
-	a.play("idle")
-	# Footprint like prop(): base row, plus body rows for big structures.
-	var tw := float(Art.info(group, name).get("cell_w", 32)) / 2.0
-	var th := float(Art.info(group, name).get("cell_h", 48)) / 2.0
-	if group == "buildings" or tw >= 56.0:
-		var w_cells := maxi(extra_w + 1, int(round(tw / TILE)))
-		var x0 := c.x + (extra_w + 1) / 2 - w_cells / 2
-		for i in w_cells:
-			for j in clampi(int(round(th / TILE)) - 1, 1, 5):
-				blocked[Vector2i(x0 + i, c.y - j)] = true
-
-
+	for y in [QUAY_Y + 3, QUAY_Y + 7, QUAY_Y + 11]:
+		prop("props", "dock_lantern", Vector2i(PIER_X - 1, y), 0, 0.0, false, 0.15)
+		prop("props", "moor_a", Vector2i(PIER_X + 3, y), 0, 0.0, false, 0.15)
+	prop("props", "rowboat2_idle", Vector2i(PIER_X - 3, QUAY_Y + 4), 1, 0.0, false, 0.3)
+	if mt >= 2:
+		prop("props", "fish_market", Vector2i(ox + 15, QUAY_Y - 4), 3, 0.0, true, 0.6)
+		prop("props", "canoe2", Vector2i(ox + 23, QUAY_Y - 2), 1, 0.0, false, 0.3)
+		prop("props", "fish_rack", Vector2i(ox + 26, QUAY_Y - 3), 1, 0.0, true, 0.3)
+		prop("props", "stall2_blue" if pen else "stall2_purple", Vector2i(ox + 22, QUAY_Y - 4), 2, 0.0, true, 0.3)
+		prop("props", "tugboat", Vector2i(PIER_X + 5, QUAY_Y + 7), 2, 0.0, false, 0.45)
+		prop("props", "c14p3_charter", Vector2i(PIER_X + 4, QUAY_Y + 3), 2, 0.0, false, 0.35)  # Roz's charter boat
+		for x in range(ox + 2, ox + 26, 2):  # the breakwater arm
+			prop("nature", "rock_l" if Art.has("nature", "rock_l") else "rock_m", Vector2i(x, QUAY_Y + 20), 1, 0.0, false)
+		prop("props", "crab_pot_water", Vector2i(ox + 4, QUAY_Y + 6), 0, 0.0, false, 0.3)
+		prop("props", "crab_pot_water", Vector2i(ox + 7, QUAY_Y + 8), 0, 0.0, false, 0.3)
+	if mt >= 3:
+		prop("props", "trawler", Vector2i(PIER_X + 5, QUAY_Y + 12), 2, 0.0, false, 0.5)
+		prop("props", "c14p3_sailboat" if pen else "c14p3_speedboat", Vector2i(PIER_X - 4, QUAY_Y + 11), 2, 0.0, false, 0.35)
+		prop("buildings", "lighthouse", Vector2i(95, QUAY_Y + 4), 2, 0.0, true, 0.45)
+		if Marina.npc_here("saffi", 12):
+			prop("props", "cargo_ship", Vector2i(PIER_X + 6, QUAY_Y + 17), 6, 0.0, false, 0.4)
+	else:
+		prop("buildings", "lighthouse_broken", Vector2i(95, QUAY_Y + 4), 2, 0.0, true, 0.45)
+	# Lantern Boats (c14_04-13): on the Lantern Festival evening, paper lanterns
+	# float out round the main pier (glow: "lantern" in the name).
+	if GameState.festival_today() == "lantern" and pen:
+		for i in 8:
+			prop("props", "lantern_lit", Vector2i(PIER_X - 4 + (i % 4) * 4, QUAY_Y + 4 + (i / 4) * 6 + i % 2), 0, 0.0, false, 0.4)
+	if mt >= 4:
+		prop("props", "stall2_white", Vector2i(ox + 9, 12), 2, 0.0, true, 0.35)
+		prop("props", "umbrella_yellow", Vector2i(ox + 13, 13), 1, 0.0, true, 0.5)
+		prop("props", "umbrella_red", Vector2i(ox + 6, 13), 1, 0.0, true, 0.5)

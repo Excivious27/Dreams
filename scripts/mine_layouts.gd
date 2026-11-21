@@ -72,11 +72,26 @@ static func pick(floor_no: int, rng: RandomNumberGenerator, recent: Array) -> Di
 	return pool[-1][0]
 
 
-static func pick_dress(st: Dictionary, rng: RandomNumberGenerator) -> String:
+## The depth theme's own dressing (c14_12-14): no old workings at the Heart's Edge, no
+## rails and street lamps in the Crystal Veins. Theme first (65%), then the style's.
+const THEME_DRESS := {"Mossy Hollows": "mossy", "Flooded Galleries": "mossy", "Fungal Caverns": "glowshroom",
+	"Crystal Veins": "crystal", "Amethyst Grotto": "crystal", "The Heart's Edge": "crystal", "The Void Reach": "crystal",
+	"Frost Caves": "dripstone", "Drowned Dark": "dripstone", "Gold Seams": "old_works", "Sandstone Ruins": "old_works",
+	"Magma Rifts": "rockfall", "Obsidian Halls": "rockfall", "Grey Stone Deeps": "rockfall"}
+## Dressings that never fit a theme (old timber and lamps in crystal/void/heart caves...).
+const THEME_NEVER := {"crystal": ["old_works"], "glowshroom": ["old_works", "crystal"], "mossy": ["crystal"], "dripstone": ["old_works", "glowshroom"], "rockfall": ["mossy", "glowshroom"]}
+
+
+static func pick_dress(st: Dictionary, rng: RandomNumberGenerator, theme_name := "") -> String:
+	var tpref := str(THEME_DRESS.get(theme_name, ""))
+	if tpref != "" and rng.randf() < 0.65:
+		return tpref
+	var never: Array = THEME_NEVER.get(tpref, [])
 	var pref := str(st.get("dress", ""))
-	if pref != "" and rng.randf() < 0.7:
+	if pref != "" and pref not in never and rng.randf() < 0.7:
 		return pref
-	return str(DRESSINGS[rng.randi() % DRESSINGS.size()])
+	var pool := DRESSINGS.filter(func(d): return d not in never)
+	return str(pool[rng.randi() % pool.size()])
 
 
 # ------------------------------------------------------------------ carving

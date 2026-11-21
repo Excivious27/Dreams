@@ -41,8 +41,23 @@ func build() -> void:
 		var has := int(GameState.run["flags"].get(key, 0)) < int(GameState.run["day"])
 		things[m] = {"type": "shroom", "key": key, "has": has, "hint": "A: pick mushroom" if has else ""}
 	extend(18, 14)
+	# C14 P1 (c14_14-24): the farm river comes on through the west trees as a creek
+	# (it leaves the farm's east edge level with this corner) and runs out south.
+	var creek := WorldGen.river_cells({"pts": [[-2, 24], [3, 26], [4, 30], [2, 34], [1, 38], [2, rows + 1]], "w": 2.2, "seed": 2424})
+	for c: Vector2i in creek:
+		if not in_content(c):
+			continue
+		if things.has(c):
+			creek.erase(c)
+			continue
+		set_thing(c.x, c.y, {"type": "water", "river": true, "hint": "A: fish" if GameState.has_tool("rod") else ""})
+	border_water_extra = creek
+	border_water_shore = "river"
 	# A two-tier hill in the opened-up south: climb the stairs for the view over the valley.
 	var hav := cells_of([Rect2i(14, 18, 9, 8)])  # the tall-grass corner stays as it is
+	for c: Vector2i in creek:
+		hav[c + Vector2i(1, 0)] = true
+		hav[c] = true
 	hav.merge(_ext_paths)
 	for e in exits:
 		hav.merge(cells_of([(e["rect"] as Rect2i).grow(3)]))

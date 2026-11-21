@@ -78,7 +78,8 @@ static func portrait_for(who: String) -> String:
 	map["mercat"] = "merkitty_b"
 	map["pip-pip"] = "penguin_king"
 	map["the president's man"] = "brute"
-	map["ferry"] = "npc_pip"
+	map["ferry"] = "merkitty_b"
+	map["skipper barnacle"] = "merkitty_b"
 	map["lucia \"flame\" ardent"] = "lt_lucia"
 	var comp := Companion.data()
 	for cid in comp:
