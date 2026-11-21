@@ -1,0 +1,15 @@
+# CONDUCT 16b fix packages: BATTLE CAMPAIGNS (18 auditors, ~256 findings in /home/claude/wt/c16b_reports/c16b_NN.jsonl)
+Spec header: /home/claude/wt/C16B_SCOPES.txt. Findings per package, most severe first: /home/claude/wt/c16b_pk/<PK>.md. Read /home/claude/wt/C16B_CONTRACT.md first.
+Base branch: origin/c16a/integ (C16a merging; it contains main + C15).
+A finding in a file you don't own: one-or-two-line hook only, or a note in /home/claude/wt/c16bf_reports/NOTES.md.
+All the "hard-locked behind winning" blockers (c16b_08-01/02, 14-01, 02-11, 05-01) are solved ONCE by P3's long-way system; P5 supplies per-campaign long-way content rows (contract section 2).
+
+P1 BATTLE CORE: COMMANDS, HELPERS/ARMY BUILDING, ALLIES, ACCESSIBILITY (53: c16b_06, 07, 12, 13). Owns scripts/battle.gd, scripts/battle_brief.gd, scripts/pad_input.gd battle words, battle HUD: every command with clear words (InputSetup.prompt/PadInput.words), touch + pad, feedback; helper/unit building and upgrading clear in UI ("can I build helpers?" answered on screen), allies' ranks (Companion.partner_rank, Crew.member_level) affecting battle with clarity; assist options (slow mode / auto-battle assist for Very easy, reduced motion, captions); always a way out.
+
+P2 DRILL/TRAINING + BATTLE FEEL + UNIT AI (32: c16b_01, 11). Owns scripts/battle_drill.gd, scripts/helper_unit.gd, enemy.gd battle behaviour, battle camera/effects: the first-battle experience both arcs (what it teaches, helper introduced on screen before it appears, follow works, way out), hit feedback, follow/pathing/stuck fixes, enemy AI, effects/audio hooks.
+
+P3 CAMPAIGN FLOW + OPTIONAL BATTLES (THE LONG WAY) + STORY + TESTS + CO-OP (38: c16b_08, 14, 15, 16). Owns scripts/campaign.gd, scripts/campaign_gate.gd, Campaign.blocks/region_open/STORY_REGION, retry flow (same or Difficulty-easier), the long-way system (contract section 2), story integration (campaign_story.json via generator if any; story still completes with zero wins), NEW tools/zero_win_test.gd (every region and the whole main story reachable with zero battle wins, both arcs), retry test, a bot persona that never wins (bot.gd hook), co-op minimum (guests never break).
+
+P4 REWARD LADDER + CAMPAIGN BOARD (29: c16b_09, 10). Owns NEW scripts/battle_rewards.gd (class BattleRewards, contract section 3) + its data (NEW tools/gen_battle_rewards.py -> data/battle_rewards.json, in regen_data.sh), scripts/campaign_screen.gd (board, mission list, stars, rewards preview, "what's next", long-way button placement from P3's API, way out, phone readability), museum/collection entries for battle trophies (collections hook), achievements hooks, titles/cosmetics/decor grants through DecorSources.grant.
+
+P5 CAMPAIGN CONTENT, BALANCE, GANG IDENTITY (104: c16b_02, 03, 04, 05, 17, 18). Owns tools/gen_battles.py, tools/bf_themes.py, data/campaign*.json via generators: every mission's goal clarity, map readability, unit/enemy stats per tier, difficulty spikes, win rates per Difficulty, gang-arc identity (guns/rounds, crew units, turf missions, words, look; serious but all ages), boss campaigns; per-campaign long-way content rows (contract section 2).
