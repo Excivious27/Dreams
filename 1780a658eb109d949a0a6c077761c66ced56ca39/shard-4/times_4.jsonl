@@ -1,0 +1,24 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 48.2}
+{"step": 5, "name": "exits and spawns", "rc": 0, "secs": 26.1}
+{"step": 11, "name": "C8 core curves: levels, caps, swings, food, prices, sleep", "rc": 0, "secs": 2.1}
+{"step": 17, "name": "performance guards (batched cliffs, texture cache)", "rc": 0, "secs": 1.9}
+{"step": 23, "name": "storage_test", "rc": 0, "secs": 2.1}
+{"step": 29, "name": "ticket_econ_test", "rc": 0, "secs": 2.1}
+{"step": 35, "name": "gang_play_test", "rc": 0, "secs": 14.9}
+{"step": 41, "name": "house_exterior_test", "rc": 0, "secs": 4.6}
+{"step": 47, "name": "shop_econ_test", "rc": 0, "secs": 2.3}
+{"step": 53, "name": "early_gating_test", "rc": 0, "secs": 3.0}
+{"step": 59, "name": "music: loop points are applied (data/music_loops.json)", "rc": 0, "secs": 2.2}
+{"step": 65, "name": "economy: no money loops, crops and brews inside their bands", "rc": 0, "secs": 0.0}
+{"step": 71, "name": "footstep_test", "rc": 0, "secs": 4.8}
+{"step": 77, "name": "keeper encounters keep real hp (floor-1 swarms topped up)", "rc": 0, "secs": 3.0}
+{"step": 83, "name": "region campaigns: boards, locks, convoy", "rc": 0, "secs": 6.0}
+{"step": 89, "name": "farm_debris_test", "rc": 0, "secs": 3.8}
+{"step": 95, "name": "skill_glow_test", "rc": 0, "secs": 3.3}
+{"step": 101, "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew", "rc": 0, "secs": 8.9}
+{"step": 107, "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)", "rc": 0, "secs": 8.3}
+{"step": 113, "name": "jumper_test", "rc": 0, "secs": 2.5}
+{"step": 119, "name": "toasts: never over a boss card, a region card, the pup strip or the en", "rc": 0, "secs": 7.3}
+{"step": 125, "name": "C11a P5: ranch villagers, mail, festivals, pen sounds", "rc": 0, "secs": 2.8}
+{"step": 131, "name": "C9 P1: controller bindings and field play", "rc": 0, "secs": 3.1}
+{"step": 137, "name": "C9 P6: forest border buckets", "rc": 0, "secs": 3.6}
