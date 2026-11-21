@@ -9,9 +9,10 @@ extends CanvasLayer
 ## added on top, faded by darkness; homes go dark late at night, shops dim after closing.
 
 var map: GameMap
-var lights: Array = []   # [Node2D, radius, lift]
+var lights: Array = []   # [Node2D, radius, lift] or [Node2D, radius, lift, Color] (a coloured light, c11b_03-07)
 var windows: Array = []  # [Sprite2D building, Texture2D mask, kind "home"|"shop"|"late"]
 var _tex: Texture2D
+var _tex_white: Texture2D  # the same soft disc in white, tinted per light (glow sheep, lab strains)
 var _canvas: Node2D
 
 ## Buildings that keep their lights on all night; homes go dark at HOME_DARK.
@@ -38,12 +39,36 @@ func _ready() -> void:
 	gt.width = 64
 	gt.height = 64
 	_tex = gt
+	var gw := Gradient.new()
+	gw.set_color(0, Color(1, 1, 1, 0.55))
+	gw.set_color(1, Color(1, 1, 1, 0.0))
+	var gtw := GradientTexture2D.new()
+	gtw.gradient = gw
+	gtw.fill = GradientTexture2D.FILL_RADIAL
+	gtw.fill_from = Vector2(0.5, 0.5)
+	gtw.fill_to = Vector2(1.0, 0.5)
+	gtw.width = 64
+	gtw.height = 64
+	_tex_white = gtw
 	var mat := CanvasItemMaterial.new()
 	mat.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
 	_canvas.material = mat
 	if map != null:  # buildings placed in build(), before this layer existed
 		for b: Array in map.get("_bprops"):
 			add_windows(b[3] as Sprite2D, str(b[0]))
+
+
+## A light that follows a node (it moves with it): colour null = the warm lamp glow. Freed nodes drop out.
+static func add_light(m: GameMap, node: Node2D, radius: float, lift: float, colour: Variant = null) -> void:
+	if m == null or m.glow == null or not is_instance_valid(node):
+		return
+	var row: Array = [node, radius, lift]
+	if colour is Color:
+		row.append(colour)
+	m.glow.lights.append(row)
+	node.tree_exiting.connect(func() -> void:
+		if is_instance_valid(m) and m.glow != null:
+			m.glow.lights.erase(row), CONNECT_ONE_SHOT)
 
 
 ## A building sprite with a window mask: lit with the night (GameMap.building()).
@@ -132,6 +157,11 @@ func _draw_glow() -> void:
 	var tsz := _tex.get_size() if _tex else Vector2.ONE
 	for l: Array in lights:
 		var o: Variant = l[0]
+		var lt := _tex
+		var lc := Color(1, 1, 1, a)
+		if l.size() > 3 and l[3] is Color and _tex_white:
+			lt = _tex_white
+			lc = Color((l[3] as Color).r, (l[3] as Color).g, (l[3] as Color).b, a)
 		if not is_instance_valid(o):
 			continue
 		var n := o as Node2D
@@ -147,6 +177,6 @@ func _draw_glow() -> void:
 			if not cut_r.has_area():
 				continue
 			var src := Rect2((cut_r.position - dst.position) / dst.size * tsz, cut_r.size / dst.size * tsz)
-			_canvas.draw_texture_rect_region(_tex, cut_r, src, Color(1, 1, 1, a))
+			_canvas.draw_texture_rect_region(lt, cut_r, src, lc)
 			continue
-		_canvas.draw_texture_rect(_tex, dst, false, Color(1, 1, 1, a))
+		_canvas.draw_texture_rect(lt, dst, false, lc)

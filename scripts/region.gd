@@ -920,6 +920,10 @@ func _talk_npc(n: Npc) -> void:
 		GameState.run["talked_today"][id] = true
 		GameState.add_friend(id, 5)
 	if await Story.talk(self, id):
+		Intros.mark(id)  # a story beat was the meeting
+		player.frozen = false
+		return
+	if await Intros.talk(self, id):  # first meeting (Tam at his hut, C11a P5)
 		player.frozen = false
 		return
 	if await Hearts.talk(self, id):

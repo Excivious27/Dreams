@@ -329,8 +329,8 @@ func _go_home() -> void:
 	st["mode"] = "follow"
 	st["wait"] = []
 	Pet.say(get_tree(), "hurt")
-	map.hud.toast("%s has gone back to the dog house on your farm to rest%s." % [name_of(), " for a few hours" if best else " until tomorrow"], Color(1, 0.8, 0.7))
-	GameState.notify("%s is resting in the dog house on the farm. Back %s." % [name_of(), "in a few hours" if best else "tomorrow morning"])
+	map.hud.toast("%s has gone back to the dog house on your farm to rest. Back %s." % [name_of(), GameMenu.pup_back_text()], Color(1, 0.8, 0.7))
+	GameState.notify("%s is resting in the dog house on the farm. Back %s." % [name_of(), GameMenu.pup_back_text()])
 	map.emote(self, "sleep", 1.5)
 	visible = false
 	busy = true
@@ -580,7 +580,7 @@ func _dig() -> void:
 			found = "fiber"
 		GameState.add_item(found)
 		GameState.add_xp("pup", 3)
-		map.hud.toast("%s dug up a %s!" % [name_of(), GameState.item_name(found)], Color(0.8, 1, 0.8))
+		map.hud.toast("%s dug up %s!" % [name_of(), ItemWords.with_article(GameState.item_name(found))], Color(0.8, 1, 0.8))
 		Music.instance(get_tree()).sfx("pickup")
 		map.fx("dust_puff", position, 12.0, 0.4)
 

@@ -81,6 +81,7 @@ static func team() -> Array:
 		if GameState.friend_hearts(id) >= FRIEND_HEARTS:
 			seen[id] = true
 			out.append([id, str(GameState.npcs[id].get("name", id.capitalize())), "friend"])
+	out.append_array(TeamAnimals.gate_rows())  # C11a P4: trained team animals muster too
 	return out
 
 
