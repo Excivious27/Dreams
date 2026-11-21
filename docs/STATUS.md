@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — S1 P6 (store materials): docs/steam-store/ drafts (short/long/bullets/tags/pricing/store fields/sysreq/claims gate), store_facts + store_text_check, 12 Steam capsule/library/icon assets from 4 new text-free masters (steam_capsules.py + check), 11 scripted 1920x1080 screenshots (steam_shots.gd + test), trailer script + Movie Maker/ffmpeg pipeline (steam_trailer.sh), NAME-CHECK.md (Sony DREAMS mark conflict, 7 alternatives; Tom decides).
+
 ## 2026-11-20 — c11a/fix3: community farm reveal consumes cf_reveal_done before its 0.4 s pause (was a wall-clock race: fast CI checked the flags before the timer ended, flaky commons_test stage 4/5)
 
 ## 2026-11-20 — 2026-11-20 relay/live: Play together uses the live relay wss://dreams-64-23-239-63.sslip.io by default (custom field + Reset to default); GET /version (code hash + commit) on server.js; server/deploy/ reference box setup (dreams-update.sh writes .deployed_commit); tools/relay_test.js in check.sh; tools/net_e2e.sh two-instance Godot test vs live relay; CI relay job (RELAY: ok, Xms; waits for server/ deploys; main pushes touching server/net.gd run it).

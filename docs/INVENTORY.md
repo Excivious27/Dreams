@@ -4,7 +4,7 @@ Every system in the game with its state, what is still outstanding, test coverag
 
 **Summary:** 74 systems: 54 done, 14 rough, 5 missing. Average 78%.
 
-**Live counts:** 20,824 sliced art pieces in 674 groups; 105 music tracks, 475 sfx files, 61 ambience beds; 125 headless tests, 119 in check.sh.
+**Live counts:** 22,210 sliced art pieces in 789 groups; 107 music tracks, 499 sfx files, 63 ambience beds; 136 headless tests, 128 in check.sh.
 
 ## Systems
 
@@ -12,8 +12,8 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 
 | Area | System / feature | Status | Percent | Tests | Notes |
 |---|---|---|---|---|---|
-| Art | 20,824 sliced pieces in 674 groups; Prompts 17-30 drawn | rough | 88 | crisp_art_test, art_audit | C2: CrispArt shader; fuzzy-art ranking docs/FUZZY-ART.md (buildings to redraw C5); Tom: gangster heroes need unique One-Piece-level designs |
-| Audio | 105 music tracks (ACE), 475 sfx files, 61 ambience beds | done | 97 | music_map_test, danger_music_test, sfx_audit | C6: seamless loops (numpy crossfade + loop points), 30 re-renders + new tracks, all sfx re-softened from source, real CC0 ambience/animal/war-horn sounds, music engine ducking/resume/prefetch, footsteps by ground |
+| Art | 22,210 sliced pieces in 789 groups; Prompts 17-30 drawn | rough | 88 | crisp_art_test, art_audit | C2: CrispArt shader; fuzzy-art ranking docs/FUZZY-ART.md (buildings to redraw C5); Tom: gangster heroes need unique One-Piece-level designs |
+| Audio | 107 music tracks (ACE), 499 sfx files, 63 ambience beds | done | 97 | music_map_test, danger_music_test, sfx_audit | C6: seamless loops (numpy crossfade + loop points), 30 re-renders + new tracks, all sfx re-softened from source, real CC0 ambience/animal/war-horn sounds, music engine ducking/resume/prefetch, footsteps by ground |
 | Combat | Battles, campaigns, drills, briefings, convoy, helpers | done | 92 | campaign_c3_test, battle_win_test, bf_themes_test, campaign_gate/words/map/story tests | C3: Grump variants + captains, per-campaign leaders, Crystal Kin, team on the field, 19 themed fields, easy early wins, resume, boss music |
 | Combat | Weapons, guns (no blood), spells, bosses, Gifts and the ten Marked | done | 85 | gift_test, ally_test | Kills-past-cap XP undecided |
 | Core | Engine, portrait 270x480, touch D-pad + A/B/MENU, input actions | done | 95 | smoke_test, desktop_layout_test, touch_ui_test | C2: desktop/landscape fills the screen (DisplayMode), F11/fullscreen, touch controls auto-hide on computers; phones unchanged |
@@ -43,11 +43,11 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 | Look | Seasonal looks: trees/bushes/tiles per season, winter snow, region look_season | done | 85 | r13_world_test | Region season pins (desert/sky summer, frost winter) |
 | Look | Interiors: furnish.py dressing, props fitted to footprint, rec rooms glow | done | 85 | interior_reach, rec_test | C2 rec visuals |
 | Look | NPC and animal animation: walk/idle strips, aligned wildlife, tool poses | rough | 78 | anim_test, gang_play_test | C5 c5_15: 12B heroes still lack side/up tool strips |
-| Multiplayer | Co-op up to 8 through relay (host-authoritative) | rough | 68 | coop_test, net_test (needs relay, not in check.sh) | C9 P6: guest sees host world keys (romance/dates, spouse, cfarm, mega, tickets), relay overwrite guard, world sync as deltas; coop_test covers C3-C8. Relay host still not deployed (Tom) |
+| Multiplayer | Co-op up to 8 through relay (host-authoritative) | rough | 68 | coop_test, net_test (needs relay, not in check.sh) | C9 P6: guest sees host world keys (romance/dates, spouse, cfarm, mega, tickets), relay overwrite guard, world sync as deltas; coop_test covers C3-C8. Relay live at wss://dreams-64-23-239-63.sslip.io (net_e2e + CI relay job); store copy gates co-op claims until this row is done (docs/steam-store/claims.md) |
 | People | 26 villagers: schedules, gifts, hearts, birthdays, 96+ heart perks | done | 90 | hearts_test, hearts_content_test | 10-heart endings and best-friend ceremony are story defaults not built |
 | People | Dating/marriage | done | 85 | romance_test | C7: bouquet at 8 hearts, 3 dates per candidate, locket at 10, wedding (penguin chapel / gangster plaza), spouse moves in and helps overnight; 10 candidates, G-rated; writing deepened in C12 |
 | People | Pet/pup: perks, hunter perk, mines | rough | 78 | systems_test, move_target_test | C2: pup swims (Paddle) instead of walking on water |
-| QA | Headless tests, bots, playtest | done | 85 | 125 *_test.gd; 119 run in check.sh | char_sheet/creator/hearts/ui/reach/net tests run outside check.sh |
+| QA | Headless tests, bots, playtest | done | 85 | 136 *_test.gd; 128 run in check.sh | char_sheet/creator/hearts/ui/reach/net tests run outside check.sh |
 | Story | Endings + epilogue slideshow | done | 90 | story_test, epilogue_test | Third ending (Clean Break) pending Tom |
 | Story | Penguin arc: 5 chapters, sanctuary, colonies | done | 85 | story_test, meow_gate_test | C7: canon (Crystopia crystals, 21-year bell timeline, Catkins guardian line, Nova dream, Fennimore beats, elders at the finale), beat flow fixes, story_flow_test |
 | Story | Gangster arc: 5 chapters, Racket, heat, turf, heists, crew | done | 85 | story_test, gang_play_test, cash_test | C7: origin + redemption path, Winter Kade, Inspector Hale, Clean Break ending, loyalty in the finale (data/story_gang.json) |
@@ -94,7 +94,7 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 
 ## What Claude needs from Tom
 
-1. **Co-op relay host account** (blocks: online co-op on the live site). Sign up for Render (second Starter service) or Fly.io; Claude gives tap-by-tap steps and deploys server/. Until then co-op only works in tests.
+1. **Co-op relay host account** (blocks: nothing (done)). Relay is live (wss://dreams-64-23-239-63.sslip.io; server/ auto-deploys from main).
 2. **Story answers, or say 'write the defaults'** (blocks: side stories, third ending, colony/Marked scenes). Guide 11 Part 3: 31 questions. Not built yet: finargle queen scene, four merkitty verses, one story per colony, Clean Break ending + Inspector Hale, one scene per Marked, 10-heart villager endings, side stories 20-26, festival mini-games.
 3. **Dating/marriage or friendship only** (blocks: done). C7: bouquet at 8 hearts, 3 dates per candidate, locket at 10, wedding (penguin chapel / gangster plaza), spouse moves in and helps overnight; 10 candidates, G-rated; writing deepened in C12
 4. **Your daughter's ideas** (blocks: nothing (optional)). Guide 11 Q29: a creature, place, joke or character she wants.
@@ -107,4 +107,4 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 
 ## Tests outside check.sh
 
-char_sheet_test, creator_test, day_length_test, difficulty_test, net_test, reach_test
+ability_tap_test, char_sheet_test, creator_test, day_length_test, difficulty_test, net_e2e_test, net_test, reach_test

@@ -945,3 +945,12 @@ echo "$nuout" | grep -E "FAIL|SCRIPT ERROR|net_url_test" || true
 if ! echo "$nuout" | grep -q "net_url_test: [0-9]* checks, 0 failures"; then
   echo "net_url_test failed"; exit 1
 fi
+
+echo "== S1 P6: Steam store text drafts (tokens, limits, banned words, claims gate) =="
+python3 tools/store_text_check.py || { echo "store_text_check failed"; exit 1; }
+
+echo "== S1 P6: Steam capsule/library art (sizes, formats, no text on hero, safe area) =="
+python3 tools/steam_capsules_check.py || { echo "steam_capsules_check failed"; exit 1; }
+
+echo "== S1 P6: Steam store screenshots (>= 5, 1920x1080, both arcs, all-ages flags) =="
+python3 tools/steam_shots_test.py || { echo "steam_shots_test failed"; exit 1; }

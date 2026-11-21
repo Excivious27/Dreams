@@ -1,0 +1,25 @@
+{
+ "_note": "Beats for tools/steam_trailer.gd (Movie Maker, 30 fps). Each beat: a fresh scripted state like tools/steam_shots.gd, then 'seconds' of play with an optional walk (from -> to cells) and tool action. Music is laid over the whole cut by tools/steam_trailer.sh (title.ogg, 2 s fade-out), game sfx kept underneath. See trailer.md.",
+ "fps": 30,
+ "music": "audio/music/title.ogg",
+ "beats": [
+  {"id": "b01_gloam_open", "arc": "penguins", "scene": "gloam_lanternfall", "from": [17, 24], "to": [23, 24], "minutes": 1110, "day": 8, "seconds": 3},
+  {"id": "b02_farm_work", "arc": "penguins", "scene": "farm", "from": [10, 16], "to": [10, 16], "minutes": 540, "day": 40, "builds": true, "crops": [[4, 17, 12, 23]], "tool": "water", "seconds": 4},
+  {"id": "b03_ranch", "arc": "penguins", "scene": "farm", "from": [20, 10], "to": [24, 10], "minutes": 600, "day": 40, "builds": true, "seconds": 3},
+  {"id": "b04_town_dusk", "arc": "penguins", "scene": "town", "from": [36, 30], "to": [44, 30], "minutes": 1140, "day": 8, "seconds": 3},
+  {"id": "b05_market_day", "arc": "penguins", "scene": "community_farm", "from": [], "to": [], "minutes": 660, "day": 10, "cfarm_stage": 8, "seconds": 3},
+  {"id": "b06_fishing", "arc": "penguins", "scene": "beach", "from": [], "to": [], "minutes": 660, "day": 40, "tool": "cast", "seconds": 3},
+  {"id": "b07_mine", "arc": "penguins", "scene": "mine", "from": [], "to": [], "minutes": 600, "day": 8, "tool": "pickaxe", "keep_foes": true, "seconds": 3},
+  {"id": "b08_penguin_battle", "arc": "penguins", "scene": "bf_orchard_line", "from": [], "to": [], "minutes": 600, "day": 8, "keep_foes": true, "seconds": 4},
+  {"id": "b09_neon", "arc": "gangsters", "scene": "neon", "from": [8, 14], "to": [16, 14], "minutes": 1290, "day": 8, "seconds": 2},
+  {"id": "b10_hideout", "arc": "gangsters", "scene": "hideout", "from": [18, 16], "to": [22, 16], "minutes": 1080, "day": 8, "seconds": 3},
+  {"id": "b11_gang_battle", "arc": "gangsters", "scene": "bf_neon_block", "from": [], "to": [], "minutes": 1200, "day": 8, "keep_foes": true, "seconds": 3},
+  {"id": "b12_rec_night", "arc": "penguins", "scene": "in_rec", "from": [], "to": [], "minutes": 1200, "day": 8, "zoom": 2.0, "seconds": 3},
+  {"id": "b13_spring", "arc": "penguins", "scene": "farm", "from": [13, 13], "to": [13, 13], "minutes": 600, "day": 5, "builds": true, "seconds": 1},
+  {"id": "b14_summer", "arc": "penguins", "scene": "beach", "from": [], "to": [], "minutes": 720, "day": 40, "seconds": 1},
+  {"id": "b15_fall", "arc": "penguins", "scene": "orchard_hills", "from": [], "to": [], "minutes": 660, "day": 65, "seconds": 1},
+  {"id": "b16_winter", "arc": "penguins", "scene": "farm", "from": [13, 13], "to": [13, 13], "minutes": 600, "day": 92, "weather": "snow", "builds": true, "seconds": 1},
+  {"id": "b17_pullback", "arc": "penguins", "scene": "farm", "from": [20, 16], "to": [20, 16], "minutes": 1110, "day": 40, "builds": true, "zoom": 0.6, "hud": false, "seconds": 3}
+ ],
+ "end_card": {"seconds": 2, "background": "docs/steam-store/art/library_hero.png", "logo": "docs/steam-store/art/library_logo.png", "line": "Coming soon to Steam"}
+}
