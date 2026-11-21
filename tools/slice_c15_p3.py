@@ -5,7 +5,8 @@ walk up x4, spare). Writes art/gen/characters/npc_<id>_<season>/ (idle, idle_up,
 idle_side, walk, walk_down, walk_up), the same strips Npc.setup already prefers
 for the season. New groups only (rm-then-write is moot: no file existed).
 
-  python3 tools/slice_c15_p3.py
+  python3 tools/slice_c15_p3.py [sheet-name-part ...]   (default: every sheet)
+Writes remove the old file first (art files are hardlinked across worktrees).
 """
 import json
 import os
@@ -13,6 +14,17 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import slice_art as S  # noqa: E402
+_save = S.save
+
+
+def _save_rm(img, group, name):  # rm-then-write: never modify a hardlinked art file in place
+    p = os.path.join(S.OUT, group, name + ".png")
+    if os.path.exists(p):
+        os.remove(p)
+    return _save(img, group, name)
+
+
+S.save = _save_rm
 from slice_art import crop, strip  # noqa: E402
 from slice_art2 import region_bbox  # noqa: E402
 from slice_world import _grid_runs, _equal_cells  # noqa: E402
@@ -22,6 +34,7 @@ import numpy as np  # noqa: E402
 # render (under art/incoming/) -> rows top to bottom
 SHEETS = {
     "c15p3/c15p3_winter_walkers_a.png": [("gideon", "winter"), ("wren", "winter"), ("alder", "winter"), ("hazel", "winter"), ("theo", "winter"), ("bram", "winter"), ("tobin", "winter")],
+    "c15p3/c15p3_walkers_b.png": [("ivy", "winter"), ("benno", "winter"), ("tess", "winter"), ("wren_jr", "winter"), ("maple", "spring"), ("finn", "spring"), ("posy", "spring")],
 }
 
 
@@ -50,7 +63,10 @@ def sheet(file, pairs):
 
 def main():
     groups = []
+    want = [a for a in sys.argv[1:] if not a.startswith("-")]  # sheet basenames (default: all)
     for f, pairs in SHEETS.items():
+        if want and not any(w in f for w in want):
+            continue
         groups += sheet(f, pairs)
     mpath = os.path.join(S.OUT, "manifest.json")
     man = json.load(open(mpath))

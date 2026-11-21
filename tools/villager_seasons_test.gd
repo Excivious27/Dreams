@@ -93,6 +93,10 @@ func _run() -> void:
 			_setup("penguins", _day(SEASONS.find(se), 5), 10.0, w)
 			check(Talk.part_ok(w), "weather %s is a Talk part on a %s day" % [w, w])
 
+	# --- every town villager has a winter walker (or an all-season sheet) ---
+	for id: String in town:
+		check(CharacterLibrary.has_character("npc_%s_winter" % id) or CharacterLibrary.has_character("npc_%s_all" % id), "%s has a winter walker" % id)
+
 	# --- seasonal Talk parts ---
 	_setup("penguins", _day(1, 1), 10.0)
 	check(Talk.part_ok("first") and Talk.part_ok("early") and not Talk.part_ok("late") and Talk.part_ok("y1") and not Talk.part_ok("y2"), "summer 1: first/early/y1")

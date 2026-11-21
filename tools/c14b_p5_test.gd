@@ -136,7 +136,7 @@ func _run() -> void:
 			var cells := Npc.pose_cells("characters/npc_" + id, "work")
 			check(cells.size() >= 2, id + ": work + work_2 loop as a pair")
 			break
-	for id: String in ["maple", "wren", "gideon", "alder"]:
+	for id: String in ["gideon", "maple", "wren", "alder"]:  # C15 P3: base walker first (outfits hold their own idle)
 		if not GameState.npcs.has(id):
 			continue
 		var n := Npc.new()

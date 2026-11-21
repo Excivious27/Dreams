@@ -43599,6 +43599,56 @@
    "w": 50
   }
  },
+ "characters/npc_benno_winter": {
+  "idle": {
+   "cell_h": 116,
+   "cell_w": 65,
+   "file": "characters/npc_benno_winter/idle.png",
+   "frames": 1,
+   "h": 116,
+   "w": 65
+  },
+  "idle_side": {
+   "cell_h": 112,
+   "cell_w": 53,
+   "file": "characters/npc_benno_winter/idle_side.png",
+   "frames": 1,
+   "h": 112,
+   "w": 53
+  },
+  "idle_up": {
+   "cell_h": 113,
+   "cell_w": 62,
+   "file": "characters/npc_benno_winter/idle_up.png",
+   "frames": 1,
+   "h": 113,
+   "w": 62
+  },
+  "walk": {
+   "cell_h": 107,
+   "cell_w": 57,
+   "file": "characters/npc_benno_winter/walk.png",
+   "frames": 4,
+   "h": 107,
+   "w": 228
+  },
+  "walk_down": {
+   "cell_h": 116,
+   "cell_w": 65,
+   "file": "characters/npc_benno_winter/walk_down.png",
+   "frames": 4,
+   "h": 116,
+   "w": 260
+  },
+  "walk_up": {
+   "cell_h": 114,
+   "cell_w": 62,
+   "file": "characters/npc_benno_winter/walk_up.png",
+   "frames": 4,
+   "h": 114,
+   "w": 248
+  }
+ },
  "characters/npc_blacksmith": {
   "idle": {
    "cell_h": 48,
@@ -44583,6 +44633,56 @@
    "frames": 4,
    "h": 103,
    "w": 196
+  }
+ },
+ "characters/npc_finn_spring": {
+  "idle": {
+   "cell_h": 113,
+   "cell_w": 64,
+   "file": "characters/npc_finn_spring/idle.png",
+   "frames": 1,
+   "h": 113,
+   "w": 64
+  },
+  "idle_side": {
+   "cell_h": 112,
+   "cell_w": 55,
+   "file": "characters/npc_finn_spring/idle_side.png",
+   "frames": 1,
+   "h": 112,
+   "w": 55
+  },
+  "idle_up": {
+   "cell_h": 112,
+   "cell_w": 61,
+   "file": "characters/npc_finn_spring/idle_up.png",
+   "frames": 1,
+   "h": 112,
+   "w": 61
+  },
+  "walk": {
+   "cell_h": 111,
+   "cell_w": 57,
+   "file": "characters/npc_finn_spring/walk.png",
+   "frames": 4,
+   "h": 111,
+   "w": 228
+  },
+  "walk_down": {
+   "cell_h": 113,
+   "cell_w": 65,
+   "file": "characters/npc_finn_spring/walk_down.png",
+   "frames": 4,
+   "h": 113,
+   "w": 260
+  },
+  "walk_up": {
+   "cell_h": 113,
+   "cell_w": 60,
+   "file": "characters/npc_finn_spring/walk_up.png",
+   "frames": 4,
+   "h": 113,
+   "w": 240
   }
  },
  "characters/npc_finn_winter": {
@@ -45789,6 +45889,56 @@
    "w": 54
   }
  },
+ "characters/npc_ivy_winter": {
+  "idle": {
+   "cell_h": 105,
+   "cell_w": 74,
+   "file": "characters/npc_ivy_winter/idle.png",
+   "frames": 1,
+   "h": 105,
+   "w": 74
+  },
+  "idle_side": {
+   "cell_h": 104,
+   "cell_w": 63,
+   "file": "characters/npc_ivy_winter/idle_side.png",
+   "frames": 1,
+   "h": 104,
+   "w": 63
+  },
+  "idle_up": {
+   "cell_h": 103,
+   "cell_w": 67,
+   "file": "characters/npc_ivy_winter/idle_up.png",
+   "frames": 1,
+   "h": 103,
+   "w": 67
+  },
+  "walk": {
+   "cell_h": 102,
+   "cell_w": 63,
+   "file": "characters/npc_ivy_winter/walk.png",
+   "frames": 4,
+   "h": 102,
+   "w": 252
+  },
+  "walk_down": {
+   "cell_h": 104,
+   "cell_w": 71,
+   "file": "characters/npc_ivy_winter/walk_down.png",
+   "frames": 4,
+   "h": 104,
+   "w": 284
+  },
+  "walk_up": {
+   "cell_h": 103,
+   "cell_w": 68,
+   "file": "characters/npc_ivy_winter/walk_up.png",
+   "frames": 4,
+   "h": 103,
+   "w": 272
+  }
+ },
  "characters/npc_juniper": {
   "carry": {
    "cell_h": 99,
@@ -46745,6 +46895,56 @@
    "frames": 4,
    "h": 100,
    "w": 180
+  }
+ },
+ "characters/npc_maple_spring": {
+  "idle": {
+   "cell_h": 107,
+   "cell_w": 69,
+   "file": "characters/npc_maple_spring/idle.png",
+   "frames": 1,
+   "h": 107,
+   "w": 69
+  },
+  "idle_side": {
+   "cell_h": 105,
+   "cell_w": 61,
+   "file": "characters/npc_maple_spring/idle_side.png",
+   "frames": 1,
+   "h": 105,
+   "w": 61
+  },
+  "idle_up": {
+   "cell_h": 105,
+   "cell_w": 58,
+   "file": "characters/npc_maple_spring/idle_up.png",
+   "frames": 1,
+   "h": 105,
+   "w": 58
+  },
+  "walk": {
+   "cell_h": 102,
+   "cell_w": 62,
+   "file": "characters/npc_maple_spring/walk.png",
+   "frames": 4,
+   "h": 102,
+   "w": 248
+  },
+  "walk_down": {
+   "cell_h": 107,
+   "cell_w": 69,
+   "file": "characters/npc_maple_spring/walk_down.png",
+   "frames": 4,
+   "h": 107,
+   "w": 276
+  },
+  "walk_up": {
+   "cell_h": 108,
+   "cell_w": 62,
+   "file": "characters/npc_maple_spring/walk_up.png",
+   "frames": 4,
+   "h": 108,
+   "w": 248
   }
  },
  "characters/npc_maple_winter": {
@@ -47897,6 +48097,56 @@
    "w": 224
   }
  },
+ "characters/npc_posy_spring": {
+  "idle": {
+   "cell_h": 115,
+   "cell_w": 70,
+   "file": "characters/npc_posy_spring/idle.png",
+   "frames": 1,
+   "h": 115,
+   "w": 70
+  },
+  "idle_side": {
+   "cell_h": 112,
+   "cell_w": 67,
+   "file": "characters/npc_posy_spring/idle_side.png",
+   "frames": 1,
+   "h": 112,
+   "w": 67
+  },
+  "idle_up": {
+   "cell_h": 112,
+   "cell_w": 69,
+   "file": "characters/npc_posy_spring/idle_up.png",
+   "frames": 1,
+   "h": 112,
+   "w": 69
+  },
+  "walk": {
+   "cell_h": 110,
+   "cell_w": 66,
+   "file": "characters/npc_posy_spring/walk.png",
+   "frames": 4,
+   "h": 110,
+   "w": 264
+  },
+  "walk_down": {
+   "cell_h": 115,
+   "cell_w": 72,
+   "file": "characters/npc_posy_spring/walk_down.png",
+   "frames": 4,
+   "h": 115,
+   "w": 288
+  },
+  "walk_up": {
+   "cell_h": 114,
+   "cell_w": 69,
+   "file": "characters/npc_posy_spring/walk_up.png",
+   "frames": 4,
+   "h": 114,
+   "w": 276
+  }
+ },
  "characters/npc_posy_winter": {
   "idle": {
    "cell_h": 100,
@@ -49001,6 +49251,56 @@
    "w": 57
   }
  },
+ "characters/npc_tess_winter": {
+  "idle": {
+   "cell_h": 123,
+   "cell_w": 81,
+   "file": "characters/npc_tess_winter/idle.png",
+   "frames": 1,
+   "h": 123,
+   "w": 81
+  },
+  "idle_side": {
+   "cell_h": 117,
+   "cell_w": 63,
+   "file": "characters/npc_tess_winter/idle_side.png",
+   "frames": 1,
+   "h": 117,
+   "w": 63
+  },
+  "idle_up": {
+   "cell_h": 119,
+   "cell_w": 77,
+   "file": "characters/npc_tess_winter/idle_up.png",
+   "frames": 1,
+   "h": 119,
+   "w": 77
+  },
+  "walk": {
+   "cell_h": 115,
+   "cell_w": 63,
+   "file": "characters/npc_tess_winter/walk.png",
+   "frames": 4,
+   "h": 115,
+   "w": 252
+  },
+  "walk_down": {
+   "cell_h": 123,
+   "cell_w": 79,
+   "file": "characters/npc_tess_winter/walk_down.png",
+   "frames": 4,
+   "h": 123,
+   "w": 316
+  },
+  "walk_up": {
+   "cell_h": 120,
+   "cell_w": 74,
+   "file": "characters/npc_tess_winter/walk_up.png",
+   "frames": 4,
+   "h": 120,
+   "w": 296
+  }
+ },
  "characters/npc_theo": {
   "carry": {
    "cell_h": 100,
@@ -50059,6 +50359,56 @@
    "frames": 4,
    "h": 72,
    "w": 192
+  }
+ },
+ "characters/npc_wren_jr_winter": {
+  "idle": {
+   "cell_h": 113,
+   "cell_w": 71,
+   "file": "characters/npc_wren_jr_winter/idle.png",
+   "frames": 1,
+   "h": 113,
+   "w": 71
+  },
+  "idle_side": {
+   "cell_h": 113,
+   "cell_w": 63,
+   "file": "characters/npc_wren_jr_winter/idle_side.png",
+   "frames": 1,
+   "h": 113,
+   "w": 63
+  },
+  "idle_up": {
+   "cell_h": 112,
+   "cell_w": 64,
+   "file": "characters/npc_wren_jr_winter/idle_up.png",
+   "frames": 1,
+   "h": 112,
+   "w": 64
+  },
+  "walk": {
+   "cell_h": 109,
+   "cell_w": 67,
+   "file": "characters/npc_wren_jr_winter/walk.png",
+   "frames": 4,
+   "h": 109,
+   "w": 268
+  },
+  "walk_down": {
+   "cell_h": 113,
+   "cell_w": 71,
+   "file": "characters/npc_wren_jr_winter/walk_down.png",
+   "frames": 4,
+   "h": 113,
+   "w": 284
+  },
+  "walk_up": {
+   "cell_h": 109,
+   "cell_w": 64,
+   "file": "characters/npc_wren_jr_winter/walk_up.png",
+   "frames": 4,
+   "h": 109,
+   "w": 256
   }
  },
  "characters/npc_wren_winter": {
