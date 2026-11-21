@@ -191,7 +191,8 @@
      "lines": [
       {
        "who": "",
-       "text": "We came round by the frozen ridge, under the stars. The Grumps never even looked up. Slow, but nobody got hurt."
+       "text": "We came round by the frozen ridge, under the stars. The Grumps never even looked up. Slow, but nobody got hurt.",
+       "pic": "c16bp3_long_wastes"
       },
       {
        "who": "Catkins",
@@ -236,7 +237,8 @@
      "lines": [
       {
        "who": "",
-       "text": "Big Jim led you up the inside of the great tree while the Storm Grumps slept. The branches creaked like an old friend."
+       "text": "Big Jim led you up the inside of the great tree while the Storm Grumps slept. The branches creaked like an old friend.",
+       "pic": "c16bp3_long_sky"
       },
       {
        "who": "Big Jim",
@@ -289,7 +291,8 @@
      "lines": [
       {
        "who": "",
-       "text": "A trucker owed Sal a favour. You rode out under a tarp in the sleeper cab, and the countryside opened up past the toll booth."
+       "text": "A trucker owed Sal a favour. You rode out under a tarp in the sleeper cab, and the countryside opened up past the toll booth.",
+       "pic": "c16bp3_long_countryside"
       },
       {
        "who": "Sal",
@@ -334,7 +337,8 @@
      "lines": [
       {
        "who": "",
-       "text": "A fisher rowed you in under the piers at night. Nobody on the docks saw a thing. Sal grins: that's how you do it."
+       "text": "A fisher rowed you in under the piers at night. Nobody on the docks saw a thing. Sal grins: that's how you do it.",
+       "pic": "c16bp3_long_docks"
       },
       {
        "who": "Sal",
@@ -379,7 +383,8 @@
      "lines": [
       {
        "who": "",
-       "text": "Halo mapped the service alleys behind the strip. You slipped through by the bins and the back doors, and the neon district let you in."
+       "text": "Halo mapped the service alleys behind the strip. You slipped through by the bins and the back doors, and the neon district let you in.",
+       "pic": "c16bp3_long_neon"
       },
       {
        "who": "Sal",
@@ -424,7 +429,8 @@
      "lines": [
       {
        "who": "",
-       "text": "An old pump worker owed Doc a kindness. A maintenance key, a ladder, a long dark walk, and you're in the underground."
+       "text": "An old pump worker owed Doc a kindness. A maintenance key, a ladder, a long dark walk, and you're in the underground.",
+       "pic": "c16bp3_long_underground"
       },
       {
        "who": "Sal",
@@ -469,7 +475,8 @@
      "lines": [
       {
        "who": "",
-       "text": "Sasha's old cleaning shift pass still works. A clean uniform, a nod at the staff entrance, and Uptown is open to you."
+       "text": "Sasha's old cleaning shift pass still works. A clean uniform, a nod at the staff entrance, and Uptown is open to you.",
+       "pic": "c16bp3_long_uptown"
       },
       {
        "who": "Sal",

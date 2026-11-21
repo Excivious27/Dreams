@@ -346,6 +346,9 @@ static func take_long_way(cid: String) -> Array:
 	var day := int(GameState.run.get("day", 1))
 	st()["long"][cid] = {"day": day, "due": day + int(lw.get("days", 1)), "done": false}
 	var lines: Array = [{"who": who(cid), "text": str(lw["words"])}]
+	var pic := str(lw.get("pic", "c16bp3_long_" + str(lw["region"])))
+	if Art.has("ui", pic):
+		lines[0]["pic"] = pic
 	for stp in lw.get("steps", []):
 		if str(stp) != "":
 			lines.append({"who": "", "text": str(stp)})

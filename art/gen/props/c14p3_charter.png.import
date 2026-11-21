@@ -17,7 +17,7 @@ dest_files=["res://.godot/imported/c14p3_charter.png-9293c5dba5a1203adadac7e7f27
 
 compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

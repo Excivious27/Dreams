@@ -28,6 +28,9 @@ func _pay_and_take(arc: String, cid: String) -> void:
 	check(Campaign.can_take_long_way(cid), "%s: %s long way can be taken (%s)" % [arc, cid, Campaign.long_way_lock(cid)])
 	var lines := Campaign.take_long_way(cid)
 	check(not lines.is_empty(), "%s: %s take_long_way says something" % [arc, cid])
+	var reg0 := str(Campaign.get_c(cid)["region"])
+	if reg0 in Campaign.STORY_REGION.values() or reg0 == "countryside":
+		check(not lines.is_empty() and str(lines[0].get("pic", "")) != "" and Art.has("ui", str(lines[0]["pic"])), "%s: %s long way has its story panel" % [arc, cid])
 	check(int(GameState.run.get("crystals", 0)) == before - int(cost.get("money", 0)), "%s: %s toll paid" % [arc, cid])
 	var reg := str(Campaign.get_c(cid)["region"])
 	if int(lw.get("days", 1)) > 0:
